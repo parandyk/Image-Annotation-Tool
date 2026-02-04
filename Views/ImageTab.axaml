@@ -1,0 +1,140 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+             xmlns:u="https://irihi.tech/ursa"
+             xmlns:enums="clr-namespace:ImageAnnotationTool.Enums"
+             xmlns:view="clr-namespace:ImageAnnotationTool.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ImageAnnotationTool.Views.ImageTab"
+             x:DataType="vm:ImageManagerViewModel">
+            <Border CornerRadius="10" 
+                    Background="{DynamicResource PrimaryBackground}"
+                    Margin="15,0,15,15">
+                <StackPanel HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True">
+                    <Grid RowDefinitions="*, *" HorizontalAlignment="Stretch" Margin="0,5,0,5">
+                        <Grid Grid.Row="0" HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="FilterIcon"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid HorizontalAlignment="Stretch" Margin="0,0,5,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MoveIcon"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MoveIcon"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Background="{DynamicResource SecondaryBackground}" 
+                                        VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Width="30" Margin="0,0,2.5,0"
+                                        x:Name="ImageBackwardButton" IsEnabled="{Binding CanMoveBackwardImage, Mode=OneWay}"
+                                        Command="{Binding MoveImageBackwardCommand}">
+                                    <PathIcon Foreground="{DynamicResource PrimaryForeground}" Data="{StaticResource IconNextRegular}">
+                                        <PathIcon.RenderTransform>
+                                            <ScaleTransform ScaleX="-1"/>
+                                        </PathIcon.RenderTransform>
+                                    </PathIcon>
+                                </Button>
+                                <Button Grid.Column="1" Background="{DynamicResource SecondaryBackground}"
+                                        VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Width="30" Margin="2.5,0,0,0"
+                                        x:Name="ImageForwardButton" IsEnabled="{Binding CanMoveForwardImage, Mode=OneWay}"
+                                        Command="{Binding MoveImageForwardCommand}">
+                                    <PathIcon Foreground="{DynamicResource PrimaryForeground}" Data="{StaticResource IconNextRegular}"/>
+                                </Button>
+                            </Grid>
+                            <Border Grid.Column="1" Margin="5,0" CornerRadius="5"
+                                    Background="{DynamicResource SecondaryBackground}" 
+                                    HorizontalAlignment="Stretch">
+                                <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                           Background="{DynamicResource SecondaryBackground}" 
+                                           Text="{Binding SelectedImageViewModel.ImageName}"  
+                                           TextTrimming="PrefixCharacterEllipsis">
+                                    <ToolTip.Tip>
+                                        <TextBlock TextWrapping="Wrap"
+                                                   Text="{Binding SelectedImageViewModel.ImageName}"/>
+                                    </ToolTip.Tip>
+                                </TextBlock>
+                            </Border>
+                            <Button Grid.Row="0" Grid.Column="2"
+                                    Margin="5,0,0,0"
+                                    Height="30" Width="30" 
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center" 
+                                    HorizontalContentAlignment="Center" 
+                                    VerticalContentAlignment="Center" 
+                                    Background="{DynamicResource SecondaryBackground}"
+                                    Foreground="Transparent">
+                                <PathIcon Data="{StaticResource IconFilterItems}" Foreground="{DynamicResource PrimaryForeground}"/>
+                                <Button.Flyout>
+                                    <MenuFlyout>
+                                        <StackPanel>
+                                            <TextBlock>Filtering</TextBlock>
+                                            <u:EnumSelector EnumType="enums:ImageFilterMode" Width="210" DisplayDescription="True"
+                                                               Value="{Binding ImageFiltering, Mode=TwoWay}">
+                                            </u:EnumSelector>
+                                            <TextBlock>Sorting</TextBlock>
+                                            <u:EnumSelector EnumType="enums:ImageSortMode" Width="210" DisplayDescription="True"
+                                                               Value="{Binding ImageSorting}">
+                                            </u:EnumSelector>
+                                        </StackPanel>
+                                    </MenuFlyout>
+                                </Button.Flyout>
+                            </Button>
+                        </Grid>
+                        <ListBox Height="100" Grid.Row="1" Margin="0,5,0,0"
+                                 HorizontalAlignment="Stretch"
+                                 IsTextSearchEnabled="True"
+                                 x:Name="ImageNamesList"
+                                 ItemsSource="{Binding SortedFilteredImageViewModelList}"
+                                 SelectedValue="{Binding SelectedImageViewModel, Mode=TwoWay}">
+                            <ListBox.Styles>
+                                <Style Selector="ListBoxItem">
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="ContextFlyout" x:DataType="vm:ImageViewModel">
+                                        <MenuFlyout>
+                                            <MenuItem Header="Delete" HotKey="Delete"
+                                                      Command="{Binding $parent[view:ImageTab].((vm:ImageManagerViewModel)DataContext).DeleteImageCommand}"
+                                                      CommandParameter="{Binding GUID}"/>
+                                        </MenuFlyout>
+                                    </Setter>
+                                </Style>
+                            </ListBox.Styles>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="vm:ImageViewModel">
+                                    <Grid HorizontalAlignment="Stretch" Background="Transparent" Margin="5">
+                                        <ToolTip.Tip>
+                                            <TextBlock TextWrapping="Wrap"
+                                                       Text="{Binding ImageName}"/>
+                                        </ToolTip.Tip>
+                                        <Grid HorizontalAlignment="Stretch">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="DeleteIcon"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                       Text="{Binding ImageName}"  
+                                                       TextTrimming="PrefixCharacterEllipsis">
+                                            </TextBlock>
+                                            <Button Grid.Column="1" Width="30" Height="30" Margin="5,0,0,0" 
+                                                    Background="Transparent"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center" 
+                                                    CommandParameter="{Binding GUID}"
+                                                    Command="{Binding DeleteImageCommand}">
+                                                <PathIcon Data="{StaticResource IconDeleteItem}" 
+                                                          Foreground="{DynamicResource PrimaryForeground}"/>
+                                            </Button>
+                                            <ToolTip.Tip>
+                                                <TextBlock TextWrapping="Wrap"
+                                                           Text="{Binding ImageName}"/>
+                                            </ToolTip.Tip>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </StackPanel>
+            </Border>
+</UserControl>

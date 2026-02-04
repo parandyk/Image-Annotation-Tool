@@ -1,0 +1,84 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageAnnotationTool.Views"
+        xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="640"
+        Width="1024" Height="640"
+        MinWidth="640" MinHeight="640"
+        x:DataType="vm:MainViewModel"
+        x:Class="ImageAnnotationTool.MainWindow"
+        xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+        Title="Image Annotation Tool">
+        
+        <Design.DataContext><vm:MainViewModel></vm:MainViewModel></Design.DataContext>
+        <Window.KeyBindings>
+            <KeyBinding Gesture="{OnPlatform Default='Ctrl+Z', macOS='Cmd+Z'}"
+                        Command="{Binding UndoOperationCommand}"/>
+            <KeyBinding Gesture="{OnPlatform Default='Ctrl+Y', macOS='Cmd+Shift+Z'}"
+                        Command="{Binding RedoOperationCommand}"/>
+            <KeyBinding Gesture="Escape"
+                        Command="{Binding AbortOperationCommand}" />
+        </Window.KeyBindings>
+        <Interaction.Behaviors>
+        </Interaction.Behaviors>
+        <dialogHost:DialogHost CloseOnClickAway="True">
+            <NativeMenu.Menu>
+                    <NativeMenu>
+                            <NativeMenuItem Header="Open">
+                                    <NativeMenu>
+                                            <NativeMenuItem Header="Image..." 
+                                                            Command="{Binding OpenImageFileCommand}"/>
+                                            <NativeMenuItem Header="Source folder..." 
+                                                            Command="{Binding OpenFolderCommand}"/>
+                                    </NativeMenu>
+                            </NativeMenuItem>
+                            <NativeMenuItem Header="_Load">
+                                    <NativeMenu>
+                                            <NativeMenuItem Header="_Classes..." 
+                                                            Command="{Binding OpenClassFileCommand}"/>
+                                            <NativeMenuItem Header="_Annotations..." IsEnabled="{Binding ImageOpen}" 
+                                                            Command="{Binding OpenAnnotationFileCommand}"/>
+                                    </NativeMenu>
+                            </NativeMenuItem>
+                            <NativeMenuItem Header="_Save">
+                                    <NativeMenu>
+                                            <NativeMenuItem Header="_Classes..."
+                                                            IsEnabled="{Binding ClassesPresent}"
+                                                            Command="{Binding SaveClassesToFileCommand}"/>
+                                            <NativeMenuItem Header="_This image's annotations..." 
+                                                            IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal}" 
+                                                            Command="{Binding SaveAnnotationsToFileCommand}"/>
+                                            <NativeMenuItem Header="_All images' annotations..." 
+                                                            IsEnabled="{Binding ImageManagerVM.BBoxesPresentGlobal}" 
+                                                            Command="{Binding SaveAnnotationsToFileCommand}"/>
+                                    </NativeMenu>
+                            </NativeMenuItem>
+                            <NativeMenuItem Header="Edit">
+                                <NativeMenu>
+                                    <NativeMenuItem Header="Undo" 
+                                                    IsEnabled="{Binding UndoStackNotEmpty}" 
+                                                    Command="{Binding UndoOperationCommand}"/>
+                                    <NativeMenuItem Header="Redo" 
+                                                    IsEnabled="{Binding RedoStackNotEmpty}" 
+                                                    Command="{Binding RedoOperationCommand}"/>
+                                    <NativeMenuItemSeparator />
+                                    <NativeMenuItem Header="Abort drawing" 
+                                                    IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.AnnotatingOn}" 
+                                                    Command="{Binding ImageManagerVM.SelectedImageViewModel.AbortDrawingCommand}"/>
+                                    <NativeMenuItem Header="Delete last annotation in this image" 
+                                                    IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal}" 
+                                                    Command="{Binding ImageManagerVM.SelectedImageViewModel.RemoveAllBBoxesCommand}"/>
+                                    <NativeMenuItem Header="Delete all annotations in this image" 
+                                                    IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal}" 
+                                                    Command="{Binding ImageManagerVM.SelectedImageViewModel.RemoveLastBBoxCommand}"/>
+                                </NativeMenu>
+                            </NativeMenuItem>
+                            <NativeMenuItem Header="Settings"
+                                            Command="{Binding SettingsManagerVM.OpenSettingsDialogCommand}"/>
+                    </NativeMenu>
+            </NativeMenu.Menu>   
+            <local:MainView/>
+        </dialogHost:DialogHost>
+</Window>

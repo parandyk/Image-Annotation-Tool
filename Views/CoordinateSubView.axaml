@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+             x:Class="ImageAnnotationTool.Views.CoordinateSubView"
+             x:DataType="vm:ImageManagerViewModel">
+                    <Expander ExpandDirection="Down" Header="Coordinates" 
+                              CornerRadius="5" HorizontalAlignment="Stretch" Margin="-5,0, -5, 0">
+                        <Grid RowDefinitions="*, *, *" ColumnDefinitions="*, *, *, *" 
+                              HorizontalAlignment="Stretch" Margin="-15,0, 5, 0">
+                            <TextBlock Classes="coordinates-textblock" Grid.Row="0" Grid.Column="0">X1 =</TextBlock>
+                            <NumericUpDown Classes="numeric-box" Grid.Row="0" Grid.Column="1"
+                                           Value="{Binding SelectedImageViewModel.SelectedAnnotation.X}"/>
+                            <TextBlock Classes="coordinates-textblock" Grid.Row="0" Grid.Column="2">Y1 =</TextBlock>
+                            <NumericUpDown Classes="numeric-box" Grid.Row="0" Grid.Column="3"
+                                           Value="{Binding SelectedImageViewModel.SelectedAnnotation.Y}"/>
+        
+                            <TextBlock Classes="coordinates-textblock" Grid.Row="1" Grid.Column="0">X2 =</TextBlock>
+                            <NumericUpDown Classes="numeric-box" Grid.Row="1" Grid.Column="1"
+                                           Value="{Binding SelectedImageViewModel.SelectedAnnotation.X2}" />
+                            <TextBlock Classes="coordinates-textblock" Grid.Row="1" Grid.Column="2">Y2 =</TextBlock>
+                            <NumericUpDown Classes="numeric-box" Grid.Row="1" Grid.Column="3"
+                                           Value="{Binding SelectedImageViewModel.SelectedAnnotation.Y2}" />
+                            
+                            <TextBlock Classes="coordinates-textblock" Grid.Row="2" Grid.Column="0">Width =</TextBlock>
+                            <NumericUpDown Classes="numeric-box" Grid.Row="2" Grid.Column="1"
+                                           Value="{Binding SelectedImageViewModel.SelectedAnnotation.Width}" />
+                            <TextBlock Classes="coordinates-textblock" Grid.Row="2" Grid.Column="2">Height =</TextBlock>
+                            <NumericUpDown Classes="numeric-box" Grid.Row="2" Grid.Column="3"
+                                           Value="{Binding SelectedImageViewModel.SelectedAnnotation.Height}" />
+                        </Grid>
+                    </Expander>
+</UserControl>

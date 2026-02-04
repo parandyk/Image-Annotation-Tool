@@ -1,0 +1,44 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+        x:DataType="vm:DeleteAnnotationDialogViewModel"
+        x:Class="ImageAnnotationTool.Views.DeleteAnnotationDialogWindow"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="250" Padding="10"
+        Width="400"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="Height"
+        CanResize="False"
+        CanMaximize="False"
+        CanMinimize="True"
+        ExtendClientAreaToDecorationsHint="False"
+        ExtendClientAreaChromeHints="PreferSystemChrome"
+        ExtendClientAreaTitleBarHeightHint="-1" 
+        Title="Deleting annotation">
+    <Window.KeyBindings>
+        <KeyBinding Gesture="Escape"
+                    Command="{Binding CancelCommand}" />
+    </Window.KeyBindings>
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" />
+
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,20,0,0">
+            <StackPanel.Styles>
+                <Style Selector="Button">
+                    <Setter Property="VerticalAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="Width" Value="100" />
+                    <Setter Property="Margin" Value="10,0,0,0" />
+                </Style>
+            </StackPanel.Styles>
+            <CheckBox IsChecked="{Binding DontAskAgain, Mode=TwoWay}"
+                      HorizontalAlignment="Left" VerticalAlignment="Center" HorizontalContentAlignment="Left"
+                      Content="Don't ask again" Margin="0,0,20, 0"/>
+            <Button Content="Proceed" Command="{Binding ProceedCommand}" />
+            <Button Content="Cancel" Command="{Binding CancelCommand}" />
+        </StackPanel>
+    </StackPanel>
+</Window>

@@ -1,0 +1,101 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ImageAnnotationTool.Views.SettingsSubView"
+             x:DataType="vm:SettingsManagerViewModel">
+                <Expander ExpandDirection="Down" Header="Settings"
+                      CornerRadius="5" HorizontalAlignment="Stretch" Margin="-5,0">
+                    <StackPanel>
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="6*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock FontWeight="Bold" Text="Mode"/>
+                            <ToggleSwitch Grid.Column="1" HorizontalAlignment="Right" OnContent="Editing" OffContent="Adding"
+                                          IsChecked="{Binding EditingModeOn, Mode=OneWayToSource}"/>
+                        </Grid>
+                        
+                        <Separator/>
+                        
+                        <TextBlock FontWeight="Bold" Text="Global toggles" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Margin="0,5,0,10"/>
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock FontWeight="Bold" Text="Class visibility"/>
+                            <CheckBox Grid.Column="1" HorizontalAlignment="Right" IsThreeState="True"
+                                      IsChecked="{Binding GlobalClassVisibility, Mode=TwoWay}"/>
+                        </Grid>
+                        
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock FontWeight="Bold" Text="Annotation visibility"/>
+                            <CheckBox Grid.Column="1" HorizontalAlignment="Right" IsThreeState="True"
+                                      IsChecked="{Binding GlobalBBoxVisibility, Mode=TwoWay}"/>
+                        </Grid>
+                        
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock FontWeight="Bold" Text="Annotation anchoring"/>
+                            <CheckBox Grid.Column="1" HorizontalAlignment="Right" IsThreeState="True"
+                                      IsChecked="{Binding GlobalBBoxAnchoring, Mode=TwoWay}"/>
+                        </Grid>
+                        
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock FontWeight="Bold" Text="Annotation borders"/>
+                            <CheckBox Grid.Column="1" HorizontalAlignment="Right"
+                                      IsChecked="{Binding BboxBorderOn, Mode=TwoWay}"/>
+                        </Grid>
+                        
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock FontWeight="Bold" Text="Annotation backgrounds"/>
+                            <CheckBox Grid.Column="1" HorizontalAlignment="Right"
+                                      IsChecked="{Binding BboxBackgroundOn, Mode=TwoWay}"/>
+                        </Grid>
+                        <StackPanel.Styles>
+                            <Style Selector="CheckBox">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            </Style>
+                            <Style Selector="ToggleSwitch">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            </Style>
+                            <Style Selector="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                            </Style>
+                        </StackPanel.Styles>
+                    </StackPanel>
+                </Expander>
+</UserControl>

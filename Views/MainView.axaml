@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="640"
+             xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+             xmlns:view="clr-namespace:ImageAnnotationTool.Views"
+             xmlns:core="using:ImageAnnotationTool.Core"
+             x:DataType="vm:MainViewModel"
+             x:Class="ImageAnnotationTool.Views.MainView"
+             x:Name="MainUserControl">
+    
+    <DockPanel LastChildFill="True">
+        <view:TopbarView DockPanel.Dock="Top" Focusable="True"/>
+        <Panel Background="Transparent">
+            <Grid ColumnDefinitions="*, 300">
+                <Panel Background="Transparent"
+                       x:Name="ZoomBorderPanel" 
+                       Focusable="True">
+                    <ZoomBorder
+                        x:Name="ImageZoomBorder"
+                        EnableConstrains="True"
+                        ClipToBounds="True"
+                        ShowGrid="False"
+                        EnablePan="True"
+                        MinZoomY="{x:Static core:InteractionConstants.MinZoom}"
+                        MinZoomX="{x:Static core:InteractionConstants.MinZoom}"
+                        AutoCalculateMaxZoom="True"
+                        EnableSimultaneousPanZoom="True"
+                        EnableDoubleClickZoom="False"
+                        EnableAnimations="True"
+                        PowerFactor="0.1"
+                        ZoomSpeed="1.08"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        BoundsMode="FillViewport"
+                        ResizeBehavior="MaintainZoom"
+                        Stretch="Uniform"
+                        WheelWithCtrl="Zoom"
+                        WheelBehavior="None"
+                        PanButton="Middle">
+                        <ZoomBorder.Margin>
+                            <Binding Source="{x:Static core:RenderingConstants.ZoomBorderMargin}" 
+                                     Converter="{StaticResource ThicknessConverter}"/>
+                        </ZoomBorder.Margin>
+                        <ContentControl Content="{Binding ImageManagerVM.SelectedImageViewModel}"
+                                        x:Name="ImageContentControl" >
+                            <ContentControl.ContentTemplate>
+                                <DataTemplate>
+                                    <!-- workspace view --> 
+                                    <view:WorkspaceView ZoomBorderScaleX="{Binding #ImageZoomBorder.ZoomX}"
+                                                        ZoomBorderScaleY="{Binding #ImageZoomBorder.ZoomY}"
+                                                        BBoxBorderOn="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).SettingsManagerVM.BboxBorderOn}"
+                                                        BBoxBackgroundOn="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).SettingsManagerVM.BboxBackgroundOn}"
+                                                        DynamicBordersOn="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).SettingsManagerVM.DynamicBordersOn}"
+                                                        BboxBorderThickness="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).SettingsManagerVM.BboxBorderThickness}"
+                                                        DragThreshold="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).SettingsManagerVM.DragThreshold}"/>
+                                </DataTemplate>
+                            </ContentControl.ContentTemplate>
+                        </ContentControl>
+                    </ZoomBorder>
+                </Panel>
+                <!-- sidebar view --> 
+                <view:SidebarView x:Name="SidebarControl" Grid.Column="1"/>
+            </Grid>
+        </Panel>
+    </DockPanel>
+</UserControl>

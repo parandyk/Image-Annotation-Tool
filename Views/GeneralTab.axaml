@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+             xmlns:model="clr-namespace:ImageAnnotationTool.Models"
+             xmlns:view="clr-namespace:ImageAnnotationTool.Views"
+             x:Class="ImageAnnotationTool.Views.GeneralTab"
+             x:DataType="vm:MainViewModel">
+                <Border CornerRadius="10" 
+                    Background="{DynamicResource PrimaryBackground}"
+                    Margin="10,0,10,10">
+                            <StackPanel>
+                                <Border Margin="15,5,15,2.5" CornerRadius="5">
+                                    <view:ImageSubView DataContext="{Binding ImageManagerVM}"/>
+                                </Border>
+                                <Border Margin="15,5,15,2.5" CornerRadius="5">
+                                    <view:AnnotationSubView DataContext="{Binding ImageManagerVM.SelectedImageViewModel}"/>
+                                </Border>
+                                <Border Margin="15,5,15,2.5" CornerRadius="5">
+                                    <view:CoordinateSubView DataContext="{Binding ImageManagerVM}"/>
+                                </Border>
+                                <Border Margin="15,5,15,2.5" CornerRadius="5">
+                                    <view:ClassSubView DataContext="{Binding ClassManagerVM}"/>
+                                </Border>
+                                <Border Margin="15,5,15,2.5" CornerRadius="5">
+                                    <view:SettingsSubView DataContext="{Binding SettingsManagerVM}"/>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+</UserControl>

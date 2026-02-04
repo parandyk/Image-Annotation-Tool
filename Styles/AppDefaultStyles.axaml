@@ -1,0 +1,165 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+        xmlns:ursa="https://irihi.tech/ursa"
+        xmlns:core="clr-namespace:ImageAnnotationTool.Core"
+        xmlns:controls="clr-namespace:ImageAnnotationTool.Controls"
+        xmlns:interface="clr-namespace:ImageAnnotationTool.Domain.Infrastructure">
+    
+    <Style Selector="controls|ResizingThumb" x:DataType="vm:AnnotationViewModel">
+        <Setter Property="Width" Value="{x:Static core:LayoutConstants.ThumbSize}"/>
+        <Setter Property="Height" Value="{x:Static core:LayoutConstants.ThumbSize}"/>
+        <Setter Property="HitTestMargin" Value="{x:Static core:LayoutConstants.ThumbHitTestAreaPadding}"/>
+        <Setter Property="Opacity" Value="0.75"/>
+        <Setter Property="UseLayoutRounding" Value="False"/>
+        <Setter Property="ConstrainToParentBounds" Value="True"/>
+        <Setter Property="Tag"/>
+        <Setter Property="TargetParent"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    
+        <Setter Property="Background" Value="{DynamicResource ThumbOnBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ThumbOnBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="RenderTransformOrigin" Value="0,0"/>
+    
+        <Setter Property="Template">
+            <ControlTemplate>
+                <!-- <Grid Background="Transparent"> -->
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="0"
+                            IsVisible="{Binding IsEnabled, RelativeSource={RelativeSource Self}}">
+                        <Border.IsEnabled>
+                            <MultiBinding Converter="{StaticResource ThumbVisibilityConverter}">
+                                <Binding Path="Width"/>
+                                <Binding Path="Height"/>
+                                <MultiBinding Converter="{StaticResource ZoomInvarianceConverter}" >
+                                    <Binding Path="$parent[interface:IRenderingInterface].InverseScaleX"/>
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Width"/>
+                                </MultiBinding>
+                                <MultiBinding Converter="{StaticResource ZoomInvarianceConverter}" >
+                                    <Binding Path="$parent[interface:IRenderingInterface].InverseScaleX"/>
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Height"/>
+                                </MultiBinding>
+                                <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Tag"/>
+                            </MultiBinding>
+                        </Border.IsEnabled>
+                        <!-- <Border.IsVisible> -->
+                        <!--     <Binding Path="{Binding IsEnabled, RelativeSource={RelativeSource Self}}"/> -->
+                        <!-- </Border.IsVisible> -->
+                        <!-- <Border.RenderTransform> -->
+                        <!--     <ScaleTransform ScaleX="{Binding $parent[interface:IRenderingInterface].InverseScaleX}" -->
+                        <!--                     ScaleY="{Binding $parent[interface:IRenderingInterface].InverseScaleX}"/> -->
+                        <!-- </Border.RenderTransform> -->
+                        <!-- <Border.Margin> -->
+                        <!--     <MultiBinding Converter="{StaticResource ZoomInvarianceConverter}"> -->
+                        <!--         <Binding Path="$parent[interface:IRenderingInterface].InverseScaleX"/> -->
+                        <!--         <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="HitTestMargin" -->
+                        <!--                  Converter="{StaticResource ThicknessConverter}"/> -->
+                        <!--     </MultiBinding> -->
+                        <!-- </Border.Margin> -->
+                        
+                        <!-- <Border.Margin> -->
+                        <!--     <MultiBinding Converter="{StaticResource ThumbMarginConverter}" > -->
+                        <!--         ~1~ <Binding RelativeSource="{RelativeSource AncestorType=Border, AncestorLevel=1}" @1@ -->
+                        <!--         ~1~          Path="BorderThickness"/> @1@ -->
+                        <!--         <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="BorderThickness"/> -->
+                        <!--         ~1~ <Binding RelativeSource="{RelativeSource AncestorType=Border, AncestorLevel=1}" @1@ -->
+                        <!--         ~1~          Path="BorderThickness"/> @1@ -->
+                        <!--         <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Tag"/> -->
+                        <!--     </MultiBinding> -->
+                        <!-- </Border.Margin> -->
+                        
+                        
+                        <!-- <Border.RenderTransformOrigin> -->
+                        <!--     <MultiBinding Converter="{StaticResource TransformOriginConverter}"> -->
+                        <!--         <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="HorizontalAlignment"/> -->
+                        <!--         <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="VerticalAlignment"/> -->
+                        <!--     </MultiBinding> -->
+                        <!-- </Border.RenderTransformOrigin> -->
+                    </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Thumb:pointerover">
+        <Setter Property="Background" Value="{DynamicResource ThumbHoverBackground}" />
+    </Style>
+    
+    <Style Selector="Thumb:pressed">
+        <Setter Property="Background" Value="{DynamicResource ThumbHoverBackground}" />
+    </Style>
+    
+    <Style Selector="Thumb.Edge">
+        <Setter Property="Background" Value="Black" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+    </Style>
+    
+    <Style Selector="NumericUpDown.numeric-box">
+        <Setter Property="Width" Value="60"/>
+        <Setter Property="FormatString" Value="0.0"/>
+        <Setter Property="ShowButtonSpinner" Value="False"/>
+        <Setter Property="AllowSpin" Value="False"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+    </Style>
+    
+    
+    <Style Selector="controls|CoordinateNumeric.coordinate-box">
+        <Setter Property="EnableCommand">
+            <MultiBinding Converter="{x:Static BoolConverters.And}" x:DataType="vm:MainViewModel">
+                <!-- TODO: COULD BE BROKEN DUE TO SettingsManagerVM REFERENCE -->
+                <Binding Path="SettingsManagerVM.EditingModeOn"/> 
+                <Binding Path="IsKeyboardFocusWithin" RelativeSource="{RelativeSource Self}"/>
+            </MultiBinding>
+        </Setter>
+    </Style>
+    
+    
+    <Style Selector="MenuItem.menu-button">
+        <Setter Property="Background" Value="{DynamicResource ButtonActiveBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonActiveTexts}"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Margin" Value="2"/>
+    </Style>
+    
+    <Style Selector="MenuItem.menu-subbutton">
+        <Setter Property="Background" Value="{DynamicResource ButtonActiveBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonActiveTexts}"/>
+    </Style>
+    
+    <Style Selector=":is(MenuItem).inactive /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ButtonInactiveBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonInactiveTexts}"/>
+    </Style>
+    
+    <Style Selector="TextBox.annotations-textbox">
+        <Setter Property="Background" Value="{DynamicResource ButtonActiveBackground}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+    </Style>
+    
+    <Style Selector="TextBlock.coordinates-textblock">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+    </Style>
+    
+    <Style Selector="TextBlock.annotations-textblock">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+    </Style>
+</Styles>

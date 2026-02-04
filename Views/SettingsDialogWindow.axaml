@@ -1,0 +1,181 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ursa="https://irihi.tech/ursa"
+        x:Class="ImageAnnotationTool.Views.SettingsDialogWindow"
+        x:DataType="vm:SettingsDialogViewModel"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600" Padding="10"
+        Width="600"
+        xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+        xmlns:core="clr-namespace:ImageAnnotationTool.Core"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="Height"
+        CanResize="False"
+        CanMaximize="False"
+        CanMinimize="True"
+        ExtendClientAreaToDecorationsHint="False"
+        ExtendClientAreaChromeHints="PreferSystemChrome"
+        ExtendClientAreaTitleBarHeightHint="-1" 
+        Title="Settings">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <TextBlock Text="Notification settings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"/>
+                <Grid Width="540" Height="135" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="9*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding SuppressImageDeletionDialogs}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Enable image deletion warnings"/>
+                        
+                        <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding SuppressClassDeletionDialogs}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="Enable class deletion warnings"/>
+                        
+                        <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding SuppressAnnotationDeletionDialogs}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="Enable annotation deletion warnings"/>
+                </Grid>
+                
+                <Separator/>
+                
+                <TextBlock Text="Drawing settings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"/>
+                <Grid ColumnDefinitions="3*, 7*" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45">
+                        <ursa:EnumSelector  Value="{Binding AddingMode, Mode=TwoWay}" 
+                                            HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="Annotation drawing mode"/>
+                </Grid>
+                
+                <Separator/>
+                
+                <TextBlock Text="Interaction settings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"/>
+                <Grid Width="540" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="9*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <CheckBox Grid.Column="0" IsChecked="{Binding OverridingDefaultDragThreshold, Mode=TwoWay}"
+                                  x:Name="UseDragCustomValueButton"/>
+                        <TextBlock Grid.Column="1" Text="Use custom value">
+                                <Interaction.Behaviors>
+                                        <EventTriggerBehavior EventName="PointerPressed">
+                                                <InvokeButtonClickAction TargetButton="UseDragCustomValueButton"/>
+                                        </EventTriggerBehavior>
+                                </Interaction.Behaviors>
+                        </TextBlock>
+                </Grid>
+                <Grid ColumnDefinitions="5*, 5*" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45">
+                        <Slider Value="{Binding DragThreshold,
+                                Mode=TwoWay, FallbackValue={x:Static core:InteractionConstants.DefaultDragThreshold},
+                                TargetNullValue={x:Static core:InteractionConstants.DefaultDragThreshold}}"
+                                Minimum="{x:Static core:InteractionConstants.LowerDragThreshold}"
+                                Maximum="{x:Static core:InteractionConstants.UpperDragThreshold}"
+                                IsSnapToTickEnabled="True" TickFrequency="1" Margin="15, 0" TickPlacement="Outside"
+                                VerticalAlignment="Center" HorizontalAlignment="Stretch" 
+                                IsEnabled="{Binding OverridingDefaultDragThreshold}">
+                        </Slider>
+                        <TextBlock Grid.Column="1" Text="Bounding box dragging threshold"/>
+                </Grid>
+                
+                <Separator/>
+                
+                <TextBlock Text="Rendering settings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"/>
+                <Grid Width="540" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="9*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <CheckBox Grid.Column="0" IsChecked="{Binding OverridingDefaultBboxBorderThickness, Mode=TwoWay}"
+                        x:Name="UseThicknessCustomValueButton"/>
+                        <TextBlock Grid.Column="1" Text="Use custom value">
+                                <Interaction.Behaviors>
+                                        <EventTriggerBehavior EventName="PointerPressed">
+                                                <InvokeButtonClickAction TargetButton="UseThicknessCustomValueButton"/>
+                                        </EventTriggerBehavior>
+                                </Interaction.Behaviors>
+                        </TextBlock>
+                </Grid>
+                <Grid ColumnDefinitions="5*, 5*" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45">
+                        <Slider Value="{Binding BboxBorderThickness,
+                                Mode=TwoWay, FallbackValue={x:Static core:RenderingConstants.DefaultThickness},
+                                TargetNullValue={x:Static core:RenderingConstants.DefaultThickness}}"
+                                Minimum="{x:Static core:RenderingConstants.MinThickness}"
+                                Maximum="{x:Static core:RenderingConstants.MaxThickness}"
+                                IsSnapToTickEnabled="True" TickFrequency="1" Margin="15,0"
+                                VerticalAlignment="Center" HorizontalAlignment="Stretch" TickPlacement="Outside"
+                                IsEnabled="{Binding OverridingDefaultBboxBorderThickness}">
+                        </Slider>
+                        <TextBlock Grid.Column="1" Text="Bounding box border thickness"/>
+                </Grid>
+                
+                <Separator/>
+                
+                <Grid Width="540" Height="135" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="9*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding BboxBackgroundOn}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Bounding box background drawing"/>
+                        
+                        <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding BboxBorderOn}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="Bounding box border drawing"/>
+                        
+                        <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding DynamicBordersOn}"/>
+                        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                <TextBlock Text="Bounding box dynamic border"/>
+                                <PathIcon Foreground="{DynamicResource PrimaryForeground}" 
+                                          Data="{StaticResource IconQuestionMarkCircleRegular}" Margin="5,0,0,0"
+                                          ToolTip.Placement="Right" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <ToolTip.Tip>
+                                                <StackPanel>
+                                                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                                — On: the box border thickness downsizes dynamically, so as to never occlude box contents entirely.
+                                                        </TextBlock>
+                                                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                                — Off: the box border thickness remains static, regardless of box dimensions.
+                                                        </TextBlock>
+                                                </StackPanel>
+                                        </ToolTip.Tip>
+                                </PathIcon>
+                        </StackPanel>
+                </Grid>
+                
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,20,0,0">
+                        <StackPanel.Styles>
+                                <Style Selector="Button">
+                                        <Setter Property="VerticalAlignment" Value="Stretch" />
+                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                        <Setter Property="Width" Value="100" />
+                                        <Setter Property="Margin" Value="10,0,0,0" />
+                                </Style>
+                        </StackPanel.Styles>
+                        <Button Content="Confirm" Command="{Binding ConfirmCommand}" />
+                        <Button Content="Cancel" Command="{Binding CancelCommand}" />
+                </StackPanel>
+                <StackPanel.Styles>
+                        <Style Selector="CheckBox">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                        <Style Selector="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                        </Style>
+                </StackPanel.Styles>
+        </StackPanel>
+</Window>

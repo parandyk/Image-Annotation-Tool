@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ImageAnnotationTool.Views.TopbarView"
+             xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+             x:DataType="vm:MainViewModel"
+             x:Name="TopbarControl">
+            <Grid ColumnDefinitions="*, *" Background="{StaticResource PrimaryBackground}">
+                <Menu Background="{StaticResource PrimaryBackground}">
+                    <MenuItem Classes="menu-button" Header="_Open">
+                        <MenuItem Header="_Image..." Command="{Binding OpenImageFileCommand}"/>
+                        <MenuItem Header="_Source folder..." Command="{Binding OpenFolderCommand}"/>
+                    </MenuItem>
+                    <MenuItem Classes="menu-button" Header="_Load">
+                        <MenuItem Header="_Classes..." Command="{Binding OpenClassFileCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="_Annotations..."  IsEnabled="{Binding ImageOpen}" 
+                                  Command="{Binding OpenAnnotationFileCommand}"/>
+                    </MenuItem>
+                    <MenuItem Classes="menu-button" Header="_Save">
+                        <MenuItem Header="_Classes..." IsEnabled="{Binding ClassesPresent}"
+                                  Command="{Binding SaveClassesToFileCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="_This image's annotations..." 
+                                  IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal}" 
+                                  Command="{Binding SaveAnnotationsToFileCommand}"/>
+                        <MenuItem Header="_All images' annotations..." 
+                                  IsEnabled="{Binding ImageManagerVM.BBoxesPresentGlobal}" 
+                                  Command="{Binding SaveAnnotationsToFileCommand}"/>
+                    </MenuItem>
+                    <MenuItem Classes="menu-button" Header="_Edit">
+                        <MenuItem Header="Undo" 
+                                  IsEnabled="{Binding UndoStackNotEmpty}" 
+                                  Command="{Binding UndoOperationCommand}"/>
+                        <MenuItem Header="Redo" 
+                                  IsEnabled="{Binding RedoStackNotEmpty}" 
+                                  Command="{Binding RedoOperationCommand}"/>
+                        <Separator />
+                        <MenuItem Header="Abort drawing" 
+                                  IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.AnnotatingOn}" 
+                                  Command="{Binding ImageManagerVM.SelectedImageViewModel.AbortDrawingCommand}"/>
+                        <MenuItem Header="Delete last annotation in this image" 
+                                  IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal}" 
+                                  Command="{Binding ImageManagerVM.SelectedImageViewModel.RemoveAllBBoxesCommand}"/>
+                        <MenuItem Header="Delete all annotations in this image" 
+                                  IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal}" 
+                                  Command="{Binding ImageManagerVM.SelectedImageViewModel.RemoveLastBBoxCommand}"/>
+                    </MenuItem>
+                    <MenuItem Classes="menu-button" 
+                              Header="Settings" Command="{Binding SettingsManagerVM.OpenSettingsDialogCommand}"/>
+                </Menu>
+                <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <ListBox  Margin="10,0" HorizontalAlignment="Right"
+                             ItemsSource="{Binding ErrorMessagesNotifications}">
+                    </ListBox>
+                </ScrollViewer>
+            </Grid>
+</UserControl>

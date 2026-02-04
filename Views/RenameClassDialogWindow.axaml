@@ -1,0 +1,48 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="250" Padding="10"
+        Width="400"
+        x:Class="ImageAnnotationTool.Views.RenameClassDialogWindow"            
+        x:DataType="vm:RenameClassDialogViewModel"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="Height"
+        CanResize="False"
+        CanMaximize="False"
+        CanMinimize="True"
+        ExtendClientAreaToDecorationsHint="False"
+        ExtendClientAreaChromeHints="PreferSystemChrome"
+        ExtendClientAreaTitleBarHeightHint="-1" 
+        Title="Renaming class">
+    <Window.KeyBindings>
+        <KeyBinding Gesture="Escape"
+                    Command="{Binding CancelCommand}" />
+    </Window.KeyBindings>
+    <StackPanel Orientation="Vertical">
+            <TextBlock Text="{Binding Description}" TextWrapping="Wrap" />
+            <Panel VerticalAlignment="Center">
+                <TextBox Grid.Column="0" x:Name="NewClassNameTextBox" Watermark="Insert new class name"
+                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"
+                         Text="{Binding NewClassName}"
+                         VerticalContentAlignment="Center" Margin="0,0,5,0"/>
+            </Panel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,20,0,0">
+                <StackPanel.Styles>
+                    <Style Selector="Button">
+                        <Setter Property="VerticalAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        <Setter Property="Width" Value="100" />
+                        <Setter Property="Margin" Value="10,0,0,0" />
+                    </Style>
+                </StackPanel.Styles>
+                <Button Content="Proceed" 
+                        IsEnabled="{Binding NameAvailable}"
+                        Command="{Binding ProceedCommand}" />
+                <Button Content="Cancel" Command="{Binding CancelCommand}" />
+            </StackPanel>
+        </StackPanel>
+</Window>

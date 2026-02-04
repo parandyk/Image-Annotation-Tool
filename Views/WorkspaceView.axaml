@@ -1,0 +1,484 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+             xmlns:bhv="clr-namespace:ImageAnnotationTool.Behaviors"
+             xmlns:core="clr-namespace:ImageAnnotationTool.Core"
+             xmlns:view="clr-namespace:ImageAnnotationTool.Views"
+             xmlns:controls="clr-namespace:ImageAnnotationTool.Controls"
+             xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+             x:DataType="vm:ImageViewModel"
+             x:Class="ImageAnnotationTool.Views.WorkspaceView"
+             x:Name="WorkspaceControl">
+            <dialogHost:DialogHost CloseOnClickAway="True" IsMultipleDialogsEnabled="True">
+                <Viewbox Stretch="Uniform" x:Name="ImageViewbox">
+                    <Grid x:Name="ImageGrid"
+                        Width="{Binding ImageSpace.Metadata.ImagePixelWidth}"
+                        Height="{Binding ImageSpace.Metadata.ImagePixelHeight}">
+                        <Interaction.Behaviors>
+                            <EventTriggerBehavior EventName="PointerPressed" 
+                                                  SourceObject="{Binding 
+                                                  RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=1}}">
+                                <EventTriggerBehavior.IsEnabled>
+                                    <MultiBinding Converter="{StaticResource NANDBoolConverter}">
+                                        <Binding Path="AddingMode"
+                                                 Converter="{StaticResource AnnotationAddingModeConverter}"/>
+                                        <Binding Path="AnnotatingOn"/>
+                                    </MultiBinding>
+                                </EventTriggerBehavior.IsEnabled>
+                                <InvokeCommandAction Command="{Binding AddPointCommand}"
+                                                     InputConverter="{StaticResource PointerPositionConverter}"
+                                                     InputConverterParameter="{Binding #ImgBox}">
+                                </InvokeCommandAction>
+                            </EventTriggerBehavior>
+                            <EventTriggerBehavior EventName="PointerReleased"
+                                                  SourceObject="{Binding 
+                                                  RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=1}}">
+                                <EventTriggerBehavior.IsEnabled>
+                                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                        <Binding Path="AddingMode"
+                                                 Converter="{StaticResource AnnotationAddingModeConverter}"/>
+                                        <Binding Path="AnnotatingOn"/>
+                                    </MultiBinding>
+                                </EventTriggerBehavior.IsEnabled>
+                                <InvokeCommandAction Command="{Binding AddPointCommand}"
+                                                     InputConverter="{StaticResource PointerPositionConverter}"
+                                                     InputConverterParameter="{Binding #ImgBox}">
+                                </InvokeCommandAction>
+                            </EventTriggerBehavior>
+                            <EventTriggerBehavior EventName="PointerMoved"
+                                                  IsEnabled="{Binding AnnotatingOn}"
+                                                  SourceObject="{Binding
+                                                  RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=1}}">
+                                <InvokeCommandAction Command="{Binding PointerMovedRedrawBBoxCommand}"
+                                                     InputConverter="{StaticResource PointerPositionConverter}"
+                                                     InputConverterParameter="{Binding #ImgBox}">
+                                </InvokeCommandAction>
+                            </EventTriggerBehavior>
+                            <EventTriggerBehavior EventName="PointerWheelChanged">
+                                <InvokeCommandAction Command="{Binding PointerMovedRedrawBBoxCommand}"
+                                                     InputConverter="{StaticResource PointerPositionConverter}"
+                                                     InputConverterParameter="{Binding #ImgBox}">
+                                </InvokeCommandAction>
+                            </EventTriggerBehavior>
+                            <bhv:CanvasLevelBBoxCycleBehavior IsEnabled="{Binding EditingModeOn}"
+                                                              CycleCommand="{Binding CompareCycleListsCommand}"/>
+                        </Interaction.Behaviors>
+                        <Image Source="{Binding ImageSpace.Source.ImagePath,
+                        Converter={StaticResource ImagePathToBitmapConverter}}"
+                               x:Name="ImgBox"
+                               Stretch="UniformToFill"
+                               ClipToBounds="True"
+                               IsPointerOver="{Binding PointerOverWorkspace, Mode=OneWayToSource}">
+                        </Image>
+                        <ItemsControl x:Name="AnnotationItemsControl" 
+                                      ItemsSource="{Binding AnnotationList}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Grid x:Name="ItemHostGrid">
+                                    </Grid>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Canvas x:Name="BBoxItemCanvas" ClipToBounds="True" UseLayoutRounding="False"
+                                                Focusable="{Binding EditingModeOn, Mode=OneWay}"
+                                                IsEnabled="{Binding IsVisible, RelativeSource={RelativeSource Self}}"
+                                                ToolTip.ShowDelay="800">
+                                            <ToolTip.Tip>
+                                                <Grid HorizontalAlignment="Stretch">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Color"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0"
+                                                               VerticalAlignment="Center" Margin="0,0,2.5,0"
+                                                               Text="{Binding BBoxDisplayName}">
+                                                    </TextBlock>
+                                                    <Border Grid.Column="1" Margin="2.5,0,0,0"
+                                                            VerticalAlignment="Center" Width="20" Height="20"
+                                                            Background="{Binding BBoxColorHex,
+                                                                Converter={StaticResource ColorHexToBrushConverter}}">
+                                                    </Border>
+                                                </Grid>
+                                            </ToolTip.Tip>
+                                            <Canvas.ContextFlyout>
+                                                <MenuFlyout>
+                                                    <MenuItem Header="Delete" HotKey="Delete"
+                                                              Command="{Binding $parent[view:WorkspaceView].((vm:ImageViewModel)DataContext).DeleteAnnotationCommand}"
+                                                              CommandParameter="{Binding GUID}"/>
+                                                    <MenuItem Header="Change class" 
+                                                              Command="{Binding $parent[view:WorkspaceView].((vm:ImageViewModel)DataContext).ChangeAnnotationClassCommand}"
+                                                              CommandParameter="{Binding GUID}"/>
+                                                    <MenuItem Header="Change visibility" 
+                                                              Command="{Binding $parent[view:WorkspaceView].((vm:ImageViewModel)DataContext).ChangeAnnotationVisibilityCommand}"
+                                                              CommandParameter="{Binding GUID}"/>
+                                                    <MenuItem Header="Anchor" 
+                                                              Command="{Binding $parent[view:WorkspaceView].((vm:ImageViewModel)DataContext).ChangeAnnotationAnchoringCommand}"
+                                                              CommandParameter="{Binding GUID}"/>
+                                                </MenuFlyout>
+                                            </Canvas.ContextFlyout>
+                                            <Canvas.IsVisible>
+                                                <MultiBinding Converter="{StaticResource BBoxVisibilityConverter}">
+                                                    <Binding Path="AssignedClass.IsVisible"/>
+                                                    <Binding Path="IsVisible"/>
+                                                </MultiBinding>
+                                            </Canvas.IsVisible>
+                                            <Border x:Name="BBoxBorder"
+                                                    Width="{Binding Width}"
+                                                    Height="{Binding Height}"
+                                                    Canvas.Left="{Binding X}"
+                                                    Canvas.Top="{Binding Y}"
+                                                    BackgroundSizing="InnerBorderEdge"
+                                                    UseLayoutRounding="False"
+                                                    ClipToBounds="True"
+                                                    IsFocused="{Binding IsSelected, Mode=OneWay}"
+                                                    IsHitTestVisible="{Binding MovingEnabled, Mode=OneWay}"
+                                                    Focusable="{Binding EditingModeOn, Mode=OneWay}"
+                                                    Cursor="Hand"
+                                                    ZIndex="10">
+                                                <Border.BorderThickness>
+                                                    <MultiBinding Converter="{StaticResource BBoxDynamicThicknessConverter}" Mode="OneWay">
+                                                        <Binding Path="$parent[view:WorkspaceView].BBoxBorderOn" Mode="OneWay"/>
+                                                        <Binding Path="$parent[view:WorkspaceView].DynamicBordersOn" Mode="OneWay"/>
+                                                        <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                        <Binding Path="$parent[view:WorkspaceView].BboxBorderThickness" Mode="OneWay"/>
+                                                        <Binding Path="Width" />
+                                                        <Binding Path="Height" />
+                                                    </MultiBinding>
+                                                </Border.BorderThickness>
+                                                <Border.BorderBrush>
+                                                    <MultiBinding Converter="{StaticResource BBoxColorsConverter}" Mode="OneWay">
+                                                        <Binding Path="AssignedClass" Mode="OneWay"/>
+                                                        <Binding Source="{x:True}"/>
+                                                        <Binding Path="IsHighlighted"  Mode="OneWay"/>
+                                                        <Binding Source="{x:Static core:RenderingConstants.DefaultBorderAlpha}" Mode="OneWay"/>
+                                                        <Binding Source="{x:Static core:RenderingConstants.SelectedBorderAlpha}" Mode="OneWay"/>
+                                                    </MultiBinding>
+                                                </Border.BorderBrush>
+                                                <Border.Background>
+                                                    <MultiBinding Converter="{StaticResource BBoxColorsConverter}" Mode="OneWay">
+                                                        <Binding Path="AssignedClass"  Mode="OneWay"/>
+                                                        <Binding Path="$parent[view:WorkspaceView].BBoxBackgroundOn" Mode="OneWay"/>
+                                                        <Binding Path="IsHighlighted"  Mode="OneWay"/>
+                                                        <Binding Source="{x:Static core:RenderingConstants.DefaultBackgroundAlpha}" Mode="OneWay"/>
+                                                        <Binding Source="{x:Static core:RenderingConstants.SelectedBackgroundAlpha}" Mode="OneWay"/>
+                                                    </MultiBinding>
+                                                </Border.Background>
+                                                <DockPanel>
+                                                    <TextBlock Text="{Binding BBoxDisplayName}"
+                                                               TextWrapping="NoWrap"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Top"
+                                                               ClipToBounds="False"
+                                                               FontSize="12"
+                                                               x:Name="BBoxNameTextBlock">
+                                                        <TextBlock.RenderTransformOrigin>
+                                                            <MultiBinding Converter="{StaticResource TransformOriginConverter}">
+                                                                <Binding Path="#BBoxNameTextBlock.HorizontalAlignment"/>
+                                                                <Binding Path="#BBoxNameTextBlock.VerticalAlignment"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.RenderTransformOrigin>
+                                                        <TextBlock.Margin>
+                                                            <MultiBinding Converter="{StaticResource ZoomInvarianceThicknessConverter}">
+                                                                <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                                <Binding Source="{x:Static core:RenderingConstants.BBoxInnerMargin}" Mode="OneWay"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Margin>
+                                                        <TextBlock.RenderTransform>
+                                                            <ScaleTransform ScaleX="{Binding $parent[view:WorkspaceView].InverseScaleX}"
+                                                                            ScaleY="{Binding $parent[view:WorkspaceView].InverseScaleX}"/>
+                                                        </TextBlock.RenderTransform>
+                                                    </TextBlock>
+                                                    <PathIcon Data="{StaticResource IconLockRegular}" Foreground="{DynamicResource PrimaryForeground}"
+                                                              FontSize="10" ClipToBounds="False" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                                                              IsVisible="{Binding IsAnchored}" x:Name="AnchoredIcon" DockPanel.Dock="Bottom">
+                                                        <PathIcon.Margin>
+                                                            <MultiBinding Converter="{StaticResource ZoomInvarianceThicknessConverter}">
+                                                                <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                                <Binding Source="{x:Static core:RenderingConstants.BBoxInnerMargin}" Mode="OneWay"/>
+                                                            </MultiBinding>
+                                                        </PathIcon.Margin>
+                                                        <PathIcon.RenderTransformOrigin>
+                                                            <MultiBinding Converter="{StaticResource TransformOriginConverter}">
+                                                                <Binding Path="#AnchoredIcon.HorizontalAlignment"/>
+                                                                <Binding Path="#AnchoredIcon.VerticalAlignment"/>
+                                                            </MultiBinding>
+                                                        </PathIcon.RenderTransformOrigin>
+                                                        <PathIcon.RenderTransform>
+                                                            <ScaleTransform ScaleX="{Binding $parent[view:WorkspaceView].InverseScaleX}"
+                                                                            ScaleY="{Binding $parent[view:WorkspaceView].InverseScaleX}"/>
+                                                        </PathIcon.RenderTransform>
+                                                    </PathIcon>
+                                                </DockPanel>
+                                                <Interaction.Behaviors>
+                                                    <bhv:DragCycleBBoxBehavior
+                                                        ConstrainToParentBounds="True"
+                                                        IsEnabled="{Binding EditingModeOn}"
+                                                        IsAnchored="{Binding IsAnchored}"
+                                                        ChangeDragStateCommand="{Binding ChangeDraggingStateCommand}"
+                                                        DragCommand="{Binding DragAnnotationCommand}"
+                                                        CancelCommand="{Binding CancelPositionMutationCommand}"
+                                                        CycleCommand="{Binding $parent[view:WorkspaceView].((vm:ImageViewModel)DataContext).CompareCycleListsCommand}"
+                                                        DragThreshold="{Binding $parent[view:WorkspaceView].DragThreshold}"/>
+                                               </Interaction.Behaviors>
+                                            </Border>
+                                            <Border x:Name="BBoxControlOutlineBorder"
+                                                    ClipToBounds="False"
+                                                    IsHitTestVisible="False"
+                                                    UseLayoutRounding="False"
+                                                    IsVisible="{Binding MovingEnabled, Mode=OneWay}"
+                                                    IsEnabled="{Binding MovingEnabled, Mode=OneWay}"
+                                                    BorderBrush="{DynamicResource ThumbOnBorder}"
+                                                    BackgroundSizing="OuterBorderEdge"
+                                                    Cursor="Hand"
+                                                    ZIndex="20">
+                                                <Canvas.Left>
+                                                    <MultiBinding Converter="{StaticResource MathOperationConverter}"
+                                                                  ConverterParameter="-">
+                                                        <Binding Path="X" Mode="OneWay"/>
+                                                        <MultiBinding Converter="{StaticResource ZoomInvarianceConverter}">
+                                                            <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                            <Binding Source="{x:Static core:LayoutConstants.OutlinePositionOffset}" Mode="OneWay"/>
+                                                        </MultiBinding>
+                                                    </MultiBinding>
+                                                </Canvas.Left>
+                                                <Canvas.Top>
+                                                    <MultiBinding Converter="{StaticResource MathOperationConverter}"
+                                                                  ConverterParameter="-">
+                                                        <Binding Path="Y" Mode="OneWay"/>
+                                                        <MultiBinding Converter="{StaticResource ZoomInvarianceConverter}">
+                                                            <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                            <Binding Source="{x:Static core:LayoutConstants.OutlinePositionOffset}" Mode="OneWay"/>
+                                                        </MultiBinding>
+                                                    </MultiBinding>
+                                                </Canvas.Top>
+                                                <Border.Width>
+                                                    <MultiBinding Converter="{StaticResource MathOperationConverter}"
+                                                                  ConverterParameter="+">
+                                                        <Binding Path="Width" Mode="OneWay"/>
+                                                        <MultiBinding Converter="{StaticResource ZoomInvarianceConverter}">
+                                                            <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                            <Binding Source="{x:Static core:LayoutConstants.OutlineSizeOffset}" Mode="OneWay"/>
+                                                        </MultiBinding>
+                                                    </MultiBinding>
+                                                </Border.Width>
+                                                <Border.Height>
+                                                    <MultiBinding Converter="{StaticResource MathOperationConverter}"
+                                                                  ConverterParameter="+">
+                                                        <Binding Path="Height" Mode="OneWay"/>
+                                                        <MultiBinding Converter="{StaticResource ZoomInvarianceConverter}">
+                                                            <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                            <Binding Source="{x:Static core:LayoutConstants.OutlineSizeOffset}" Mode="OneWay"/>
+                                                        </MultiBinding>
+                                                    </MultiBinding>
+                                                </Border.Height>
+                                                <Border.BorderThickness>
+                                                    <MultiBinding Converter="{StaticResource ZoomInvarianceThicknessConverter}">
+                                                        <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                        <Binding Source="{x:Static core:LayoutConstants.ThumbBorderOutlineSize}" Mode="OneWay"/>
+                                                    </MultiBinding>
+                                                </Border.BorderThickness>
+                                            </Border>
+                                            <Border x:Name="BBoxControlBorder"
+                                                    BorderThickness="0"
+                                                    ClipToBounds="False"
+                                                    UseLayoutRounding="False"
+                                                    IsHitTestVisible="{Binding MovingEnabled, Mode=OneWay}"
+                                                    IsVisible="{Binding MovingEnabled, Mode=OneWay}"
+                                                    IsEnabled="{Binding MovingEnabled, Mode=OneWay}"
+                                                    Cursor="Hand"
+                                                    ZIndex="30">
+                                                <Canvas.Left>
+                                                    <MultiBinding Converter="{StaticResource MathOperationConverter}"
+                                                                  ConverterParameter="-">
+                                                        <Binding Path="X" Mode="OneWay"/>
+                                                        <MultiBinding Converter="{StaticResource ZoomInvarianceConverter}">
+                                                            <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                            <Binding Source="{x:Static core:LayoutConstants.ThumbPositionOffset}" Mode="OneWay"/>
+                                                        </MultiBinding>
+                                                    </MultiBinding>
+                                                </Canvas.Left>
+                                                <Canvas.Top>
+                                                    <MultiBinding Converter="{StaticResource MathOperationConverter}"
+                                                                  ConverterParameter="-">
+                                                        <Binding Path="Y" Mode="OneWay"/>
+                                                        <MultiBinding Converter="{StaticResource ZoomInvarianceConverter}">
+                                                            <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                            <Binding Source="{x:Static core:LayoutConstants.ThumbPositionOffset}" Mode="OneWay"/>
+                                                        </MultiBinding>
+                                                    </MultiBinding>
+                                                </Canvas.Top>
+                                                <Border.Width>
+                                                    <MultiBinding Converter="{StaticResource MathOperationConverter}"
+                                                                  ConverterParameter="+">
+                                                        <Binding Path="Width" Mode="OneWay"/>
+                                                        <MultiBinding Converter="{StaticResource ZoomInvarianceConverter}">
+                                                            <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                            <Binding Source="{x:Static core:LayoutConstants.ThumbSizeOffset}" Mode="OneWay"/>
+                                                        </MultiBinding>
+                                                    </MultiBinding>
+                                                </Border.Width>
+                                                <Border.Height>
+                                                    <MultiBinding Converter="{StaticResource MathOperationConverter}"
+                                                                  ConverterParameter="+">
+                                                        <Binding Path="Height" Mode="OneWay"/>
+                                                        <MultiBinding Converter="{StaticResource ZoomInvarianceConverter}">
+                                                            <Binding Path="$parent[view:WorkspaceView].InverseScaleX" Mode="OneWay"/>
+                                                            <Binding Source="{x:Static core:LayoutConstants.ThumbSizeOffset}" Mode="OneWay"/>
+                                                        </MultiBinding>
+                                                    </MultiBinding>
+                                                </Border.Height>
+                                                <Grid IsEnabled="{Binding !IsAnchored}">
+                                                    <controls:ResizingThumb HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                                                            x:Name="LeftTopThumb" Tag="LeftTopThumb"
+                                                                            TargetParent="{Binding #BBoxBorder}"
+                                                                            ResizeCommand="{Binding ResizeAnnotationCommand}"
+                                                                            ChangeResizeStateCommand="{Binding ChangeResizingStateCommand}"
+                                                                            CancelCommand="{Binding CancelPositionMutationCommand}">
+                                                        <controls:ResizingThumb.RenderTransformOrigin>
+                                                            <MultiBinding Converter="{StaticResource TransformOriginConverter}">
+                                                                <Binding Path="#LeftTopThumb.HorizontalAlignment"/>
+                                                                <Binding Path="#LeftTopThumb.VerticalAlignment"/>
+                                                            </MultiBinding>
+                                                        </controls:ResizingThumb.RenderTransformOrigin>
+                                                        <controls:ResizingThumb.RenderTransform>
+                                                            <ScaleTransform ScaleX="{Binding $parent[view:WorkspaceView].InverseScaleX}"
+                                                                            ScaleY="{Binding $parent[view:WorkspaceView].InverseScaleX}"/>
+                                                        </controls:ResizingThumb.RenderTransform>
+                                                    </controls:ResizingThumb>
+                                                    <controls:ResizingThumb HorizontalAlignment="Center" VerticalAlignment="Top"
+                                                                            x:Name="CenterTopThumb" Tag="CenterTopThumb"
+                                                                            TargetParent="{Binding #BBoxBorder}"
+                                                                            ResizeCommand="{Binding ResizeAnnotationCommand}"
+                                                                            ChangeResizeStateCommand="{Binding ChangeResizingStateCommand}"
+                                                                            CancelCommand="{Binding CancelPositionMutationCommand}">
+                                                        <controls:ResizingThumb.RenderTransformOrigin>
+                                                            <MultiBinding Converter="{StaticResource TransformOriginConverter}">
+                                                                <Binding Path="#CenterTopThumb.HorizontalAlignment"/>
+                                                                <Binding Path="#CenterTopThumb.VerticalAlignment"/>
+                                                            </MultiBinding>
+                                                        </controls:ResizingThumb.RenderTransformOrigin>
+                                                        <controls:ResizingThumb.RenderTransform>
+                                                            <ScaleTransform ScaleX="{Binding $parent[view:WorkspaceView].InverseScaleX}"
+                                                                            ScaleY="{Binding $parent[view:WorkspaceView].InverseScaleX}"/>
+                                                        </controls:ResizingThumb.RenderTransform>
+                                                    </controls:ResizingThumb>
+                                                    <controls:ResizingThumb HorizontalAlignment="Right" VerticalAlignment="Top"
+                                                                            x:Name="RightTopThumb" Tag="RightTopThumb"
+                                                                            TargetParent="{Binding #BBoxBorder}"
+                                                                            ResizeCommand="{Binding ResizeAnnotationCommand}"
+                                                                            ChangeResizeStateCommand="{Binding ChangeResizingStateCommand}"
+                                                                            CancelCommand="{Binding CancelPositionMutationCommand}">
+                                                        <controls:ResizingThumb.RenderTransformOrigin>
+                                                            <MultiBinding Converter="{StaticResource TransformOriginConverter}">
+                                                                <Binding Path="#RightTopThumb.HorizontalAlignment"/>
+                                                                <Binding Path="#RightTopThumb.VerticalAlignment"/>
+                                                            </MultiBinding>
+                                                        </controls:ResizingThumb.RenderTransformOrigin>
+                                                        <controls:ResizingThumb.RenderTransform>
+                                                            <ScaleTransform ScaleX="{Binding $parent[view:WorkspaceView].InverseScaleX}"
+                                                                            ScaleY="{Binding $parent[view:WorkspaceView].InverseScaleX}"/>
+                                                        </controls:ResizingThumb.RenderTransform>
+                                                    </controls:ResizingThumb>
+                                                        
+                                                    <controls:ResizingThumb HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                                            x:Name="LeftCenterThumb" Tag="LeftCenterThumb"
+                                                                            TargetParent="{Binding #BBoxBorder}"
+                                                                            ResizeCommand="{Binding ResizeAnnotationCommand}"
+                                                                            ChangeResizeStateCommand="{Binding ChangeResizingStateCommand}"
+                                                                            CancelCommand="{Binding CancelPositionMutationCommand}">
+                                                        <controls:ResizingThumb.RenderTransformOrigin>
+                                                            <MultiBinding Converter="{StaticResource TransformOriginConverter}">
+                                                                <Binding Path="#LeftCenterThumb.HorizontalAlignment"/>
+                                                                <Binding Path="#LeftCenterThumb.VerticalAlignment"/>
+                                                            </MultiBinding>
+                                                        </controls:ResizingThumb.RenderTransformOrigin>
+                                                        <controls:ResizingThumb.RenderTransform>
+                                                            <ScaleTransform ScaleX="{Binding $parent[view:WorkspaceView].InverseScaleX}"
+                                                                            ScaleY="{Binding $parent[view:WorkspaceView].InverseScaleX}"/>
+                                                        </controls:ResizingThumb.RenderTransform>
+                                                    </controls:ResizingThumb>
+                                                    <controls:ResizingThumb HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                                            x:Name="RightCenterThumb" Tag="RightCenterThumb"
+                                                                            TargetParent="{Binding #BBoxBorder}"
+                                                                            ResizeCommand="{Binding ResizeAnnotationCommand}"
+                                                                            ChangeResizeStateCommand="{Binding ChangeResizingStateCommand}"
+                                                                            CancelCommand="{Binding CancelPositionMutationCommand}">
+                                                        <controls:ResizingThumb.RenderTransformOrigin>
+                                                            <MultiBinding Converter="{StaticResource TransformOriginConverter}">
+                                                                <Binding Path="#RightCenterThumb.HorizontalAlignment"/>
+                                                                <Binding Path="#RightCenterThumb.VerticalAlignment"/>
+                                                            </MultiBinding>
+                                                        </controls:ResizingThumb.RenderTransformOrigin>
+                                                        <controls:ResizingThumb.RenderTransform>
+                                                            <ScaleTransform ScaleX="{Binding $parent[view:WorkspaceView].InverseScaleX}"
+                                                                            ScaleY="{Binding $parent[view:WorkspaceView].InverseScaleX}"/>
+                                                        </controls:ResizingThumb.RenderTransform>
+                                                    </controls:ResizingThumb>
+                                                    
+                                                    <controls:ResizingThumb HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                                                            x:Name="LeftBottomThumb" Tag="LeftBottomThumb"
+                                                                            TargetParent="{Binding #BBoxBorder}"
+                                                                            ResizeCommand="{Binding ResizeAnnotationCommand}"
+                                                                            ChangeResizeStateCommand="{Binding ChangeResizingStateCommand}"
+                                                                            CancelCommand="{Binding CancelPositionMutationCommand}">
+                                                        <controls:ResizingThumb.RenderTransformOrigin>
+                                                            <MultiBinding Converter="{StaticResource TransformOriginConverter}">
+                                                                <Binding Path="#LeftBottomThumb.HorizontalAlignment"/>
+                                                                <Binding Path="#LeftBottomThumb.VerticalAlignment"/>
+                                                            </MultiBinding>
+                                                        </controls:ResizingThumb.RenderTransformOrigin>
+                                                        <controls:ResizingThumb.RenderTransform>
+                                                            <ScaleTransform ScaleX="{Binding $parent[view:WorkspaceView].InverseScaleX}"
+                                                                            ScaleY="{Binding $parent[view:WorkspaceView].InverseScaleX}"/>
+                                                        </controls:ResizingThumb.RenderTransform>
+                                                    </controls:ResizingThumb>
+                                                    <controls:ResizingThumb HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                                                                            x:Name="CenterBottomThumb" Tag="CenterBottomThumb"
+                                                                            TargetParent="{Binding #BBoxBorder}"
+                                                                            ResizeCommand="{Binding ResizeAnnotationCommand}"
+                                                                            ChangeResizeStateCommand="{Binding ChangeResizingStateCommand}"
+                                                                            CancelCommand="{Binding CancelPositionMutationCommand}">
+                                                        <controls:ResizingThumb.RenderTransformOrigin>
+                                                            <MultiBinding Converter="{StaticResource TransformOriginConverter}">
+                                                                <Binding Path="#CenterBottomThumb.HorizontalAlignment"/>
+                                                                <Binding Path="#CenterBottomThumb.VerticalAlignment"/>
+                                                            </MultiBinding>
+                                                        </controls:ResizingThumb.RenderTransformOrigin>
+                                                        <controls:ResizingThumb.RenderTransform>
+                                                            <ScaleTransform ScaleX="{Binding $parent[view:WorkspaceView].InverseScaleX}"
+                                                                            ScaleY="{Binding $parent[view:WorkspaceView].InverseScaleX}"/>
+                                                        </controls:ResizingThumb.RenderTransform>
+                                                    </controls:ResizingThumb>
+                                                    <controls:ResizingThumb HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                                                            x:Name="RightBottomThumb" Tag="RightBottomThumb"
+                                                                            TargetParent="{Binding #BBoxBorder}"
+                                                                            ResizeCommand="{Binding ResizeAnnotationCommand}"
+                                                                            ChangeResizeStateCommand="{Binding ChangeResizingStateCommand}"
+                                                                            CancelCommand="{Binding CancelPositionMutationCommand}">
+                                                        <controls:ResizingThumb.RenderTransformOrigin>
+                                                            <MultiBinding Converter="{StaticResource TransformOriginConverter}">
+                                                                <Binding Path="#RightBottomThumb.HorizontalAlignment"/>
+                                                                <Binding Path="#RightBottomThumb.VerticalAlignment"/>
+                                                            </MultiBinding>
+                                                        </controls:ResizingThumb.RenderTransformOrigin>
+                                                        <controls:ResizingThumb.RenderTransform>
+                                                            <ScaleTransform ScaleX="{Binding $parent[view:WorkspaceView].InverseScaleX}"
+                                                                            ScaleY="{Binding $parent[view:WorkspaceView].InverseScaleX}"/>
+                                                        </controls:ResizingThumb.RenderTransform>
+                                                    </controls:ResizingThumb>
+                                                </Grid>
+                                            </Border> 
+                                        </Canvas>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Viewbox>
+            </dialogHost:DialogHost>
+</UserControl>

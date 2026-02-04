@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ImageAnnotationTool.Views.SidebarView"
+             xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
+             xmlns:view="clr-namespace:ImageAnnotationTool.Views"
+             x:DataType="vm:MainViewModel"
+             x:Name="SidebarControl">
+                <Panel VerticalAlignment="Stretch" 
+                   Background="{DynamicResource PrimaryBackground}"
+                   Focusable="True">
+                    <!-- <ScrollViewer> -->
+                        <TabControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
+                            <TabItem Header="General" HorizontalAlignment="Center">
+                                <ScrollViewer>
+                                    <view:GeneralTab DataContext="{Binding }"/>
+                                </ScrollViewer>
+                            </TabItem>
+                            <TabItem Header="Images" HorizontalAlignment="Stretch">
+                                <ScrollViewer>
+                                    <view:ImageTab DataContext="{Binding ImageManagerVM}"/>
+                                </ScrollViewer>
+                            </TabItem>
+                            <TabItem Header="Classes" HorizontalAlignment="Center">
+                                <ScrollViewer>
+                                    <view:ClassTab DataContext="{Binding ClassManagerVM}"/>
+                                </ScrollViewer>
+                            </TabItem>
+                            <TabItem Header="Settings" HorizontalAlignment="Center">
+                                <ScrollViewer>
+                                    <view:SettingsTab DataContext="{Binding SettingsManagerVM}"/>
+                                </ScrollViewer>
+                            </TabItem>
+                        </TabControl>
+                </Panel>
+</UserControl>
