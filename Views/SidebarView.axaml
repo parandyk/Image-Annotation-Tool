@@ -13,22 +13,23 @@
                    Focusable="True">
                     <!-- <ScrollViewer> -->
                         <TabControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
-                            <TabItem Header="General" HorizontalAlignment="Center">
+                            <TabItem Header="General" HorizontalAlignment="Stretch">
                                 <ScrollViewer>
                                     <view:GeneralTab DataContext="{Binding }"/>
                                 </ScrollViewer>
                             </TabItem>
                             <TabItem Header="Images" HorizontalAlignment="Stretch">
-                                <ScrollViewer>
-                                    <view:ImageTab DataContext="{Binding ImageManagerVM}"/>
-                                </ScrollViewer>
+                                <view:ImageTab DataContext="{Binding ImageManagerVM}"/>
+                                <!-- <ScrollViewer> -->
+                                <!--     <view:ImageTab DataContext="{Binding ImageManagerVM}"/> -->
+                                <!-- </ScrollViewer> -->
                             </TabItem>
-                            <TabItem Header="Classes" HorizontalAlignment="Center">
-                                <ScrollViewer>
+                            <TabItem Header="Classes" HorizontalAlignment="Stretch">
+                                <!-- <ScrollViewer> -->
                                     <view:ClassTab DataContext="{Binding ClassManagerVM}"/>
-                                </ScrollViewer>
+                                <!-- </ScrollViewer> -->
                             </TabItem>
-                            <TabItem Header="Settings" HorizontalAlignment="Center">
+                            <TabItem Header="Settings" HorizontalAlignment="Stretch">
                                 <ScrollViewer>
                                     <view:SettingsTab DataContext="{Binding SettingsManagerVM}"/>
                                 </ScrollViewer>

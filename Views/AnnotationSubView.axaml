@@ -12,7 +12,7 @@
                 <Expander ExpandDirection="Down" Header="Annotations" 
                       CornerRadius="5" HorizontalAlignment="Stretch" Margin="-5,0">
                     <StackPanel HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True">
-                        <Grid RowDefinitions="*, *" HorizontalAlignment="Stretch" Margin="0,2.5,0,5">
+                        <Grid RowDefinitions="Auto, *" HorizontalAlignment="Stretch" Margin="0,2.5,0,5">
                             <Grid Grid.Row="0" HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>

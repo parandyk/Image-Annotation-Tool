@@ -26,7 +26,7 @@
                                 CommandParameter="{Binding #NewClassNameTextBox.Text}"/>
                     </Grid>
                 </Border>
-                <Grid RowDefinitions="*, *" HorizontalAlignment="Stretch">
+                <Grid RowDefinitions="Auto, *" HorizontalAlignment="Stretch">
                     <Grid HorizontalAlignment="Stretch"
                           Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Border, AncestorLevel=2}}">
                         <Grid.ColumnDefinitions>
@@ -45,7 +45,7 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="Color"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="2.5,0,2.5,0"
-                                           HorizontalAlignment="Stretch" Text="{Binding ActiveClass.Name}" 
+                                           HorizontalAlignment="Center" Text="{Binding ActiveClass.Name}" 
                                            TextTrimming="CharacterEllipsis">
                                 </TextBlock>
                                 <Border Grid.Column="1" Margin="2.5,0,2.5,0"
