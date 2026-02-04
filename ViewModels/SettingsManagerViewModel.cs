@@ -227,8 +227,8 @@ public partial class SettingsManagerViewModel : ObservableObject
                 
                 if (value == null)
                 {
-                    newVisibility = !_renderingSettings.GlobalBBoxVisibility;
-                    _renderingSettings.SetGlobalBboxVisibility(newVisibility);
+                    newVisibility = !_renderingSettings.GlobalAnnotationVisibility;
+                    _renderingSettings.SetGlobalAnnotationVisibility(newVisibility);
                     _undoRedoService.Execute(_commandFactory.ChangeGlobalAnnotationVisibility(newVisibility));
                     OnPropertyChanged(nameof(GlobalBBoxVisibility));
                     return;
@@ -236,10 +236,10 @@ public partial class SettingsManagerViewModel : ObservableObject
     
                 newVisibility = value.Value;
             
-                if (_renderingSettings.GlobalBBoxVisibility == newVisibility)
+                if (_renderingSettings.GlobalAnnotationVisibility == newVisibility)
                     return;
     
-                _renderingSettings.SetGlobalBboxVisibility(newVisibility);
+                _renderingSettings.SetGlobalAnnotationVisibility(newVisibility);
                 _undoRedoService.Execute(_commandFactory.ChangeGlobalAnnotationVisibility(newVisibility));
                 OnPropertyChanged(nameof(GlobalBBoxVisibility));
             }
@@ -282,6 +282,32 @@ public partial class SettingsManagerViewModel : ObservableObject
             {
                 _messenger.SendErrorOccurredNotification(e.Message);
             }
+        }
+    }
+
+    public bool FilteredAnnotationVisibility //TODO
+    {
+        get => _renderingSettings.FilteredAnnotationVisibility;
+        set
+        {
+            if (_renderingSettings.FilteredAnnotationVisibility == value) 
+                return;
+            
+            _renderingSettings.SetFilteredAnnotationVisibility(value);
+            OnPropertyChanged();
+        }
+    }
+    
+    public bool FilteredClassVisibility //TODO
+    {
+        get => _renderingSettings.FilteredClassVisibility;
+        set
+        {
+            if (_renderingSettings.FilteredClassVisibility == value) 
+                return;
+            
+            _renderingSettings.SetFilteredClassVisibility(value);
+            OnPropertyChanged();
         }
     }
 }

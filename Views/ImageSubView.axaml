@@ -16,7 +16,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="FilterIcon"/>
                             </Grid.ColumnDefinitions>
-                            <Grid HorizontalAlignment="Stretch" Margin="0,0,5,0">
+                            <Grid HorizontalAlignment="Stretch" Margin="0,0,2.5,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="MoveIcon"/>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="MoveIcon"/>
@@ -38,12 +38,10 @@
                                     <PathIcon Foreground="{DynamicResource PrimaryForeground}" Data="{StaticResource IconNextRegular}"/>
                                 </Button>
                             </Grid>
-                            <!-- Height="32" -->
-                            <Border Grid.Column="1" Margin="5,0" CornerRadius="5"
+                            <Border Grid.Column="1" Margin="2.5,0" CornerRadius="5"
                                     Background="{DynamicResource SecondaryBackground}" 
                                     HorizontalAlignment="Stretch">
-                                <!-- Margin="5,0" -->
-                                <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2.5,0"
                                            Background="{DynamicResource SecondaryBackground}" 
                                            Text="{Binding SelectedImageViewModel.ImageName}"  
                                            TextTrimming="PrefixCharacterEllipsis">
@@ -51,19 +49,10 @@
                                         <TextBlock TextWrapping="Wrap"
                                                    Text="{Binding SelectedImageViewModel.ImageName}"/>
                                     </ToolTip.Tip>
-                                    <!-- <TextBlock.Text> -->
-                                    <!--     <MultiBinding Converter="{StaticResource TruncatedTextConverter}"> -->
-                                    <!--         <Binding Path="SelectedImageViewModel.ImageName"/> -->
-                                    <!--         <Binding Source="{x:Static enums:TruncationMode.Middle}"/> -->
-                                    <!--         <Binding Source="6"/> -->
-                                    <!--         <Binding Source="{x:True}"/> -->
-                                    <!--     </MultiBinding> -->
-                                    <!-- </TextBlock.Text> -->
                                 </TextBlock>
                             </Border>
-                            <!-- HorizontalAlignment="Stretch" -->
                             <Button Grid.Row="0" Grid.Column="2"
-                                    Margin="5,0,0,0"
+                                    Margin="2.5,0,0,0"
                                     Height="30" Width="30" 
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center" 
@@ -89,7 +78,6 @@
                                 </Button.Flyout>
                             </Button>
                         </Grid>
-                        <!-- Height="100" -->
                         <ListBox Grid.Row="1" Margin="0,5,0,0" Height="100"
                                  HorizontalAlignment="Stretch"
                                  IsTextSearchEnabled="True"
@@ -101,39 +89,17 @@
                                     <Setter Property="Padding" Value="0"/>
                                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                     <Setter Property="ContextFlyout" x:DataType="vm:ImageViewModel">
-                                        <!-- <Grid.ContextFlyout> -->
-                                            <MenuFlyout>
-                                                <MenuItem Header="Delete" HotKey="Delete"
-                                                          Command="{Binding $parent[view:ImageSubView].((vm:ImageManagerViewModel)DataContext).DeleteImageCommand}"
-                                                          CommandParameter="{Binding GUID}"/>
-                                            </MenuFlyout>
-                                        <!-- </Grid.ContextFlyout> -->
+                                        <MenuFlyout>
+                                            <MenuItem Header="Delete" HotKey="Delete"
+                                                      Command="{Binding $parent[view:ImageSubView].((vm:ImageManagerViewModel)DataContext).DeleteImageCommand}"
+                                                      CommandParameter="{Binding GUID}"/>
+                                        </MenuFlyout>
                                     </Setter>
                                 </Style>
                             </ListBox.Styles>
-                            <!-- <ListBox.ContextFlyout> -->
-                            <!--     ~1~ <Grid.ContextFlyout> @1@ -->
-                            <!--         <MenuFlyout x:DataType="vm:ImageViewModel"> -->
-                            <!--             <MenuItem Header="Delete" HotKey="Delete" -->
-                            <!--                       Command="{Binding $parent[view:ImageSubView].((vm:ImageManagerViewModel)DataContext).DeleteImageCommand}" -->
-                            <!--                       CommandParameter="{Binding GUID}"/> -->
-                            <!--         </MenuFlyout> -->
-                            <!--     ~1~ </Grid.ContextFlyout> @1@ -->
-                            <!-- </ListBox.ContextFlyout> -->
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="vm:ImageViewModel">
-                                    <!-- VerticalAlignment="Stretch" -->
                                     <Grid HorizontalAlignment="Stretch" Background="Transparent" Margin="5">
-                                        <!-- IsHitTestVisible="True" -->
-                                        <!-- <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  -->
-                                        <!--         Background="Transparent"> -->
-                                        <!-- <Grid.ContextFlyout> -->
-                                        <!--     <MenuFlyout> -->
-                                        <!--         <MenuItem Header="Delete" HotKey="Delete" -->
-                                        <!--                   Command="{Binding $parent[view:ImageSubView].((vm:ImageManagerViewModel)DataContext).DeleteImageCommand}" -->
-                                        <!--                   CommandParameter="{Binding GUID}"/> -->
-                                        <!--     </MenuFlyout> -->
-                                        <!-- </Grid.ContextFlyout> -->
                                         <ToolTip.Tip>
                                             <TextBlock TextWrapping="Wrap"
                                                        Text="{Binding ImageName}"/>
@@ -147,17 +113,9 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
                                                        Text="{Binding ImageName}"  
-                                                       TextTrimming="PrefixCharacterEllipsis">
-                                                <!-- <TextBlock.Text> -->
-                                                <!--     <MultiBinding Converter="{StaticResource TruncatedTextConverter}"> -->
-                                                <!--         <Binding Path="ImageName"/> -->
-                                                <!--         <Binding Source="{x:Static enums:TruncationMode.Middle}"/> -->
-                                                <!--         <Binding Source="10"/> -->
-                                                <!--         <Binding Source="{x:True}"/> -->
-                                                <!--     </MultiBinding> -->
-                                                <!-- </TextBlock.Text> -->
+                                                       TextTrimming="PrefixCharacterEllipsis" Margin="2.5, 0">
                                             </TextBlock>
-                                            <Button Grid.Column="1" Width="30" Height="30" Margin="5,0,0,0" 
+                                            <Button Grid.Column="1" Width="30" Height="30" Margin="2.5,0,0,0" 
                                                     Background="Transparent"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center" 

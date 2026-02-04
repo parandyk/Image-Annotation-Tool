@@ -10,6 +10,8 @@ public interface IRenderingSettings : IRenderingSettingsProvider
     void SetBboxBackgroundOn(bool state);
     void SetBboxBorderOn(bool state);
     void SetDynamicBordersOn(bool state);
-    void SetGlobalBboxVisibility(bool state);
+    void SetGlobalAnnotationVisibility(bool state);
     void SetGlobalClassVisibility(bool state);
+    void SetFilteredAnnotationVisibility(bool state);
+    void SetFilteredClassVisibility(bool state);
 }

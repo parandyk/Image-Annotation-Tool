@@ -11,8 +11,10 @@ public class RenderingSettings : ObservableObject, IRenderingSettings
     public bool BboxBackgroundOn { get; private set; } = true;
     public bool BboxBorderOn { get; private set; } = true;
     public bool DynamicBordersOn { get; private set; } = false;
-    public bool GlobalBBoxVisibility { get; private set; } = true;
+    public bool GlobalAnnotationVisibility { get; private set; } = true;
     public bool GlobalClassVisibility { get; private set; } = true;
+    public bool FilteredAnnotationVisibility { get; private set; } = true;
+    public bool FilteredClassVisibility { get; private set; } = true;
 
     public void UseDefaultBboxBorderThickness(bool state)
     {
@@ -65,13 +67,13 @@ public class RenderingSettings : ObservableObject, IRenderingSettings
         OnPropertyChanged(nameof(DynamicBordersOn));
     }
 
-    public void SetGlobalBboxVisibility(bool state)
+    public void SetGlobalAnnotationVisibility(bool state)
     {
-        if (GlobalBBoxVisibility == state)
+        if (GlobalAnnotationVisibility == state)
             return;
         
-        GlobalBBoxVisibility = state;
-        OnPropertyChanged(nameof(GlobalBBoxVisibility));
+        GlobalAnnotationVisibility = state;
+        OnPropertyChanged(nameof(GlobalAnnotationVisibility));
     }
     
     public void SetGlobalClassVisibility(bool state)
@@ -81,5 +83,23 @@ public class RenderingSettings : ObservableObject, IRenderingSettings
         
         GlobalClassVisibility = state;
         OnPropertyChanged(nameof(GlobalClassVisibility));
+    }
+
+    public void SetFilteredAnnotationVisibility(bool state)
+    {
+        if (FilteredAnnotationVisibility == state)
+            return;
+        
+        FilteredAnnotationVisibility = state;
+        OnPropertyChanged(nameof(FilteredAnnotationVisibility));
+    }
+
+    public void SetFilteredClassVisibility(bool state)
+    {
+        if (FilteredClassVisibility == state)
+            return;
+        
+        FilteredClassVisibility = state;
+        OnPropertyChanged(nameof(FilteredClassVisibility));
     }
 }

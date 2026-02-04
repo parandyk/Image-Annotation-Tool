@@ -9,6 +9,7 @@
         Width="600"
         xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
         xmlns:core="clr-namespace:ImageAnnotationTool.Core"
+        xmlns:enums="clr-namespace:ImageAnnotationTool.Enums"
         WindowStartupLocation="CenterOwner"
         SizeToContent="Height"
         CanResize="False"
@@ -44,9 +45,10 @@
                 
                 <TextBlock Text="Drawing settings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"/>
                 <Grid ColumnDefinitions="3*, 7*" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45">
-                        <ursa:EnumSelector  Value="{Binding AddingMode, Mode=TwoWay}" 
-                                            HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Text="Annotation drawing mode"/>
+                        <ursa:EnumSelector  Value="{Binding AddingMode, Mode=TwoWay}"
+                                            EnumType="enums:AnnotationAddingMode" DisplayDescription="True"
+                                            HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Grid.Column="1" Text="Annotation drawing mode" Margin="5,0,0,0"/>
                 </Grid>
                 
                 <Separator/>

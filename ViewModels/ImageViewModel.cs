@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using AtomUI.Desktop.Controls;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -749,8 +750,13 @@ public partial class ImageViewModel : ObservableObject, IDisposable
     {
         if (!AnnotatingOn)
         {
-            if (SelectedAnnotation is not null) 
-                SelectedAnnotation.IsSelected = !_annotationModes.EditingModeOn && SelectedAnnotation.IsSelected;
+            if (SelectedAnnotation is not null)
+            {
+                if (!SelectedAnnotation.PreviewingEnabled)
+                {
+                    SelectedAnnotation.IsSelected = !_annotationModes.EditingModeOn && SelectedAnnotation.IsSelected;
+                }
+            }
             
             return;
         }

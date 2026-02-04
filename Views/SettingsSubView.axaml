@@ -41,9 +41,31 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             
+                            <TextBlock FontWeight="Bold" Text="Filtered class visibility"/>
+                            <CheckBox Grid.Column="1" HorizontalAlignment="Right" IsThreeState="True"
+                                      IsChecked="{Binding GlobalClassVisibility, Mode=TwoWay}"/>
+                        </Grid>
+                        
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
                             <TextBlock FontWeight="Bold" Text="Annotation visibility"/>
                             <CheckBox Grid.Column="1" HorizontalAlignment="Right" IsThreeState="True"
                                       IsChecked="{Binding GlobalBBoxVisibility, Mode=TwoWay}"/>
+                        </Grid>
+                        
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock FontWeight="Bold" Text="Filtered annotation visibility"/>
+                            <CheckBox Grid.Column="1" HorizontalAlignment="Right" IsThreeState="True"
+                                      IsChecked="{Binding GlobalClassVisibility, Mode=TwoWay}"/>
                         </Grid>
                         
                         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
@@ -78,6 +100,7 @@
                             <CheckBox Grid.Column="1" HorizontalAlignment="Right"
                                       IsChecked="{Binding BboxBackgroundOn, Mode=TwoWay}"/>
                         </Grid>
+                        
                         <StackPanel.Styles>
                             <Style Selector="CheckBox">
                                 <Setter Property="VerticalAlignment" Value="Center" />
