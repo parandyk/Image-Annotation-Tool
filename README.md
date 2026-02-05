@@ -111,8 +111,8 @@ convenience tool settings, mainly regarding rendering of annotations and classes
 
 ## Showcase
 
-### [Screenshots](#screenshots)
-### [GIFs](#gifs)
+### [Screenshots](#screenshots-1)
+### [GIFs](#gifs-1)
 
 ## Technical details
 
