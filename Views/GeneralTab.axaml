@@ -8,25 +8,25 @@
              xmlns:view="clr-namespace:ImageAnnotationTool.Views"
              x:Class="ImageAnnotationTool.Views.GeneralTab"
              x:DataType="vm:MainViewModel">
-                <Border CornerRadius="10" 
-                    Background="{DynamicResource PrimaryBackground}"
-                    Margin="10,0,10,10">
-                            <StackPanel>
-                                <Border Margin="15,5,15,2.5" CornerRadius="5">
-                                    <view:ImageSubView DataContext="{Binding ImageManagerVM}"/>
-                                </Border>
-                                <Border Margin="15,5,15,2.5" CornerRadius="5">
-                                    <view:AnnotationSubView DataContext="{Binding ImageManagerVM.SelectedImageViewModel}"/>
-                                </Border>
-                                <Border Margin="15,5,15,2.5" CornerRadius="5">
-                                    <view:CoordinateSubView DataContext="{Binding ImageManagerVM}"/>
-                                </Border>
-                                <Border Margin="15,5,15,2.5" CornerRadius="5">
-                                    <view:ClassSubView DataContext="{Binding ClassManagerVM}"/>
-                                </Border>
-                                <Border Margin="15,5,15,2.5" CornerRadius="5">
-                                    <view:SettingsSubView DataContext="{Binding SettingsManagerVM}"/>
-                                </Border>
-                            </StackPanel>
-                        </Border>
+                    <Border CornerRadius="10" 
+                            Background="{DynamicResource PrimaryBackground}"
+                            Margin="15,0,15,15">
+                                    <StackPanel HorizontalAlignment="Stretch">
+                                            <!-- <Border CornerRadius="5"> -->
+                                                <view:ImageSubView DataContext="{Binding ImageManagerVM}"/>
+                                            <!-- </Border> -->
+                                            <!-- <Border CornerRadius="5"> -->
+                                                <view:AnnotationSubView DataContext="{Binding ImageManagerVM.SelectedImageViewModel}"/>
+                                            <!-- </Border> -->
+                                            <!-- <Border CornerRadius="5"> -->
+                                                <view:CoordinateSubView DataContext="{Binding ImageManagerVM}"/>
+                                            <!-- </Border> -->
+                                            <!-- <Border CornerRadius="5"> -->
+                                                <view:ClassSubView DataContext="{Binding ClassManagerVM}"/>
+                                            <!-- </Border> -->
+                                            <!-- <Border CornerRadius="5"> -->
+                                                <view:SettingsSubView DataContext="{Binding SettingsManagerVM}"/>
+                                            <!-- </Border> -->
+                                    </StackPanel>
+                    </Border>
 </UserControl>

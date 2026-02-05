@@ -13,7 +13,7 @@
                         <Grid Grid.Row="0" HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" SharedSizeGroup="Text"/>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="FilterIcon"/>
                             </Grid.ColumnDefinitions>
                             <Grid HorizontalAlignment="Stretch" Margin="0,0,2.5,0">

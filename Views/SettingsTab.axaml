@@ -10,8 +10,8 @@
                 <!--       CornerRadius="5" HorizontalAlignment="Stretch" Margin="-5,0"> -->
                 <Border CornerRadius="10" 
                         Background="{DynamicResource PrimaryBackground}"
-                        Margin="10,0,10,10">
-                    <StackPanel>
+                        Margin="15,0,15,15">
+                    <StackPanel HorizontalAlignment="Stretch">
                         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,5,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4*"/>

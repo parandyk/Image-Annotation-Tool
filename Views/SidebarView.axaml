@@ -10,7 +10,7 @@
              x:Name="SidebarControl">
                 <Panel VerticalAlignment="Stretch" 
                    Background="{DynamicResource PrimaryBackground}"
-                   Focusable="True">
+                   Focusable="True" HorizontalAlignment="Stretch">
                     <!-- <ScrollViewer> -->
                         <TabControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
                             <TabItem Header="General" HorizontalAlignment="Stretch">
