@@ -114,6 +114,9 @@ convenience tool settings, mainly regarding rendering of annotations and classes
 ### [Screenshots](#screenshots-1)
 ### [GIFs](#gifs-1)
 
+Image used for showcasing examples:
+https://www.pexels.com/photo/people-at-times-square-new-york-1770775/
+
 ## Technical details
 
 **Note: the tool implementation may be subject to change, and so may the details.**
