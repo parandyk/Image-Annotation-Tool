@@ -36,18 +36,25 @@
                                              ItemsSource="{Binding SortedFilteredClassList}"
                                              SelectedValue="{Binding SubstituteClass, Mode=TwoWay}"
                                              MaxDropDownHeight="240"
+                                             SelectedItem="{Binding SubstituteClass}"
                                              VerticalAlignment="Center">
+                                <ComboBox.Styles>
+                                    <Style Selector="Popup">
+                                        <Setter Property="ShouldUseOverlayLayer" Value="False"/>
+                                        <Setter Property="IsLightDismissEnabled" Value="True"/>
+                                    </Style>
+                                </ComboBox.Styles>
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate x:DataType="entities:ClassData">
                                         <Grid HorizontalAlignment="Stretch">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="5*" MaxWidth="150"/>
+                                                <ColumnDefinition Width="*" MaxWidth="300"/>
                                                 <ColumnDefinition Width="Auto" SharedSizeGroup="Color"/>
                                             </Grid.ColumnDefinitions>
                                             <ToolTip.Tip>
                                                 <Grid HorizontalAlignment="Stretch">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" MaxWidth="150"/>
+                                                        <ColumnDefinition Width="*" MaxWidth="200"/>
                                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Color"/>
                                                     </Grid.ColumnDefinitions>
                                                     <TextBlock Grid.Column="0"
@@ -85,7 +92,7 @@
                                 <PathIcon Data="{StaticResource IconFilterItems}" 
                                           Foreground="{DynamicResource PrimaryForeground}"/>
                                 <Button.Flyout>
-                                    <MenuFlyout>
+                                    <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
                                         <StackPanel>
                                             <TextBlock>Filtering</TextBlock>
                                             <u:EnumSelector EnumType="enums:ClassFilterMode" 

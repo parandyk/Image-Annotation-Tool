@@ -106,7 +106,7 @@
                                                 </Grid>
                                             </ToolTip.Tip>
                                             <Canvas.ContextFlyout>
-                                                <MenuFlyout>
+                                                <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
                                                     <MenuItem Header="Delete" HotKey="Delete"
                                                               Command="{Binding $parent[view:WorkspaceView].((vm:ImageViewModel)DataContext).DeleteAnnotationCommand}"
                                                               CommandParameter="{Binding GUID}"/>

@@ -142,7 +142,7 @@ public partial class DeleteClassDialogViewModel : ObservableObject, IModalDialog
             case ClassFilterMode.None:
                 filteredTempList = _classList.Where(c => c != ClassToDelete).ToList();
                 break;
-            case ClassFilterMode.Unused:
+            case ClassFilterMode.HideUnused:
                 var unusedGuids = _statisticsAggregator.AnnotationsPerClassCounts
                     .Where(kvp => kvp.Value == 0 && kvp.Key != ClassToDelete.Id).OrderBy(kvp => kvp.Key);
                 
@@ -153,7 +153,7 @@ public partial class DeleteClassDialogViewModel : ObservableObject, IModalDialog
                     filteredTempList.Add(_classListProvider.GetClass(guid));
                 }
                 break;
-            case ClassFilterMode.Used:
+            case ClassFilterMode.HideUsed:
                 var usedGuids = _statisticsAggregator.AnnotationsPerClassCounts
                     .Where(kvp => kvp.Value > 0 && kvp.Key != ClassToDelete.Id).OrderBy(kvp => kvp.Key);
                 

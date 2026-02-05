@@ -2,6 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
              xmlns:u="https://irihi.tech/ursa"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:enums="clr-namespace:ImageAnnotationTool.Enums"
              xmlns:view="clr-namespace:ImageAnnotationTool.Views"
              x:Class="ImageAnnotationTool.Views.ImageSubView"
@@ -62,7 +65,7 @@
                                 <PathIcon Data="{StaticResource IconFilterItems}" 
                                           Foreground="{DynamicResource PrimaryForeground}"/>
                                 <Button.Flyout>
-                                    <MenuFlyout>
+                                    <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
                                         <StackPanel>
                                             <TextBlock>Filtering</TextBlock>
                                             <u:EnumSelector EnumType="enums:ImageFilterMode" Width="210" DisplayDescription="True"
@@ -88,7 +91,7 @@
                                     <Setter Property="Padding" Value="0"/>
                                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                     <Setter Property="ContextFlyout" x:DataType="vm:ImageViewModel">
-                                        <MenuFlyout>
+                                        <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
                                             <MenuItem Header="Delete" HotKey="Delete"
                                                       Command="{Binding $parent[view:ImageSubView].((vm:ImageManagerViewModel)DataContext).DeleteImageCommand}"
                                                       CommandParameter="{Binding GUID}"/>
@@ -119,7 +122,7 @@
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center" 
                                                     CommandParameter="{Binding GUID}"
-                                                    Command="{Binding DeleteImageCommand}">
+                                                    Command="{Binding $parent[view:ImageSubView].((vm:ImageManagerViewModel)DataContext).DeleteImageCommand}">
                                                 <PathIcon Data="{StaticResource IconDeleteItem}" 
                                                           Foreground="{DynamicResource PrimaryForeground}"/>
                                             </Button>

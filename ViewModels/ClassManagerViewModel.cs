@@ -148,7 +148,7 @@ public partial class ClassManagerViewModel : ObservableObject
             case ClassFilterMode.None:
                 filteredTempList = _classList.ToList();
                 break;
-            case ClassFilterMode.Unused:
+            case ClassFilterMode.HideUsed:
                 var unusedGuids = _statisticsAggregator.AnnotationsPerClassCounts
                     .Where(kvp => kvp.Value == 0).OrderBy(kvp => kvp.Key);
                 
@@ -159,7 +159,7 @@ public partial class ClassManagerViewModel : ObservableObject
                     filteredTempList.Add(_classStore.GetClass(guid));
                 }
                 break;
-            case ClassFilterMode.Used:
+            case ClassFilterMode.HideUnused:
                 var usedGuids = _statisticsAggregator.AnnotationsPerClassCounts
                     .Where(kvp => kvp.Value > 0).OrderBy(kvp => kvp.Key);
                 

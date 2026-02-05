@@ -501,11 +501,11 @@ public partial class ImageViewModel : ObservableObject, IDisposable
             case AnnotationFilterMode.None:
                 filteredTempList = _annotationList.ToList();
                 break;
-            case AnnotationFilterMode.Assigned:
-                filteredTempList = _annotationList.Where(avm => avm.AnnotationData.ClassInfo != _classListProvider.GetDefaultClass()).ToList();
-                break;
-            case AnnotationFilterMode.Unassigned:
+            case AnnotationFilterMode.HideAssigned:
                 filteredTempList = _annotationList.Where(avm => avm.AnnotationData.ClassInfo == _classListProvider.GetDefaultClass()).ToList();
+                break;
+            case AnnotationFilterMode.HideUnassigned:
+                filteredTempList = _annotationList.Where(avm => avm.AnnotationData.ClassInfo != _classListProvider.GetDefaultClass()).ToList();
                 break;
         }
         

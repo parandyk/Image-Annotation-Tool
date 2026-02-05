@@ -9,8 +9,8 @@ public enum ImageFilterMode
     None,
     
     [Description("Hide annotated")]
-    Annotated,
+    HideAnnotated,
     
     [Description("Hide unannotated")]
-    Unannotated
+    HideUnannotated
 }

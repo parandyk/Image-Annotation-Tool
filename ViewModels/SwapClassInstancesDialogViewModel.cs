@@ -58,9 +58,10 @@ public partial class SwapClassInstancesDialogViewModel : ObservableObject, IModa
 
     public bool Global { get; init; }
     
-    public ClassData ClassToSwap { get; init; } 
-    
-    public ClassData? SubstituteClass { get; set; } 
+    public ClassData ClassToSwap { get; init; }
+
+    [ObservableProperty]
+    public ClassData? _substituteClass;
 
     [ObservableProperty] 
     private string _title = "Swapping class instances";
@@ -152,7 +153,7 @@ public partial class SwapClassInstancesDialogViewModel : ObservableObject, IModa
             case ClassFilterMode.None:
                 filteredTempList = _classList.Where(c => c != ClassToSwap).ToList();
                 break;
-            case ClassFilterMode.Unused:
+            case ClassFilterMode.HideUsed:
                 var unusedGuids = _statisticsAggregator.AnnotationsPerClassCounts
                     .Where(kvp => kvp.Value == 0 && kvp.Key != ClassToSwap.Id).OrderBy(kvp => kvp.Key);
                 
@@ -163,7 +164,7 @@ public partial class SwapClassInstancesDialogViewModel : ObservableObject, IModa
                     filteredTempList.Add(_classListProvider.GetClass(guid));
                 }
                 break;
-            case ClassFilterMode.Used:
+            case ClassFilterMode.HideUnused:
                 var usedGuids = _statisticsAggregator.AnnotationsPerClassCounts
                     .Where(kvp => kvp.Value > 0 && kvp.Key != ClassToSwap.Id).OrderBy(kvp => kvp.Key);
                 

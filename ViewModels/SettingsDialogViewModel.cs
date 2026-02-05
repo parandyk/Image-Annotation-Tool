@@ -25,6 +25,8 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         SuppressAnnotationDeletionDialogs = notificationSettings.SuppressAnnotationDeletionDialogs;
         SuppressClassDeletionDialogs = notificationSettings.SuppressClassDeletionDialogs;
         SuppressImageDeletionDialogs = notificationSettings.SuppressImageDeletionDialogs;
+        SuppressGlobalClassInstanceDeletionDialogs = notificationSettings.SuppressGlobalClassInstanceDeletionDialogs;
+        SuppressLocalClassInstanceDeletionDialogs = notificationSettings.SuppressLocalClassInstanceDeletionDialogs;
         
         DragThreshold = interactionSettings.DragThreshold;
         OverridingDefaultDragThreshold = interactionSettings.OverridingDefaultDragThreshold;
@@ -48,21 +50,36 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     public event EventHandler? RequestClose;
     
     // App mode settings
-    public AnnotationAddingMode AddingMode { get; set; }
+    [ObservableProperty]
+    private AnnotationAddingMode _addingMode;
     
     // Rendering settings
-    public bool DynamicBordersOn { get; set; }
-    public bool BboxBorderOn { get; set; }
-    public bool BboxBackgroundOn { get; set; }
-    public bool OverridingDefaultBboxBorderThickness { get; set; }
-    public double BboxBorderThickness { get; set; }
+    [ObservableProperty]
+    private bool _dynamicBordersOn;
+    [ObservableProperty]
+    private bool _bboxBorderOn;
+    [ObservableProperty]
+    private bool _bboxBackgroundOn;
+    [ObservableProperty]
+    private bool _overridingDefaultBboxBorderThickness;
+    [ObservableProperty]
+    private double _bboxBorderThickness;
     
     // Notification settings
-    public bool SuppressAnnotationDeletionDialogs { get; set; }
-    public bool SuppressClassDeletionDialogs { get; set; }
-    public bool SuppressImageDeletionDialogs { get; set; }
+    [ObservableProperty]
+    private bool _suppressAnnotationDeletionDialogs;
+    [ObservableProperty]
+    private bool _suppressClassDeletionDialogs;
+    [ObservableProperty]
+    private bool _suppressImageDeletionDialogs;
+    [ObservableProperty]
+    private bool _suppressLocalClassInstanceDeletionDialogs;
+    [ObservableProperty]
+    private bool _suppressGlobalClassInstanceDeletionDialogs;
     
     // Interaction settings
-    public bool OverridingDefaultDragThreshold { get; set; }
-    public double DragThreshold { get; set; }
+    [ObservableProperty]
+    private bool _overridingDefaultDragThreshold;
+    [ObservableProperty]
+    private double _dragThreshold;
 }

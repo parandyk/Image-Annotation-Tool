@@ -19,7 +19,7 @@
         ExtendClientAreaChromeHints="PreferSystemChrome"
         ExtendClientAreaTitleBarHeightHint="-1" 
         Title="Settings">
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Grid.IsSharedSizeScope="True">
                 <TextBlock Text="Notification settings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"/>
                 <Grid Width="540" Height="135" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
@@ -30,15 +30,23 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding SuppressImageDeletionDialogs}"/>
+                        <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding !SuppressImageDeletionDialogs}"/>
                         <TextBlock Grid.Row="0" Grid.Column="1" Text="Enable image deletion warnings"/>
                         
-                        <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding SuppressClassDeletionDialogs}"/>
+                        <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding !SuppressClassDeletionDialogs}"/>
                         <TextBlock Grid.Row="1" Grid.Column="1" Text="Enable class deletion warnings"/>
                         
-                        <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding SuppressAnnotationDeletionDialogs}"/>
+                        <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding !SuppressAnnotationDeletionDialogs}"/>
                         <TextBlock Grid.Row="2" Grid.Column="1" Text="Enable annotation deletion warnings"/>
+                        
+                        <CheckBox Grid.Row="3" Grid.Column="0" IsChecked="{Binding !SuppressLocalClassInstanceDeletionDialogs}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="Enable selected image class instance deletion warnings"/>
+                        
+                        <CheckBox Grid.Row="4" Grid.Column="0" IsChecked="{Binding !SuppressGlobalClassInstanceDeletionDialogs}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="Enable global class instance deletion warnings"/>
                 </Grid>
                 
                 <Separator/>
@@ -54,56 +62,70 @@
                 <Separator/>
                 
                 <TextBlock Text="Interaction settings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"/>
-                <Grid Width="540" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border Width="540" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                        <CheckBox  IsChecked="{Binding OverridingDefaultDragThreshold, Mode=TwoWay}"
+                                  x:Name="UseDragCustomValueButton" Content="Use custom value" HorizontalAlignment="Left"/>
+                </Border>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45">
                         <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Numeric"/>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="5*"/>
                         </Grid.ColumnDefinitions>
-                        
-                        <CheckBox Grid.Column="0" IsChecked="{Binding OverridingDefaultDragThreshold, Mode=TwoWay}"
-                                  x:Name="UseDragCustomValueButton"/>
-                        <TextBlock Grid.Column="1" Text="Use custom value">
-                                <Interaction.Behaviors>
-                                        <EventTriggerBehavior EventName="PointerPressed">
-                                                <InvokeButtonClickAction TargetButton="UseDragCustomValueButton"/>
-                                        </EventTriggerBehavior>
-                                </Interaction.Behaviors>
-                        </TextBlock>
-                </Grid>
-                <Grid ColumnDefinitions="5*, 5*" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45">
-                        <Slider Value="{Binding DragThreshold,
+                        <NumericUpDown Value="{Binding DragThreshold}" Width="40"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0"
+                                       IsEnabled="{Binding OverridingDefaultDragThreshold}"
+                                       ShowButtonSpinner="False" Increment="1" FormatString="{}{0,2}" IsReadOnly="True"
+                                       ParsingNumberStyle="Integer" ClipValueToMinMax="True" HorizontalContentAlignment="Center">
+                                <NumericUpDown.Minimum>
+                                        <Binding Source="{x:Static core:InteractionConstants.LowerDragThreshold}" 
+                                                 Converter="{StaticResource DoubleToDecimalConverter}"/>
+                                </NumericUpDown.Minimum>
+                                <NumericUpDown.Maximum>
+                                        <Binding Source="{x:Static core:InteractionConstants.UpperDragThreshold}" 
+                                                 Converter="{StaticResource DoubleToDecimalConverter}"/>
+                                </NumericUpDown.Maximum>
+                        </NumericUpDown>
+                        <Slider Grid.Column="1" Value="{Binding DragThreshold,
                                 Mode=TwoWay, FallbackValue={x:Static core:InteractionConstants.DefaultDragThreshold},
                                 TargetNullValue={x:Static core:InteractionConstants.DefaultDragThreshold}}"
                                 Minimum="{x:Static core:InteractionConstants.LowerDragThreshold}"
                                 Maximum="{x:Static core:InteractionConstants.UpperDragThreshold}"
-                                IsSnapToTickEnabled="True" TickFrequency="1" Margin="15, 0" TickPlacement="Outside"
+                                IsSnapToTickEnabled="True" TickFrequency="1" Margin="5, 0" TickPlacement="Outside"
                                 VerticalAlignment="Center" HorizontalAlignment="Stretch" 
                                 IsEnabled="{Binding OverridingDefaultDragThreshold}">
                         </Slider>
-                        <TextBlock Grid.Column="1" Text="Bounding box dragging threshold"/>
+                        <TextBlock Grid.Column="2" Text="Bounding box dragging threshold" Margin="5,0"/>
                 </Grid>
                 
                 <Separator/>
                 
                 <TextBlock Text="Rendering settings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"/>
-                <Grid Width="540" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="9*"/>
-                        </Grid.ColumnDefinitions>
-                        
+                <Border Width="540" Height="45" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                         <CheckBox Grid.Column="0" IsChecked="{Binding OverridingDefaultBboxBorderThickness, Mode=TwoWay}"
-                        x:Name="UseThicknessCustomValueButton"/>
-                        <TextBlock Grid.Column="1" Text="Use custom value">
-                                <Interaction.Behaviors>
-                                        <EventTriggerBehavior EventName="PointerPressed">
-                                                <InvokeButtonClickAction TargetButton="UseThicknessCustomValueButton"/>
-                                        </EventTriggerBehavior>
-                                </Interaction.Behaviors>
-                        </TextBlock>
-                </Grid>
-                <Grid ColumnDefinitions="5*, 5*" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45">
-                        <Slider Value="{Binding BboxBorderThickness,
+                                  x:Name="UseThicknessCustomValueButton" Content="Use custom value" HorizontalAlignment="Left"/>
+                </Border>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45">
+                        <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Numeric"/>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <NumericUpDown Value="{Binding BboxBorderThickness}" Width="40"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0"
+                                       IsEnabled="{Binding OverridingDefaultBboxBorderThickness}"
+                                       ShowButtonSpinner="False" Increment="1" FormatString="{}{0,2}" IsReadOnly="True" 
+                                       ParsingNumberStyle="Integer" ClipValueToMinMax="True" HorizontalContentAlignment="Center">
+                                <NumericUpDown.Minimum>
+                                        <Binding Source="{x:Static core:RenderingConstants.MinThickness}" 
+                                                 Converter="{StaticResource DoubleToDecimalConverter}"/>
+                                </NumericUpDown.Minimum>
+                                <NumericUpDown.Maximum>
+                                        <Binding Source="{x:Static core:RenderingConstants.MaxThickness}" 
+                                                 Converter="{StaticResource DoubleToDecimalConverter}"/>
+                                </NumericUpDown.Maximum>
+                        </NumericUpDown>
+                        <Slider Grid.Column="1" Value="{Binding BboxBorderThickness,
                                 Mode=TwoWay, FallbackValue={x:Static core:RenderingConstants.DefaultThickness},
                                 TargetNullValue={x:Static core:RenderingConstants.DefaultThickness}}"
                                 Minimum="{x:Static core:RenderingConstants.MinThickness}"
@@ -112,7 +134,7 @@
                                 VerticalAlignment="Center" HorizontalAlignment="Stretch" TickPlacement="Outside"
                                 IsEnabled="{Binding OverridingDefaultBboxBorderThickness}">
                         </Slider>
-                        <TextBlock Grid.Column="1" Text="Bounding box border thickness"/>
+                        <TextBlock Grid.Column="2" Text="Bounding box border thickness"/>
                 </Grid>
                 
                 <Separator/>
@@ -137,7 +159,7 @@
                         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
                                 <TextBlock Text="Bounding box dynamic border"/>
                                 <PathIcon Foreground="{DynamicResource PrimaryForeground}" 
-                                          Data="{StaticResource IconQuestionMarkCircleRegular}" Margin="5,0,0,0"
+                                          Data="{StaticResource IconQuestionMarkCircleRegular}" Margin="10,0,0,0"
                                           ToolTip.Placement="Right" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <ToolTip.Tip>
                                                 <StackPanel>

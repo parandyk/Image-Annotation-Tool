@@ -8,8 +8,8 @@ public enum AnnotationFilterMode
     None,
     
     [Description("Hide assigned")]
-    Assigned,
+    HideAssigned,
     
     [Description("Hide unassigned")]
-    Unassigned
+    HideUnassigned
 }

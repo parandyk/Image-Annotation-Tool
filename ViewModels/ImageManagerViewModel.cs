@@ -234,10 +234,10 @@ public partial class ImageManagerViewModel : ObservableObject
             case ImageFilterMode.None:
                 filteredTempList = ImageViewModelList.ToList();
                 break;
-            case ImageFilterMode.Annotated:
+            case ImageFilterMode.HideAnnotated:
                 filteredTempList = ImageViewModelList.Where(ivm => !ivm.BBoxesPresentLocal).ToList();
                 break;
-            case ImageFilterMode.Unannotated:
+            case ImageFilterMode.HideUnannotated:
                 filteredTempList = ImageViewModelList.Where(ivm => ivm.BBoxesPresentLocal).ToList();
                 break;
         }

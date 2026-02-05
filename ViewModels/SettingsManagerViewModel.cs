@@ -167,6 +167,7 @@ public partial class SettingsManagerViewModel : ObservableObject
             if (result is true)
             {
                 // SaveSettings(); //TODO
+                SaveSettings(vm);
                 _messenger.SendErrorOccurredNotification("Settings changes saved.");
             }
             else
@@ -178,6 +179,47 @@ public partial class SettingsManagerViewModel : ObservableObject
         {
             _messenger.SendErrorOccurredNotification(e.Message);
         }
+    }
+
+    private void SaveSettings(SettingsDialogViewModel settingsVm)
+    {
+        SaveInteractionSettings(settingsVm);
+        SaveAppModeSettings(settingsVm);
+        SaveRenderingSettings(settingsVm);
+        SaveNotificationSettings(settingsVm);
+    }
+
+    private void SaveNotificationSettings(SettingsDialogViewModel settingsVm)
+    {
+        _notificationSettings.ChangeSuppressionAnnotationDeletionDialogs(settingsVm.SuppressAnnotationDeletionDialogs);
+        _notificationSettings.ChangeSuppressionClassDeletionDialogs(settingsVm.SuppressClassDeletionDialogs);
+        _notificationSettings.ChangeSuppressionImageDeletionDialogs(settingsVm.SuppressImageDeletionDialogs);
+        _notificationSettings.ChangeSuppressionGlobalClassInstanceDeletionDialogs(settingsVm.SuppressGlobalClassInstanceDeletionDialogs);
+        _notificationSettings.ChangeSuppressionLocalClassInstanceDeletionDialogs(settingsVm.SuppressLocalClassInstanceDeletionDialogs);
+    }
+
+    private void SaveInteractionSettings(SettingsDialogViewModel settingsVm)
+    {
+        _interactionSettings.UseDefaultDragThreshold(settingsVm.OverridingDefaultDragThreshold);
+        _interactionSettings.SetDragThreshold(settingsVm.DragThreshold);
+    }
+    
+    private void SaveAppModeSettings(SettingsDialogViewModel settingsVm)
+    {
+        _appModeSettings.ChangeAnnotationAddingMode(settingsVm.AddingMode);
+    }
+    
+    private void SaveRenderingSettings(SettingsDialogViewModel settingsVm)
+    {
+        _renderingSettings.SetBboxBackgroundOn(settingsVm.BboxBackgroundOn);
+        _renderingSettings.SetBboxBorderOn(settingsVm.BboxBorderOn);
+        _renderingSettings.SetDynamicBordersOn(settingsVm.DynamicBordersOn);
+        _renderingSettings.UseDefaultBboxBorderThickness(settingsVm.OverridingDefaultBboxBorderThickness);
+        _renderingSettings.SetBboxBorderThickness(settingsVm.BboxBorderThickness);
+        OnPropertyChanged(nameof(BboxBackgroundOn));
+        OnPropertyChanged(nameof(BboxBorderOn));
+        OnPropertyChanged(nameof(DynamicBordersOn));
+        OnPropertyChanged(nameof(BboxBorderThickness));
     }
     
     public bool? GlobalClassVisibility

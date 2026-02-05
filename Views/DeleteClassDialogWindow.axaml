@@ -84,6 +84,12 @@
                                         </Grid>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
+                                <ComboBox.Styles>
+                                    <Style Selector="Popup">
+                                        <Setter Property="ShouldUseOverlayLayer" Value="False"/>
+                                        <Setter Property="IsLightDismissEnabled" Value="True"/>
+                                    </Style>
+                                </ComboBox.Styles>
                             </ComboBox>
                             <Button Grid.Column="1" Margin="5,0,0,0"
                                     Width="30" Height="30"
@@ -95,7 +101,7 @@
                                 <PathIcon Data="{StaticResource IconFilterItems}" 
                                           Foreground="{DynamicResource PrimaryForeground}"/>
                                 <Button.Flyout>
-                                    <MenuFlyout>
+                                    <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
                                         <StackPanel>
                                             <TextBlock>Filtering</TextBlock>
                                             <u:EnumSelector EnumType="enums:ClassFilterMode" 

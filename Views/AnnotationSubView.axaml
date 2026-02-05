@@ -67,7 +67,7 @@
                                     <PathIcon Data="{StaticResource IconFilterItems}" 
                                               Foreground="{DynamicResource PrimaryForeground}"/>
                                     <Button.Flyout>
-                                        <MenuFlyout>
+                                        <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
                                             <StackPanel>
                                                 <TextBlock>Filtering</TextBlock>
                                                 <u:EnumSelector EnumType="enums:AnnotationFilterMode" Width="210" DisplayDescription="True"
@@ -93,7 +93,7 @@
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                         <Setter Property="Padding" Value="0"/>
                                         <Setter Property="ContextFlyout" x:DataType="vm:AnnotationViewModel">
-                                            <MenuFlyout>
+                                            <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
                                                 <MenuItem Header="Delete"
                                                           Command="{Binding $parent[view:AnnotationSubView].((vm:ImageViewModel)DataContext).DeleteAnnotationCommand}"
                                                           CommandParameter="{Binding GUID}"/>

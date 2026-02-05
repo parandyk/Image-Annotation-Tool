@@ -106,7 +106,7 @@ public partial class ChangeClassDialogViewModel : ObservableObject, IModalDialog
             case ClassFilterMode.None:
                 filteredTempList = _classList.Where(c => c != AnnotationToModify.ClassInfo).ToList();
                 break;
-            case ClassFilterMode.Unused:
+            case ClassFilterMode.HideUsed:
                 var unusedGuids = _statisticsAggregator.AnnotationsPerClassCounts
                     .Where(kvp => kvp.Value == 0 && kvp.Key != AnnotationToModify.ClassInfo.Id).OrderBy(kvp => kvp.Key);
                 
@@ -117,7 +117,7 @@ public partial class ChangeClassDialogViewModel : ObservableObject, IModalDialog
                     filteredTempList.Add(_classListProvider.GetClass(guid));
                 }
                 break;
-            case ClassFilterMode.Used:
+            case ClassFilterMode.HideUnused:
                 var usedGuids = _statisticsAggregator.AnnotationsPerClassCounts
                     .Where(kvp => kvp.Value > 0 && kvp.Key != AnnotationToModify.ClassInfo.Id).OrderBy(kvp => kvp.Key);
                 

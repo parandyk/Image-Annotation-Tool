@@ -24,7 +24,7 @@
                                   Command="{Binding SaveClassesToFileCommand}"/>
                         <Separator/>
                         <MenuItem Header="_This image's annotations..." 
-                                  IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal}" 
+                                  IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal, FallbackValue=False}" 
                                   Command="{Binding SaveAnnotationsToFileCommand}"/>
                         <MenuItem Header="_All images' annotations..." 
                                   IsEnabled="{Binding ImageManagerVM.BBoxesPresentGlobal}" 

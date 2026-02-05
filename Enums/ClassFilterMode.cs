@@ -7,9 +7,9 @@ public enum ClassFilterMode
     [Description("Show all")]
     None,
     
-    [Description("Show used")]
-    Used,
+    [Description("Hide used")] 
+    HideUsed,
     
-    [Description("Show unused")]
-    Unused
+    [Description("Hide unused")]
+    HideUnused
 }

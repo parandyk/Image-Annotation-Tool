@@ -84,7 +84,7 @@
                             <PathIcon Data="{StaticResource IconFilterItems}" 
                                       Foreground="{DynamicResource PrimaryForeground}"/>
                             <Button.Flyout>
-                                <MenuFlyout>
+                                <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
                                     <StackPanel>
                                         <TextBlock>Filtering</TextBlock>
                                         <u:EnumSelector EnumType="enums:ClassFilterMode" 
