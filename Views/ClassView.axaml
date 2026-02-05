@@ -3,17 +3,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
-             xmlns:u="https://irihi.tech/ursa"
-             xmlns:enums="clr-namespace:ImageAnnotationTool.Enums"
-             xmlns:entities="clr-namespace:ImageAnnotationTool.Domain.Entities"
              xmlns:view="clr-namespace:ImageAnnotationTool.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ImageAnnotationTool.Views.ClassTab"
+             x:Class="ImageAnnotationTool.Views.ClassView"
              x:DataType="vm:ClassManagerViewModel">
-    <Border CornerRadius="10" 
-            HorizontalAlignment="Stretch"
-            Background="{DynamicResource PrimaryBackground}"
-            Margin="15,0,15,15">
-            <view:ClassSubView DataContext="{Binding }"/>
-        </Border>
+                <Expander ExpandDirection="Down" Header="Classes" 
+                          CornerRadius="5" HorizontalAlignment="Stretch" Margin="-5,0, -5, 0">
+                    <view:ClassSubView DataContext="{Binding }" MaxHeight="160"/>
+                </Expander>
 </UserControl>

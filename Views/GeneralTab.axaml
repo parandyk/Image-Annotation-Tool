@@ -12,21 +12,11 @@
                             Background="{DynamicResource PrimaryBackground}"
                             Margin="15,0,15,15">
                                     <StackPanel HorizontalAlignment="Stretch">
-                                            <!-- <Border CornerRadius="5"> -->
-                                                <view:ImageSubView DataContext="{Binding ImageManagerVM}"/>
-                                            <!-- </Border> -->
-                                            <!-- <Border CornerRadius="5"> -->
-                                                <view:AnnotationSubView DataContext="{Binding ImageManagerVM.SelectedImageViewModel}"/>
-                                            <!-- </Border> -->
-                                            <!-- <Border CornerRadius="5"> -->
-                                                <view:CoordinateSubView DataContext="{Binding ImageManagerVM}"/>
-                                            <!-- </Border> -->
-                                            <!-- <Border CornerRadius="5"> -->
-                                                <view:ClassSubView DataContext="{Binding ClassManagerVM}"/>
-                                            <!-- </Border> -->
-                                            <!-- <Border CornerRadius="5"> -->
-                                                <view:SettingsSubView DataContext="{Binding SettingsManagerVM}"/>
-                                            <!-- </Border> -->
+                                            <view:ImageView DataContext="{Binding ImageManagerVM}"/>
+                                            <view:AnnotationView DataContext="{Binding ImageManagerVM.SelectedImageViewModel}"/>
+                                            <view:CoordinateSubView DataContext="{Binding ImageManagerVM}"/>
+                                            <view:ClassView DataContext="{Binding ClassManagerVM}"/>
+                                            <view:SettingsView DataContext="{Binding SettingsManagerVM}"/>
                                     </StackPanel>
                     </Border>
 </UserControl>

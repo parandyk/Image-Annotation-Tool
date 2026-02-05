@@ -6,14 +6,13 @@
              xmlns:view="clr-namespace:ImageAnnotationTool.Views"
              x:Class="ImageAnnotationTool.Views.ImageSubView"
              x:DataType="vm:ImageManagerViewModel">
-        <Expander ExpandDirection="Down" Header="Images" 
-                  CornerRadius="5" HorizontalAlignment="Stretch" Margin="-5,0">
-                <StackPanel HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True">
+       
+                <DockPanel HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" LastChildFill="True">
                     <Grid RowDefinitions="Auto, *" HorizontalAlignment="Stretch" Margin="0,2.5,0,5">
                         <Grid Grid.Row="0" HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*" SharedSizeGroup="Text"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="FilterIcon"/>
                             </Grid.ColumnDefinitions>
                             <Grid HorizontalAlignment="Stretch" Margin="0,0,2.5,0">
@@ -78,7 +77,7 @@
                                 </Button.Flyout>
                             </Button>
                         </Grid>
-                        <ListBox Grid.Row="1" Margin="0,5,0,0" Height="100"
+                        <ListBox Grid.Row="1" Margin="0,5,0,0"
                                  HorizontalAlignment="Stretch"
                                  IsTextSearchEnabled="True"
                                  x:Name="ImageNamesList"
@@ -134,122 +133,5 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
-                </StackPanel>
-            <!-- </Border> -->
-            <!-- <Grid RowDefinitions="*, *"  -->
-            <!--       Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Expander}}" -->
-            <!--       Margin="{Binding Margin, RelativeSource={RelativeSource AncestorType=Expander}}"> -->
-            <!--     <Grid ColumnDefinitions="60, *, 36" Grid.Row="0" HorizontalAlignment="Stretch"> -->
-            <!--         <Grid ColumnDefinitions="30, 30" HorizontalAlignment="Stretch"> -->
-            <!--             <Button Grid.Column="0" Background="{DynamicResource SecondaryBackground}"  -->
-            <!--                     VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" Margin="0,0,2,0" -->
-            <!--                     x:Name="ImageBackwardButton" IsEnabled="{Binding CanMoveBackwardImage, Mode=OneWay}" -->
-            <!--                     Command="{Binding MoveImageBackwardCommand}"> -->
-            <!--                 <PathIcon Foreground="{DynamicResource PrimaryForeground}" Data="{StaticResource IconNextRegular}"> -->
-            <!--                     <PathIcon.RenderTransform> -->
-            <!--                         <ScaleTransform ScaleX="-1"/> -->
-            <!--                     </PathIcon.RenderTransform> -->
-            <!--                 </PathIcon> -->
-            <!--             </Button> -->
-            <!--             <Button Grid.Column="1"  -->
-            <!--                     Background="{DynamicResource SecondaryBackground}" -->
-            <!--                     VerticalAlignment="Center"  -->
-            <!--                     HorizontalAlignment="Center"  -->
-            <!--                     Height="32"  -->
-            <!--                     Margin="2,0,0,0" -->
-            <!--                     x:Name="ImageForwardButton" IsEnabled="{Binding CanMoveForwardImage, Mode=OneWay}" -->
-            <!--                     Command="{Binding MoveImageForwardCommand}"> -->
-            <!--                 <PathIcon Foreground="{DynamicResource PrimaryForeground}" Data="{StaticResource IconNextRegular}"/> -->
-            <!--             </Button> -->
-            <!--         </Grid> -->
-            <!--         <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"  -->
-            <!--                    Background="{DynamicResource SecondaryBackground}" Margin="5,0" Height="32"> -->
-            <!--             <ToolTip.Tip> -->
-            <!--                 <TextBlock TextWrapping="Wrap" -->
-            <!--                            Text="{Binding SelectedImageViewModel.ImageName}"/> -->
-            <!--             </ToolTip.Tip> -->
-            <!--             <TextBlock.Text> -->
-            <!--                 <MultiBinding Converter="{StaticResource TruncatedTextConverter}"> -->
-            <!--                     <Binding Path="SelectedImageViewModel.ImageName"/> -->
-            <!--                     <Binding Source="{x:Static enums:TruncationMode.Middle}"/> -->
-            <!--                     <Binding Source="6"/> -->
-            <!--                     <Binding Source="{x:True}"/> -->
-            <!--                 </MultiBinding> -->
-            <!--             </TextBlock.Text> -->
-            <!--         </TextBlock> -->
-            <!--         <Button Grid.Row="0" Grid.Column="2" Margin="8,0,0,0" -->
-            <!--                 HorizontalAlignment="Stretch" VerticalAlignment="Center"  -->
-            <!--                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  -->
-            <!--                 Background="{DynamicResource SecondaryBackground}" -->
-            <!--                 Foreground="Transparent" Width="30"> -->
-            <!--             <PathIcon Data="{StaticResource IconFilterItems}" Foreground="{DynamicResource PrimaryForeground}"/> -->
-            <!--             <Button.Flyout> -->
-            <!--                 <MenuFlyout> -->
-            <!--                     <StackPanel> -->
-            <!--                         <TextBlock>Filtering</TextBlock> -->
-            <!--                         <u:EnumSelector EnumType="enums:ImageFilterMode" Width="210" DisplayDescription="True" -->
-            <!--                                            Value="{Binding ImageFiltering, Mode=TwoWay}"> -->
-            <!--                         </u:EnumSelector> -->
-            <!--                         <TextBlock>Sorting</TextBlock> -->
-            <!--                         <u:EnumSelector EnumType="enums:ImageSortMode" Width="210" DisplayDescription="True" -->
-            <!--                                            Value="{Binding ImageSorting}"> -->
-            <!--                         </u:EnumSelector> -->
-            <!--                     </StackPanel> -->
-            <!--                 </MenuFlyout> -->
-            <!--             </Button.Flyout> -->
-            <!--         </Button> -->
-            <!--     </Grid> -->
-            <!--     ~1~ <Expander Grid.Row="1" ExpandDirection="Down" Header="Image list" @1@ -->
-            <!--     ~1~           CornerRadius="5" HorizontalAlignment="Stretch" Margin="-10,0"> @1@ -->
-            <!--     <ListBox Height="100" Grid.Row="1" -->
-            <!--              HorizontalAlignment="Stretch" -->
-            <!--              IsTextSearchEnabled="True" -->
-            <!--              x:Name="ImageNamesList" -->
-            <!--              ItemsSource="{Binding SortedFilteredImageViewModelList}" -->
-            <!--              SelectedValue="{Binding SelectedImageViewModel, Mode=TwoWay}"> -->
-            <!--         ~1~ <ListBox.SelectedValueBinding> @1@ -->
-            <!--         ~1~     <MultiBinding Converter="{StaticResource TruncatedTextConverter}"> @1@ -->
-            <!--         ~1~         <Binding Path="ImageName"/> @1@ -->
-            <!--         ~1~         <Binding Source="{x:Static enums:TruncationMode.Middle}"/> @1@ -->
-            <!--         ~1~         <Binding Source="10"/> @1@ -->
-            <!--         ~1~     </MultiBinding> @1@ -->
-            <!--         ~1~ </ListBox.SelectedValueBinding> @1@ -->
-            <!--         ~1~ <ListBox.DisplayMemberBinding> @1@ -->
-            <!--         ~1~     <MultiBinding Converter="{StaticResource TruncatedTextConverter}"> @1@ -->
-            <!--         ~1~         <Binding Path="ImageName"/> @1@ -->
-            <!--         ~1~         <Binding Source="{x:Static enums:TruncationMode.Middle}"/> @1@ -->
-            <!--         ~1~         <Binding Source="10"/> @1@ -->
-            <!--         ~1~     </MultiBinding> @1@ -->
-            <!--         ~1~ </ListBox.DisplayMemberBinding> @1@ -->
-            <!--         <ListBox.ItemTemplate> -->
-            <!--             <DataTemplate DataType="vm:ImageViewModel"> -->
-            <!--                 <Grid> -->
-            <!--                     <ToolTip.Tip> -->
-            <!--                         <TextBlock TextWrapping="Wrap" -->
-            <!--                                    Text="{Binding ImageName}"/> -->
-            <!--                     </ToolTip.Tip> -->
-            <!--                     <DockPanel LastChildFill="True"> -->
-            <!--                         <TextBlock VerticalAlignment="Center"> -->
-            <!--                             <TextBlock.Text> -->
-            <!--                                 <MultiBinding Converter="{StaticResource TruncatedTextConverter}"> -->
-            <!--                                     <Binding Path="ImageName"/> -->
-            <!--                                     <Binding Source="{x:Static enums:TruncationMode.Middle}"/> -->
-            <!--                                     <Binding Source="10"/> -->
-            <!--                                     <Binding Source="{x:True}"/> -->
-            <!--                                 </MultiBinding> -->
-            <!--                             </TextBlock.Text> -->
-            <!--                         </TextBlock> -->
-            <!--                         <Button Width="32" Height="32" Margin="5,0,0,0" DockPanel.Dock="Right" Background="Transparent" -->
-            <!--                                 VerticalAlignment="Center" CommandParameter="{Binding }" -->
-            <!--                                 Command="{Binding DeleteImageCommand}"> -->
-            <!--                             <PathIcon Data="{StaticResource IconDeleteItem}" Foreground="{DynamicResource PrimaryForeground}"/> -->
-            <!--                         </Button> -->
-            <!--                     </DockPanel> -->
-            <!--                 </Grid> -->
-            <!--             </DataTemplate> -->
-            <!--         </ListBox.ItemTemplate> -->
-            <!--     </ListBox> -->
-            <!--     ~1~ </Expander> @1@ -->
-            <!-- </Grid> -->
-        </Expander>
+                </DockPanel>
 </UserControl>

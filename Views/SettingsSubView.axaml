@@ -6,9 +6,8 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ImageAnnotationTool.Views.SettingsSubView"
              x:DataType="vm:SettingsManagerViewModel">
-                <Expander ExpandDirection="Down" Header="Settings"
-                      CornerRadius="5" HorizontalAlignment="Stretch" Margin="-5,0">
-                    <StackPanel>
+                <ScrollViewer HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
+                    <StackPanel HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True">
                         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4*"/>
@@ -120,5 +119,6 @@
                             </Style>
                         </StackPanel.Styles>
                     </StackPanel>
-                </Expander>
+                </ScrollViewer>
 </UserControl>
+

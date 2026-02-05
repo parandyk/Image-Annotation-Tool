@@ -10,11 +10,9 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ImageAnnotationTool.Views.ClassSubView"
              x:DataType="vm:ClassManagerViewModel">
-    <Expander ExpandDirection="Down" Header="Classes" 
-              CornerRadius="5" HorizontalAlignment="Stretch" Margin="-5,0, -5, 0">
-        <StackPanel HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True">
-                <Border Background="{DynamicResource PrimaryBackground}" HorizontalAlignment="Stretch">
-                    <Grid HorizontalAlignment="Stretch" ColumnDefinitions="3*, *" Margin="0,2.5,0,5"
+        <DockPanel HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" LastChildFill="True">
+                <Border Background="{DynamicResource PrimaryBackground}" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+                    <Grid HorizontalAlignment="Stretch" ColumnDefinitions="3*, *" Margin="0,5,0,5"
                           Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Border, AncestorLevel=2}}">
                         <TextBox Grid.Column="0" x:Name="NewClassNameTextBox" Watermark="Insert new class name"
                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left"
@@ -30,8 +28,8 @@
                     <Grid HorizontalAlignment="Stretch"
                           Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Border, AncestorLevel=2}}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40*"/>
-                            <ColumnDefinition Width="150*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="FilterIcon"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Stretch"  VerticalAlignment="Center"
@@ -98,7 +96,7 @@
                             </Button.Flyout>
                         </Button>
                     </Grid>
-                    <ListBox Grid.Row="1" Margin="0,5,0,0" Height="100"
+                    <ListBox Grid.Row="1" Margin="0,5,0,0"
                              HorizontalAlignment="Stretch"
                              IsTextSearchEnabled="True"
                              x:Name="ImageNamesList"
@@ -108,7 +106,7 @@
                             <Style Selector="ListBoxItem">
                                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                 <Setter Property="Padding" Value="0"/>
-                                    <Setter Property="ContextFlyout" x:DataType="entities:ClassData">
+                                <Setter Property="ContextFlyout" x:DataType="entities:ClassData">
                                         <MenuFlyout>
                                             <MenuItem Header="Delete" HotKey="Delete"
                                                       Command="{Binding $parent[view:ClassSubView].((vm:ClassManagerViewModel)DataContext).DeleteClassCommand}"
@@ -216,6 +214,5 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
-            </StackPanel>
-    </Expander>
+            </DockPanel>
 </UserControl>

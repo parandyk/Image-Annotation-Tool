@@ -5,11 +5,10 @@
              xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
              xmlns:views="clr-namespace:ImageAnnotationTool.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:DataType="vm:SettingsManagerViewModel"
-             x:Class="ImageAnnotationTool.Views.SettingsTab">
-                <Border CornerRadius="10" 
-                        Background="{DynamicResource PrimaryBackground}"
-                        Margin="15,0,15,15">
-                    <views:SettingsSubView DataContext="{Binding }"/>
-                </Border>
+             x:Class="ImageAnnotationTool.Views.AnnotationView"
+             x:DataType="vm:ImageViewModel">
+    <Expander ExpandDirection="Down" Header="Annotations" 
+              CornerRadius="5" HorizontalAlignment="Stretch" Margin="-5,0">
+        <views:AnnotationSubView DataContext="{Binding }" MaxHeight="160"/>
+    </Expander>
 </UserControl>

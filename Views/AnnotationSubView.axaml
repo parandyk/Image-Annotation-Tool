@@ -6,12 +6,10 @@
              xmlns:enums="clr-namespace:ImageAnnotationTool.Enums"
              xmlns:u="https://irihi.tech/ursa"
              xmlns:view="clr-namespace:ImageAnnotationTool.Views"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ImageAnnotationTool.Views.AnnotationSubView"
              x:DataType="vm:ImageViewModel">
-                <Expander ExpandDirection="Down" Header="Annotations" 
-                      CornerRadius="5" HorizontalAlignment="Stretch" Margin="-5,0">
-                    <StackPanel HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True">
+                
+                    <DockPanel HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" LastChildFill="True">
                         <Grid RowDefinitions="Auto, *" HorizontalAlignment="Stretch" Margin="0,2.5,0,5">
                             <Grid Grid.Row="0" HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
@@ -84,7 +82,7 @@
                                     </Button.Flyout>
                                 </Button>
                             </Grid>
-                            <ListBox Height="100" Grid.Row="1" Margin="0,5,0,0"
+                            <ListBox Grid.Row="1" Margin="0,5,0,0"
                                      x:Name="AnnotationNamesList"  
                                      HorizontalAlignment="Stretch"
                                      IsTextSearchEnabled="True"
@@ -170,6 +168,5 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </Grid>
-                    </StackPanel>
-                </Expander>
+                    </DockPanel>
 </UserControl>

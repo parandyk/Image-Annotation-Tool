@@ -11,7 +11,6 @@
                 <Panel VerticalAlignment="Stretch" 
                    Background="{DynamicResource PrimaryBackground}"
                    Focusable="True" HorizontalAlignment="Stretch">
-                    <!-- <ScrollViewer> -->
                         <TabControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
                             <TabItem Header="General" HorizontalAlignment="Stretch">
                                 <ScrollViewer>
@@ -20,14 +19,9 @@
                             </TabItem>
                             <TabItem Header="Images" HorizontalAlignment="Stretch">
                                 <view:ImageTab DataContext="{Binding ImageManagerVM}"/>
-                                <!-- <ScrollViewer> -->
-                                <!--     <view:ImageTab DataContext="{Binding ImageManagerVM}"/> -->
-                                <!-- </ScrollViewer> -->
                             </TabItem>
                             <TabItem Header="Classes" HorizontalAlignment="Stretch">
-                                <!-- <ScrollViewer> -->
                                     <view:ClassTab DataContext="{Binding ClassManagerVM}"/>
-                                <!-- </ScrollViewer> -->
                             </TabItem>
                             <TabItem Header="Settings" HorizontalAlignment="Stretch">
                                 <ScrollViewer>
