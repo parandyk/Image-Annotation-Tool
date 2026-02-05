@@ -2,13 +2,16 @@
 
 ## Table of contents
 
-### [Overview](#overview)
-### [Interface](#interface)
-### [Features](#features)
-### [Upcoming features](#upcoming-features)
-### [Disclaimer](#disclaimer)
-### [UI walkthrough](#ui-walkthrough)
-### [Technical details](#technical-details)
+<!-- TOC -->
+* [Overview](#overview)
+* [Interface](#interface)
+* [Features](#features)
+* [Upcoming features](#upcoming-features)
+* [Disclaimer](#disclaimer)
+* [UI walkthrough](#ui-walkthrough)
+* [Technical details](#technical-details)
+* [Showcase](#showcase)
+<!-- TOC -->
 
 ## Overview
 A simple desktop image annotation tool for rapid bounding box-based 
@@ -17,7 +20,7 @@ object detection dataset building.
 The tool aims to provide a simple and straightforward approach to 
 creation and manipulation of annotations in the form of bounding boxes.
 
-Getting started 
+#### [Jump to introduction](#ui-walkthrough) 
 
 ## Interface
 
@@ -73,14 +76,43 @@ and annotation saving.
 
 ## UI walkthrough
 
-The UI consists of the topbar, sidebar and workspace.
+The UI consists of three major, distinct parts: topbar, sidebar and workspace.
 
 ### Topbar
 Contains IO management buttons (_Open_, _Save_, _Load_), 
 settings and some editing options, much akin to what any desktop application has.
+The rightmost part of the topbar, directly above the sidebar, is used to display
+feedback about user operations.
+
+<img src="Assets/Images/UI-topbar.png" alt="topbar"/>
 
 ### Sidebar
-Contains four tabs: _General_, _Images_, 
+Contains four tabs: _General_, _Images_, _Classes_ and _Settings_.
+
+<img src="Assets/Images/UI-sidebar.png" alt="sidebar" height="400"/>
+
+### General tab
+Consists of five sections: one for each of the remaining tabs, 
+one contained within _Images_ tab (_Annotations_), and one for last
+drawn/selected annotation's coordinates.
+
+<img src="Assets/Images/UI-general-images.png" alt="general1"/>
+
+### Images tab
+Contains a list of open images, as well as a list of annotations 
+associated with the currently selected image.
+
+### Classes tab
+Contains a list of classes, as well as means of manually adding new ones.
+
+### Settings tab
+Comprises mode switching (adding/editing) together with 
+convenience tool settings, mainly regarding rendering of annotations and classes.
+
+## Showcase
+
+### [Screenshots](#screenshots)
+### [GIFs](#gifs)
 
 ## Technical details
 
@@ -126,3 +158,26 @@ Presently, the tool makes extensive use of the following packages:
 
 - FluentAvalonia by amwx
   - https://github.com/amwx/FluentAvalonia
+
+
+## Screenshots
+
+<img src="Assets/Images/UI-general-example.png" alt="general2"/>
+
+<img src="Assets/Images/UI-general-example-2.png" alt="general3"/>
+
+<img src="Assets/Images/UI-general-example-3-anchoring.png" alt="general4"/>
+
+## GIFs
+
+<img src="Assets/GIFs/gif-adding-example.gif" alt="adding-gif"/>
+
+<img src="Assets/GIFs/gif-deleting-example.gif" alt="deleting-gif"/>
+
+<img src="Assets/GIFs/gif-swapping-example.gif" alt="swapping-gif"/>
+
+<img src="Assets/GIFs/gif-visibility-example.gif" alt="visibility-gif"/>
+
+<img src="Assets/GIFs/gif-resizing-moving-example.gif" alt="resizing-moving-gif"/>
+
+<img src="Assets/GIFs/gif-settings.gif" alt="settings-gif"/>
