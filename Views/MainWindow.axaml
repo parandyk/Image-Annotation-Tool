@@ -15,64 +15,70 @@
         <Design.DataContext><vm:MainViewModel></vm:MainViewModel></Design.DataContext>
         <Window.KeyBindings>
             <KeyBinding Gesture="{OnPlatform Default='Ctrl+Z', macOS='Cmd+Z'}"
-                        Command="{Binding UndoOperationCommand}"/>
+                        Command="{Binding WorkspaceManagerVM.UndoOperationCommand}"/>
             <KeyBinding Gesture="{OnPlatform Default='Ctrl+Y', macOS='Cmd+Shift+Z'}"
-                        Command="{Binding RedoOperationCommand}"/>
+                        Command="{Binding WorkspaceManagerVM.RedoOperationCommand}"/>
             <KeyBinding Gesture="Escape"
-                        Command="{Binding AbortOperationCommand}" />
+                        Command="{Binding WorkspaceManagerVM.AbortOperationCommand}" />
         </Window.KeyBindings>
-        <Interaction.Behaviors>
-        </Interaction.Behaviors>
         <dialogHost:DialogHost CloseOnClickAway="True">
             <NativeMenu.Menu>
                     <NativeMenu>
                             <NativeMenuItem Header="Open">
                                     <NativeMenu>
                                             <NativeMenuItem Header="Image..." 
-                                                            Command="{Binding OpenImageFileCommand}"/>
+                                                            Command="{Binding WorkspaceManagerVM.OpenImageFileCommand}"/>
                                             <NativeMenuItem Header="Source folder..." 
-                                                            Command="{Binding OpenFolderCommand}"/>
+                                                            Command="{Binding WorkspaceManagerVM.OpenFolderCommand}"/>
                                     </NativeMenu>
                             </NativeMenuItem>
                             <NativeMenuItem Header="_Load">
                                     <NativeMenu>
                                             <NativeMenuItem Header="_Classes..." 
-                                                            Command="{Binding OpenClassFileCommand}"/>
-                                            <NativeMenuItem Header="_Annotations..." IsEnabled="{Binding ImageOpen}" 
-                                                            Command="{Binding OpenAnnotationFileCommand}"/>
+                                                            Command="{Binding WorkspaceManagerVM.OpenClassFileCommand}"/>
+                                            <NativeMenuItem Header="_Annotations..." IsEnabled="{Binding WorkspaceManagerVM.ImageOpen}" 
+                                                            Command="{Binding WorkspaceManagerVM.OpenAnnotationFileCommand}"/>
                                     </NativeMenu>
                             </NativeMenuItem>
                             <NativeMenuItem Header="_Save">
                                     <NativeMenu>
                                             <NativeMenuItem Header="_Classes..."
-                                                            IsEnabled="{Binding ClassesPresent}"
-                                                            Command="{Binding SaveClassesToFileCommand}"/>
+                                                            IsEnabled="{Binding WorkspaceManagerVM.ClassesPresent}"
+                                                            Command="{Binding WorkspaceManagerVM.SaveClassesToFileCommand}"/>
                                             <NativeMenuItem Header="_This image's annotations..." 
-                                                            IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal}" 
-                                                            Command="{Binding SaveAnnotationsToFileCommand}"/>
+                                                            IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal,
+                                                            FallbackValue=False}" 
+                                                            Command="{Binding WorkspaceManagerVM.SaveAnnotationsToFileCommand}"/>
                                             <NativeMenuItem Header="_All images' annotations..." 
-                                                            IsEnabled="{Binding ImageManagerVM.BBoxesPresentGlobal}" 
-                                                            Command="{Binding SaveAnnotationsToFileCommand}"/>
+                                                            IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.BBoxesPresentGlobal, 
+                                                            FallbackValue=False}" 
+                                                            Command="{Binding WorkspaceManagerVM.SaveAnnotationsToFileCommand}"/>
                                     </NativeMenu>
                             </NativeMenuItem>
                             <NativeMenuItem Header="Edit">
                                 <NativeMenu>
                                     <NativeMenuItem Header="Undo" 
-                                                    IsEnabled="{Binding UndoStackNotEmpty}" 
-                                                    Command="{Binding UndoOperationCommand}"/>
+                                                    IsEnabled="{Binding WorkspaceManagerVM.UndoStackNotEmpty}" 
+                                                    Command="{Binding WorkspaceManagerVM.UndoOperationCommand}"/>
                                     <NativeMenuItem Header="Redo" 
-                                                    IsEnabled="{Binding RedoStackNotEmpty}" 
-                                                    Command="{Binding RedoOperationCommand}"/>
+                                                    IsEnabled="{Binding WorkspaceManagerVM.RedoStackNotEmpty}" 
+                                                    Command="{Binding WorkspaceManagerVM.RedoOperationCommand}"/>
                                     <NativeMenuItemSeparator />
                                     <NativeMenuItem Header="Abort drawing" 
-                                                    IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.AnnotatingOn}" 
-                                                    Command="{Binding ImageManagerVM.SelectedImageViewModel.AbortDrawingCommand}"/>
+                                                    IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.AnnotatingOn, 
+                                                            FallbackValue=False}"
+                                                    Command="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.AbortDrawingCommand, 
+                                                            FallbackValue=False}"/>
                                     <NativeMenuItem Header="Delete last annotation in this image" 
-                                                    IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal}" 
-                                                    Command="{Binding ImageManagerVM.SelectedImageViewModel.RemoveAllBBoxesCommand}"/>
+                                                    IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal, 
+                                                            FallbackValue=False}" 
+                                                    Command="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.RemoveAllBBoxesCommand, 
+                                                            FallbackValue=False}"/>
                                     <NativeMenuItem Header="Delete all annotations in this image" 
-                                                    IsEnabled="{Binding ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal}" 
-                                                    Command="{Binding ImageManagerVM.SelectedImageViewModel.RemoveLastBBoxCommand}"/>
+                                                    IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal, 
+                                                            FallbackValue=False}" 
+                                                    Command="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.RemoveLastBBoxCommand, 
+                                                            FallbackValue=False}"/>
                                 </NativeMenu>
                             </NativeMenuItem>
                             <NativeMenuItem Header="Settings"

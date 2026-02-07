@@ -90,6 +90,7 @@ public class App : Application
             servicesCollection.AddSingleton<IAppMessenger, AppMessengerService>();
             servicesCollection.AddSingleton<SettingsDialogViewModel>(sp => sp.GetRequiredService<SettingsDialogViewModel>());
             servicesCollection.AddSingleton<ISettingsManagerViewModelFactory, SettingsManagerViewModelFactory>();
+            servicesCollection.AddSingleton<IWorkspaceManagerViewModelFactory, WorkspaceManagerViewModelFactory>();
             servicesCollection.AddSingleton<IClassManagerViewModelFactory, ClassManagerViewModelFactory>();
             servicesCollection.AddSingleton<IAnnotationViewModelFactory, AnnotationViewModelFactory>();
             servicesCollection.AddSingleton<IImageManagerViewModelFactory, ImageManagerViewModelFactory>();

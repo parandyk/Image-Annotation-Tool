@@ -12,10 +12,10 @@
                             Background="{DynamicResource PrimaryBackground}"
                             Margin="15,0,15,15">
                                     <StackPanel HorizontalAlignment="Stretch">
-                                            <view:ImageView DataContext="{Binding ImageManagerVM}"/>
-                                            <view:AnnotationView DataContext="{Binding ImageManagerVM.SelectedImageViewModel}"/>
-                                            <view:CoordinateSubView DataContext="{Binding ImageManagerVM}"/>
-                                            <view:ClassView DataContext="{Binding ClassManagerVM}"/>
+                                            <view:ImageView DataContext="{Binding WorkspaceManagerVM.ImageManagerVM}"/>
+                                            <view:AnnotationView DataContext="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel}"/>
+                                            <view:CoordinateSubView DataContext="{Binding WorkspaceManagerVM.ImageManagerVM}"/>
+                                            <view:ClassView DataContext="{Binding WorkspaceManagerVM.ClassManagerVM}"/>
                                             <view:SettingsView DataContext="{Binding SettingsManagerVM}"/>
                                     </StackPanel>
                     </Border>

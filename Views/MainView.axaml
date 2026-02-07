@@ -43,7 +43,7 @@
                             <Binding Source="{x:Static core:RenderingConstants.ZoomBorderMargin}" 
                                      Converter="{StaticResource ThicknessConverter}"/>
                         </ZoomBorder.Margin>
-                        <ContentControl Content="{Binding ImageManagerVM.SelectedImageViewModel}"
+                        <ContentControl Content="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel}"
                                         x:Name="ImageContentControl" >
                             <ContentControl.ContentTemplate>
                                 <DataTemplate>

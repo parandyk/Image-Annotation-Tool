@@ -18,10 +18,10 @@
                                 </ScrollViewer>
                             </TabItem>
                             <TabItem Header="Images" HorizontalAlignment="Stretch">
-                                <view:ImageTab DataContext="{Binding ImageManagerVM}"/>
+                                <view:ImageTab DataContext="{Binding WorkspaceManagerVM.ImageManagerVM}"/>
                             </TabItem>
                             <TabItem Header="Classes" HorizontalAlignment="Stretch">
-                                    <view:ClassTab DataContext="{Binding ClassManagerVM}"/>
+                                    <view:ClassTab DataContext="{Binding WorkspaceManagerVM.ClassManagerVM}"/>
                             </TabItem>
                             <TabItem Header="Settings" HorizontalAlignment="Stretch">
                                 <ScrollViewer>

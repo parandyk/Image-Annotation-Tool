@@ -119,16 +119,16 @@
                                                 </MenuItem.IsEnabled>
                                             </MenuItem>
                                             <MenuItem Header="Remove all instances in this image" 
-                                                      Command="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).ImageManagerVM.SelectedImageViewModel.RemoveClassInstancesCommand}"
+                                                      Command="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.RemoveClassInstancesCommand}"
                                                       CommandParameter="{Binding Id}"/>
                                             <MenuItem Header="Remove all instances" 
-                                                      Command="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).ImageManagerVM.RemoveClassInstancesCommand}"
+                                                      Command="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).WorkspaceManagerVM.ImageManagerVM.RemoveClassInstancesCommand}"
                                                       CommandParameter="{Binding Id}"/>
                                             <MenuItem Header="Swap all instances in this image" 
-                                                      Command="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).ImageManagerVM.SelectedImageViewModel.SwapClassInstancesCommand}"
+                                                      Command="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.SwapClassInstancesCommand}"
                                                       CommandParameter="{Binding Id}"/>
                                             <MenuItem Header="Swap all instances" 
-                                                      Command="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).ImageManagerVM.SwapClassInstancesCommand}"
+                                                      Command="{Binding $parent[view:MainView].((vm:MainViewModel)DataContext).WorkspaceManagerVM.ImageManagerVM.SwapClassInstancesCommand}"
                                                       CommandParameter="{Binding Id}"/>
                                             <MenuItem Header="Change visibility" 
                                                       Command="{Binding $parent[view:ClassSubView].((vm:ClassManagerViewModel)DataContext).ChangeClassVisibilityCommand}"
