@@ -165,6 +165,7 @@ Presently, the tool makes extensive use of the following packages:
 
 ## Screenshots
 
+### General functionality showcase
 <img src="Assets/Images/UI-general-example.png" alt="general2"/>
 
 <img src="Assets/Images/UI-general-example-2.png" alt="general3"/>
@@ -173,14 +174,20 @@ Presently, the tool makes extensive use of the following packages:
 
 ## GIFs
 
+### Adding annotations
 <img src="Assets/GIFs/gif-adding-example.gif" alt="adding-gif"/>
 
+### Deleting annotations and images from GUI
 <img src="Assets/GIFs/gif-deleting-example.gif" alt="deleting-gif"/>
 
+### Swapping and removing specific class instances
 <img src="Assets/GIFs/gif-swapping-example.gif" alt="swapping-gif"/>
 
-<img src="Assets/GIFs/gif-visibility-example.gif" alt="visibility-gif"/>
+### Changing visibility settings of classes and annotations
+<img src="Assets/GIFs/gif-visibility-example-2.gif" alt="visibility-gif"/>
 
+### Zooming in, resizing and moving existing annotations
 <img src="Assets/GIFs/gif-resizing-moving-example.gif" alt="resizing-moving-gif"/>
 
+### Settings showcase
 <img src="Assets/GIFs/gif-settings.gif" alt="settings-gif"/>
