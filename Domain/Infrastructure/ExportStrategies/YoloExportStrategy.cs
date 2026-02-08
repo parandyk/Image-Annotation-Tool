@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,7 +47,12 @@ public class YoloExportStrategy : IAnnotationExportStrategy
 
                 var (cx, cy, w, h) = annotation.GetYoloCoordinates();
                 
-                lines.Add($"{classId} {cx:F6} {cy:F6} {w:F6} {h:F6}");
+                lines.Add(string.Format(CultureInfo.InvariantCulture, 
+                    "{0} {1:F6} {2:F6} {3:F6} {4:F6}",
+                    classId, cx, cy, w, h));
+                
+                // lines.Add(string.Format(
+                //     $"{classId} {cx:F6} {cy:F6} {w:F6} {h:F6}"));
             }
             
             var labelFilename = Path.ChangeExtension(image.Filename, ".txt");
