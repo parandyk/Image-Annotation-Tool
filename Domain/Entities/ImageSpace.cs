@@ -5,6 +5,8 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using ImageAnnotationTool.Domain.DataTransferObjects;
+using ImageAnnotationTool.Domain.DomainCommands;
 using ImageAnnotationTool.Domain.Infrastructure;
 using ImageAnnotationTool.Domain.ValueObjects;
 
@@ -12,15 +14,18 @@ namespace ImageAnnotationTool.Domain.Entities;
 
 public sealed class ImageSpace : ObservableObject, IImageDomainInterface
 {
-    public ImageSpace(ImageSource imageSource, ImageMetadata imageMetadata)
+    public ImageSpace(ImageSource imageSource, ImageMetadata imageMetadata, int exportId)
     {
         Source = imageSource;
         Metadata = imageMetadata;
+        ExportId = exportId;
     }
     
     public event Action? AnnotationChanged;
     
     public Guid Id { get; } = Guid.NewGuid();
+    
+    public int ExportId { get; }
 
     public int AnnotationRunningCount { get; private set; } = 0;
 
@@ -32,7 +37,6 @@ public sealed class ImageSpace : ObservableObject, IImageDomainInterface
     
     public ImageMetadata Metadata { get; }
     
-
     internal void IncrementAnnotationRunningCount()
     {
         AnnotationRunningCount++;

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using ImageAnnotationTool.Domain.DataTransferObjects;
 using ImageAnnotationTool.Domain.Infrastructure;
 
 namespace ImageAnnotationTool.Domain.Entities;
@@ -38,10 +39,47 @@ public sealed class AnnotationWorkspace : ObservableObject, IWorkspaceDomainInte
                 img.Annotations).ToList()));
     
     public int ClassRunningCount { get; private set; } = 0;
+    
+    public int ImageRunningCount { get; private set; } = 0;
 
+    public ImageSnapshot ImageToSnapshot(ImageSpace image)
+    {
+        var annotations = image.Annotations
+            .Select(a => AnnotationToSnapshot(a)).ToList();
+
+        return new ImageSnapshot(
+            image.ExportId,
+            image.Source.ImageName,
+            image.Source.ImagePath,
+            image.Metadata.ImagePixelWidth,
+            image.Metadata.ImagePixelHeight,
+            annotations);
+    }
+    
+    public ClassSnapshot ClassToSnapshot(ClassData classData)
+    {
+        return new ClassSnapshot(classData.Name);
+    }
+    
+    public AnnotationSnapshot AnnotationToSnapshot(Annotation annotation)
+    {
+        var bounds = annotation.Bounds;
+        return new AnnotationSnapshot(
+            annotation.ClassInfo.Name,
+            bounds.X1,
+            bounds.Y1,
+            bounds.Width,
+            bounds.Height);
+    }
+    
     internal void IncrementClassRunningCount()
     {
         ClassRunningCount++;
+    }
+    
+    internal void IncrementImageRunningCount()
+    {
+        ImageRunningCount++;
     }
     
     internal ClassData GetClass(string className)

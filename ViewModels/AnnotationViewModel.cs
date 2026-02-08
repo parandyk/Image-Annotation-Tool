@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using ImageAnnotationTool.Core;
 using ImageAnnotationTool.Domain.Entities;
 using ImageAnnotationTool.Domain.Infrastructure;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
 using ImageAnnotationTool.Domain.ValueObjects;
 using ImageAnnotationTool.Interfaces;
 using ImageAnnotationTool.Models;

@@ -15,6 +15,7 @@ public interface IFileAccessProvider
     public Task<List<string>?> OpenClassFileAsync();
     public Task<List<Annotation>?> OpenAnnotationFileAsync();
     public Task<IStorageFile?> SaveAnnotationFileAsync();
-    public Task<IStorageFolder?> OpenFolderAsync();
+    public Task<string?> OpenOutputFolderAsync();
+    public Task<List<string>?> OpenDataFolderAsync();
     public Task<IStorageFile?> SaveClassesFileAsync();
 }

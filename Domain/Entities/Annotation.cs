@@ -1,5 +1,6 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
+using ImageAnnotationTool.Domain.DataTransferObjects;
 using ImageAnnotationTool.Domain.ValueObjects;
 
 namespace ImageAnnotationTool.Domain.Entities;
@@ -26,7 +27,7 @@ public sealed class Annotation : ObservableObject
     public bool IsVisible { get; private set; } = true;
     
     public bool IsAnchored { get; private set; } = false;
-
+    
     internal void Move(double newX1, double newY1)
     {
         var xDelta = Bounds.X1 - newX1;

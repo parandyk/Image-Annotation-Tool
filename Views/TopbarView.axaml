@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ImageAnnotationTool.Views.TopbarView"
+             xmlns:enums="clr-namespace:ImageAnnotationTool.Enums"
              xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
              x:DataType="vm:MainViewModel"
              x:Name="TopbarControl">
-            <Grid ColumnDefinitions="*, *" Background="{StaticResource PrimaryBackground}">
+            <Grid ColumnDefinitions="2*, *" Background="{StaticResource PrimaryBackground}">
                 <Menu Background="{StaticResource PrimaryBackground}">
                     <MenuItem Classes="menu-button" Header="_Open">
                         <MenuItem Header="_Image..." Command="{Binding WorkspaceManagerVM.OpenImageFileCommand}"/>
@@ -19,18 +20,88 @@
                         <MenuItem Header="_Annotations..."  IsEnabled="{Binding WorkspaceManagerVM.ImageOpen}" 
                                   Command="{Binding WorkspaceManagerVM.OpenAnnotationFileCommand}"/>
                     </MenuItem>
-                    <MenuItem Classes="menu-button" Header="_Save">
-                        <MenuItem Header="_Classes..." IsEnabled="{Binding WorkspaceManagerVM.ClassesPresent}"
-                                  Command="{Binding WorkspaceManagerVM.SaveClassesToFileCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="_This image's annotations..." 
+                    <!-- <MenuItem Classes="menu-button" Header="_Save"> -->
+                    <!--     <MenuItem Header="_Classes..." IsEnabled="{Binding WorkspaceManagerVM.ClassesPresent}" -->
+                    <!--               Command="{Binding WorkspaceManagerVM.SaveClassesToFileCommand}"/> -->
+                    <!--     <Separator/> -->
+                        <!-- <MenuItem Header="_This image's annotations..."  -->
+                        <!--           IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal,  -->
+                        <!--           FallbackValue=False}"  -->
+                        <!--           Command="{Binding WorkspaceManagerVM.SaveAnnotationsCommand}" -->
+                        <!--           CommandParameter="{x:False}"/> -->
+                        <!-- <MenuItem Header="_All images' annotations..."  -->
+                        <!--           IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.BBoxesPresentGlobal,  -->
+                        <!--           FallbackValue=False}" -->
+                        <!--           Command="{Binding WorkspaceManagerVM.SaveAnnotationsCommand}" -->
+                        <!--           CommandParameter="{x:True}"/> -->
+                    <!-- </MenuItem> -->
+                    <MenuItem Classes="menu-button" Header="_Export classes" IsEnabled="{Binding WorkspaceManagerVM.ClassesPresent}">
+                        <MenuItem Command="{Binding WorkspaceManagerVM.SaveClassesToFileCommand}"
+                                  CommandParameter="{x:Static enums:ClassFormat.Txt}">
+                            <MenuItem.Header>
+                                <Binding Source="{x:Static enums:ClassFormat.Txt}"
+                                         Converter="{StaticResource EnumDisplayNameConverter}"/>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Command="{Binding WorkspaceManagerVM.SaveClassesToFileCommand}"
+                                  CommandParameter="{x:Static enums:ClassFormat.Yaml}">
+                            <MenuItem.Header>
+                                <Binding Source="{x:Static enums:ClassFormat.Yaml}"
+                                         Converter="{StaticResource EnumDisplayNameConverter}"/>
+                            </MenuItem.Header>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Classes="menu-button" Header="_Export annotations">
+                        <MenuItem Header="_From this image..." 
                                   IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal, 
-                                  FallbackValue=False}" 
-                                  Command="{Binding WorkspaceManagerVM.SaveAnnotationsToFileCommand}"/>
-                        <MenuItem Header="_All images' annotations..." 
+                                  FallbackValue=False}">
+                            <MenuItem Command="{Binding WorkspaceManagerVM.SaveLocalAnnotationsCommand}"
+                                      CommandParameter="{x:Static enums:AnnotationFormat.Yolo}">
+                                <MenuItem.Header>
+                                    <Binding Source="{x:Static enums:AnnotationFormat.Yolo}"
+                                             Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem Command="{Binding WorkspaceManagerVM.SaveLocalAnnotationsCommand}"
+                                      CommandParameter="{x:Static enums:AnnotationFormat.Coco}">
+                                <MenuItem.Header>
+                                    <Binding Source="{x:Static enums:AnnotationFormat.Coco}"
+                                             Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem Command="{Binding WorkspaceManagerVM.SaveLocalAnnotationsCommand}"
+                                      CommandParameter="{x:Static enums:AnnotationFormat.Voc}">
+                                <MenuItem.Header>
+                                    <Binding Source="{x:Static enums:AnnotationFormat.Voc}"
+                                             Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="_From all images..." 
                                   IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.BBoxesPresentGlobal, 
-                                  FallbackValue=False}"
-                                  Command="{Binding WorkspaceManagerVM.SaveAnnotationsToFileCommand}"/>
+                                  FallbackValue=False}">
+                                <MenuItem Command="{Binding WorkspaceManagerVM.SaveGlobalAnnotationsCommand}"
+                                          CommandParameter="{x:Static enums:AnnotationFormat.Yolo}">
+                                    <MenuItem.Header>
+                                        <Binding Source="{x:Static enums:AnnotationFormat.Yolo}"
+                                                 Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem Command="{Binding WorkspaceManagerVM.SaveGlobalAnnotationsCommand}"
+                                          CommandParameter="{x:Static enums:AnnotationFormat.Coco}">
+                                    <MenuItem.Header>
+                                        <Binding Source="{x:Static enums:AnnotationFormat.Coco}"
+                                                 Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem Command="{Binding WorkspaceManagerVM.SaveGlobalAnnotationsCommand}"
+                                          CommandParameter="{x:Static enums:AnnotationFormat.Voc}">
+                                    <MenuItem.Header>
+                                        <Binding Source="{x:Static enums:AnnotationFormat.Voc}"
+                                                 Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                    </MenuItem.Header>
+                                </MenuItem>
+                        </MenuItem>
                     </MenuItem>
                     <MenuItem Classes="menu-button" Header="_Edit">
                         <MenuItem Header="Undo" 

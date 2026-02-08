@@ -11,11 +11,13 @@ using CommunityToolkit.Mvvm.Input;
 using DynamicData.Kernel;
 using ImageAnnotationTool.Domain.Entities;
 using ImageAnnotationTool.Domain.Infrastructure;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
 using ImageAnnotationTool.Domain.ValueObjects;
 using ImageAnnotationTool.Enums;
+using ImageAnnotationTool.Factories;
 using ImageAnnotationTool.Interfaces;
 using IClassListProvider = ImageAnnotationTool.Domain.Infrastructure.IClassListProvider;
-using IImageViewModelFactory = ImageAnnotationTool.Domain.Infrastructure.IImageViewModelFactory;
+using IImageViewModelFactory = ImageAnnotationTool.Factories.IImageViewModelFactory;
 
 namespace ImageAnnotationTool.ViewModels;
 

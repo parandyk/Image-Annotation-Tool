@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ImageAnnotationTool.Interfaces;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
@@ -61,6 +62,8 @@ public sealed class FileAccessService : IFileAccessProvider
 
         return annotationList;
     }
+    
+    
 
     private async Task<List<ValueTuple<ImageSource, ImageMetadata>>?> GetImagesAsync(IReadOnlyList<IStorageFile> files)
     {
@@ -109,15 +112,54 @@ public sealed class FileAccessService : IFileAccessProvider
         
         return annotationList;
     }
-    
-    public async Task<IStorageFolder?> OpenFolderAsync()
+
+    private List<string>? GetFolderPaths(IReadOnlyList<IStorageFolder> folders) //TODO: ASYNC?
     {
-        throw new NotImplementedException();
+        var pathList = new List<string>();
+
+        foreach (var folder in folders)
+        {
+            var path = _fileParsingService.ParseFolderPath(folder);
+            pathList.Add(path);
+        }
+
+        return pathList;
     }
 
     public async Task<IStorageFile?> SaveAnnotationFileAsync()
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<string?> OpenOutputFolderAsync()
+    {
+        var folders = await _storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions()
+        {
+            Title = "Pick output folder",
+            AllowMultiple = false
+        });
+
+        var folder = folders.FirstOrDefault();
+        
+        if (folder is null) 
+            return null;
+        
+        var path = _fileParsingService.ParseFolderPath(folder);
+        
+        return path;
+    }
+
+    public async Task<List<string>?> OpenDataFolderAsync()
+    {
+        var folders = await _storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions()
+        {
+            Title = "Pick output folder",
+            AllowMultiple = false
+        });
+        
+        var paths = GetFolderPaths(folders);
+        
+        return paths;
     }
 
     public async Task<IStorageFile?> SaveClassesFileAsync()

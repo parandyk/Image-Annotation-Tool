@@ -15,12 +15,14 @@ using ImageAnnotationTool.Domain.DomainCommands.Undoable.Images;
 using ImageAnnotationTool.Domain.DomainCommands.Undoable.Images.Batch;
 using ImageAnnotationTool.Domain.Entities;
 using ImageAnnotationTool.Domain.Infrastructure;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
 using ImageAnnotationTool.Domain.ValueObjects;
 using ImageAnnotationTool.Enums;
+using ImageAnnotationTool.Factories;
 using ImageAnnotationTool.Interfaces;
 using ImageAnnotationTool.Messages;
 using ImageAnnotationTool.Models;
-using IAnnotationViewModelFactory = ImageAnnotationTool.Domain.Infrastructure.IAnnotationViewModelFactory;
+using IAnnotationViewModelFactory = ImageAnnotationTool.Factories.IAnnotationViewModelFactory;
 using IClassListProvider = ImageAnnotationTool.Domain.Infrastructure.IClassListProvider;
 
 

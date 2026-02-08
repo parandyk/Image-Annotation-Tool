@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace ImageAnnotationTool;
+namespace ImageAnnotationTool.Views;
 
 public partial class MainWindow : Window
 {

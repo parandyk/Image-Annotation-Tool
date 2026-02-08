@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using ImageAnnotationTool.Domain.DataTransferObjects;
 using ImageAnnotationTool.Domain.Entities;
 
 namespace ImageAnnotationTool.Domain.Infrastructure;
@@ -13,6 +14,8 @@ public interface IWorkspaceDomainClassInterface : INotifyPropertyChanged
     ReadOnlyObservableCollection<ClassData> Classes { get; }
 
     int ClassRunningCount { get; }
+
+    ClassSnapshot ClassToSnapshot(ClassData classData);
     
     bool ClassExists(Guid classId);
     bool ClassExists(string className);

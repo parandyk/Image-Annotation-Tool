@@ -11,7 +11,9 @@ using CommunityToolkit.Mvvm.Input;
 using DynamicData.Kernel;
 using ImageAnnotationTool.Domain.Entities;
 using ImageAnnotationTool.Domain.Infrastructure;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
 using ImageAnnotationTool.Enums;
+using ImageAnnotationTool.Factories;
 using ImageAnnotationTool.Interfaces;
 
 namespace ImageAnnotationTool.ViewModels;

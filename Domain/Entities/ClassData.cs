@@ -1,5 +1,6 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
+using ImageAnnotationTool.Domain.DataTransferObjects;
 
 namespace ImageAnnotationTool.Domain.Entities;
 
@@ -20,7 +21,7 @@ public sealed class ClassData : ObservableObject
     public string HexColor { get; private set; }
     
     public bool IsVisible { get; private set; } = true;
-
+    
     internal void Rename(string newName)
     {
         Name = newName;

@@ -1,8 +1,9 @@
 using HanumanInstitute.MvvmDialogs;
 using ImageAnnotationTool.Domain.Infrastructure;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
 using ImageAnnotationTool.Interfaces;
 using IClassListProvider = ImageAnnotationTool.Domain.Infrastructure.IClassListProvider;
-using IImageViewModelFactory = ImageAnnotationTool.Domain.Infrastructure.IImageViewModelFactory;
+using IImageViewModelFactory = ImageAnnotationTool.Factories.IImageViewModelFactory;
 using ImageManagerViewModel = ImageAnnotationTool.ViewModels.ImageManagerViewModel;
 
 namespace ImageAnnotationTool.Factories;

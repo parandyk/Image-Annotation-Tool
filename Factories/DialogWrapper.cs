@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel.__Internals;
 using HanumanInstitute.MvvmDialogs;
 using ImageAnnotationTool.Domain.Entities;
 using ImageAnnotationTool.Domain.Infrastructure;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
 using ImageAnnotationTool.ViewModels;
 
 namespace ImageAnnotationTool.Factories;

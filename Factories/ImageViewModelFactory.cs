@@ -1,11 +1,12 @@
 using HanumanInstitute.MvvmDialogs;
 using ImageAnnotationTool.Domain.Entities;
 using ImageAnnotationTool.Domain.Infrastructure;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
 using ImageAnnotationTool.Domain.ValueObjects;
 using ImageAnnotationTool.Interfaces;
-using IAnnotationViewModelFactory = ImageAnnotationTool.Domain.Infrastructure.IAnnotationViewModelFactory;
+using IAnnotationViewModelFactory = ImageAnnotationTool.Factories.IAnnotationViewModelFactory;
 using IClassListProvider = ImageAnnotationTool.Domain.Infrastructure.IClassListProvider;
-using IImageViewModelFactory = ImageAnnotationTool.Domain.Infrastructure.IImageViewModelFactory;
+using IImageViewModelFactory = ImageAnnotationTool.Factories.IImageViewModelFactory;
 using ImageViewModel = ImageAnnotationTool.ViewModels.ImageViewModel;
 
 namespace ImageAnnotationTool.Factories;

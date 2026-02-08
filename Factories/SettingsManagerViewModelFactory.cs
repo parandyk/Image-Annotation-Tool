@@ -1,5 +1,6 @@
 using HanumanInstitute.MvvmDialogs;
 using ImageAnnotationTool.Domain.Infrastructure;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
 using ImageAnnotationTool.Interfaces;
 using ImageAnnotationTool.ViewModels;
 

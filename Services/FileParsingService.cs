@@ -15,16 +15,26 @@ namespace ImageAnnotationTool.Services;
 public sealed class FileParsingService : IFileParsingProvider
 {
     private readonly IImageParser _imageParsingService;
+    private readonly IFolderParser _folderParsingService;
     private readonly IClassParser _classParsingService;
     private readonly IAnnotationParser _annotationParsingService;
 
-    public FileParsingService(IImageParser imageParsingService,  IClassParser classParsingService, IAnnotationParser annotationParsingService)
+    public FileParsingService(IFolderParser folderParsingService,
+        IImageParser imageParsingService,  
+        IClassParser classParsingService, 
+        IAnnotationParser annotationParsingService)
     {
+        _folderParsingService = folderParsingService;
         _imageParsingService = imageParsingService;
         _classParsingService = classParsingService;
         _annotationParsingService = annotationParsingService;
     }
-    
+
+    public string ParseFolderPath(IStorageFolder folder)
+    {
+        return _folderParsingService.ParseFolderPath(folder);
+    }
+
     public async Task<List<string>?> ParseFileClassesAsync(IStorageFile file)
     {
         var ext = Path.GetExtension(file.Path.ToString());

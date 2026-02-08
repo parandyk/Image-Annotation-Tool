@@ -13,7 +13,7 @@ public class AddImageCommand : IPersistentCommand
     
     public AddImageCommand(AnnotationWorkspace annotationWorkspace, ImageSource imageSource, ImageMetadata imageMetadata)
     {
-        _imageSpace = new ImageSpace(imageSource, imageMetadata);
+        _imageSpace = new ImageSpace(imageSource, imageMetadata, annotationWorkspace.ImageRunningCount);
         
         if (annotationWorkspace.ImageExists(_imageSpace))
         {
@@ -31,6 +31,7 @@ public class AddImageCommand : IPersistentCommand
         }
         
         _annotationWorkspace = annotationWorkspace;
+        annotationWorkspace.IncrementImageRunningCount();
     }
     
     public void Execute()

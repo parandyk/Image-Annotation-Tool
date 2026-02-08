@@ -4,5 +4,8 @@ using ImageAnnotationTool.Domain.ValueObjects;
 namespace ImageAnnotationTool.Domain.DataTransferObjects;
 
 public sealed record AnnotationSnapshot(
-    BoundingBox Box,
-    string Label);
+    string Label,
+    double X,
+    double Y,
+    double Width,
+    double Height);

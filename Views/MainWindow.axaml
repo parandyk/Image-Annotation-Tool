@@ -8,8 +8,9 @@
         Width="1024" Height="640"
         MinWidth="640" MinHeight="640"
         x:DataType="vm:MainViewModel"
-        x:Class="ImageAnnotationTool.MainWindow"
+        x:Class="ImageAnnotationTool.Views.MainWindow"
         xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+        xmlns:enums="clr-namespace:ImageAnnotationTool.Enums"
         Title="Image Annotation Tool">
         
         <Design.DataContext><vm:MainViewModel></vm:MainViewModel></Design.DataContext>
@@ -40,21 +41,79 @@
                                                             Command="{Binding WorkspaceManagerVM.OpenAnnotationFileCommand}"/>
                                     </NativeMenu>
                             </NativeMenuItem>
-                            <NativeMenuItem Header="_Save">
-                                    <NativeMenu>
-                                            <NativeMenuItem Header="_Classes..."
-                                                            IsEnabled="{Binding WorkspaceManagerVM.ClassesPresent}"
-                                                            Command="{Binding WorkspaceManagerVM.SaveClassesToFileCommand}"/>
-                                            <NativeMenuItem Header="_This image's annotations..." 
-                                                            IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal,
-                                                            FallbackValue=False}" 
-                                                            Command="{Binding WorkspaceManagerVM.SaveAnnotationsToFileCommand}"/>
-                                            <NativeMenuItem Header="_All images' annotations..." 
-                                                            IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.BBoxesPresentGlobal, 
-                                                            FallbackValue=False}" 
-                                                            Command="{Binding WorkspaceManagerVM.SaveAnnotationsToFileCommand}"/>
-                                    </NativeMenu>
+                            <NativeMenuItem Header="_Export annotations">
+                                <NativeMenu>
+                                    <NativeMenuItem Header="_This image..." 
+                                                    IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal, 
+                                                    FallbackValue=False}">
+                                        <NativeMenu>
+                                            <NativeMenuItem Command="{Binding WorkspaceManagerVM.SaveLocalAnnotationsCommand}"
+                                                            CommandParameter="{x:Static enums:AnnotationFormat.Yolo}">
+                                                <NativeMenuItem.Header>
+                                                    <Binding Source="{x:Static enums:AnnotationFormat.Yolo}"
+                                                             Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                                </NativeMenuItem.Header>
+                                            </NativeMenuItem>
+                                            <NativeMenuItem Command="{Binding WorkspaceManagerVM.SaveLocalAnnotationsCommand}"
+                                                            CommandParameter="{x:Static enums:AnnotationFormat.Coco}">
+                                                <NativeMenuItem.Header>
+                                                    <Binding Source="{x:Static enums:AnnotationFormat.Coco}"
+                                                             Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                                </NativeMenuItem.Header>
+                                            </NativeMenuItem>
+                                            <NativeMenuItem Command="{Binding WorkspaceManagerVM.SaveLocalAnnotationsCommand}"
+                                                            CommandParameter="{x:Static enums:AnnotationFormat.Voc}">
+                                                <NativeMenuItem.Header>
+                                                    <Binding Source="{x:Static enums:AnnotationFormat.Voc}"
+                                                             Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                                </NativeMenuItem.Header>
+                                            </NativeMenuItem>
+                                        </NativeMenu>
+                                    </NativeMenuItem>
+                                    <NativeMenuItem Header="_All images..." 
+                                                    IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.BBoxesPresentGlobal, 
+                                                    FallbackValue=False}">
+                                        <NativeMenu>
+                                            <NativeMenuItem Command="{Binding WorkspaceManagerVM.SaveGlobalAnnotationsCommand}"
+                                                            CommandParameter="{x:Static enums:AnnotationFormat.Yolo}">
+                                                <NativeMenuItem.Header>
+                                                    <Binding Source="{x:Static enums:AnnotationFormat.Yolo}"
+                                                             Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                                </NativeMenuItem.Header>
+                                                </NativeMenuItem>
+                                                <NativeMenuItem Command="{Binding WorkspaceManagerVM.SaveGlobalAnnotationsCommand}"
+                                                                CommandParameter="{x:Static enums:AnnotationFormat.Coco}">
+                                                    <NativeMenuItem.Header>
+                                                        <Binding Source="{x:Static enums:AnnotationFormat.Coco}"
+                                                                 Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                                    </NativeMenuItem.Header>
+                                                </NativeMenuItem>
+                                                <NativeMenuItem Command="{Binding WorkspaceManagerVM.SaveGlobalAnnotationsCommand}"
+                                                                CommandParameter="{x:Static enums:AnnotationFormat.Voc}">
+                                                    <NativeMenuItem.Header>
+                                                        <Binding Source="{x:Static enums:AnnotationFormat.Voc}"
+                                                                 Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                                    </NativeMenuItem.Header>
+                                                </NativeMenuItem>
+                                        </NativeMenu>
+                                    </NativeMenuItem>
+                                </NativeMenu>
                             </NativeMenuItem>
+                            <!-- <NativeMenuItem Header="_Save"> -->
+                            <!--         <NativeMenu> -->
+                            <!--                 <NativeMenuItem Header="_Classes..." -->
+                            <!--                                 IsEnabled="{Binding WorkspaceManagerVM.ClassesPresent}" -->
+                            <!--                                 Command="{Binding WorkspaceManagerVM.SaveClassesToFileCommand}"/> -->
+                            <!--                 <NativeMenuItem Header="_This image's annotations..."  -->
+                            <!--                                 IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.SelectedImageViewModel.BBoxesPresentLocal, -->
+                            <!--                                 FallbackValue=False}"  -->
+                            <!--                                 Command="{Binding WorkspaceManagerVM.SaveAnnotationsCommand}"/> -->
+                            <!--                 <NativeMenuItem Header="_All images' annotations..."  -->
+                            <!--                                 IsEnabled="{Binding WorkspaceManagerVM.ImageManagerVM.BBoxesPresentGlobal,  -->
+                            <!--                                 FallbackValue=False}"  -->
+                            <!--                                 Command="{Binding WorkspaceManagerVM.SaveAnnotationsCommand}"/> -->
+                            <!--         </NativeMenu> -->
+                            <!-- </NativeMenuItem> -->
                             <NativeMenuItem Header="Edit">
                                 <NativeMenu>
                                     <NativeMenuItem Header="Undo" 

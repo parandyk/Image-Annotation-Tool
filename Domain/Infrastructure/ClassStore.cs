@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using ImageAnnotationTool.Domain.DomainCommands.Undoable.Classes;
 using ImageAnnotationTool.Domain.DomainCommands.Undoable.Classes.Batch;
 using ImageAnnotationTool.Domain.Entities;
+using ImageAnnotationTool.Factories;
 using ImageAnnotationTool.Models;
 
 namespace ImageAnnotationTool.Domain.Infrastructure;

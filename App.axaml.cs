@@ -11,12 +11,15 @@ using Avalonia.Platform.Storage;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia;
 using ImageAnnotationTool.Domain.Entities;
+using ImageAnnotationTool.Domain.Infrastructure.ExportStrategies;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
+using ImageAnnotationTool.Domain.Infrastructure.UseCases;
 using ImageAnnotationTool.Factories;
 using ImageAnnotationTool.Parsers;
 using DialogService = HanumanInstitute.MvvmDialogs.Avalonia.DialogService;
-using IAnnotationViewModelFactory = ImageAnnotationTool.Domain.Infrastructure.IAnnotationViewModelFactory;
+using IAnnotationViewModelFactory = ImageAnnotationTool.Factories.IAnnotationViewModelFactory;
 using IClassListProvider = ImageAnnotationTool.Domain.Infrastructure.IClassListProvider;
-using IImageViewModelFactory = ImageAnnotationTool.Domain.Infrastructure.IImageViewModelFactory;
+using IImageViewModelFactory = ImageAnnotationTool.Factories.IImageViewModelFactory;
 
 namespace ImageAnnotationTool;
 
@@ -31,7 +34,7 @@ public class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var mainWindow = new MainWindow();
+            var mainWindow = new Views.MainWindow();
             
             var servicesCollection = new ServiceCollection();
             
@@ -40,15 +43,25 @@ public class App : Application
             servicesCollection.AddSingleton<IWorkspaceDomainClassInterface>(sp => sp.GetRequiredService<AnnotationWorkspace>());
             servicesCollection.AddSingleton<IWorkspaceDomainImageInterface>(sp => sp.GetRequiredService<AnnotationWorkspace>());
             servicesCollection.AddSingleton<IWorkspaceDomainAnnotationInterface>(sp => sp.GetRequiredService<AnnotationWorkspace>());
-            servicesCollection.AddSingleton<IWorkspaceDomainAnnotationInterface>(sp => sp.GetRequiredService<AnnotationWorkspace>());
             
             servicesCollection.AddSingleton<IDialogService>(sp => new DialogService(new DialogManager(
                     dialogFactory: new DialogFactory()), //.AddFluent()
                 viewModelFactory: sp.GetRequiredService));
             servicesCollection.AddTransient<DeleteClassDialogViewModel>();
             servicesCollection.AddTransient<ChangeClassDialogViewModel>();
+            servicesCollection.AddSingleton<SettingsDialogViewModel>();
+            // servicesCollection.AddSingleton<SettingsDialogViewModel>(sp => sp.GetRequiredService<SettingsDialogViewModel>());
             servicesCollection.AddSingleton<IStorageProvider>(x => mainWindow.StorageProvider);
+            
+            servicesCollection.AddSingleton<ExportAnnotationsUseCase>();
+            servicesCollection.AddSingleton<ExportClassesUseCase>();
+            
+            servicesCollection.AddSingleton<UseCaseService>();
+            servicesCollection.AddSingleton<IUseCaseProvider>(sp => sp.GetRequiredService<UseCaseService>());
+            servicesCollection.AddSingleton<IExportUseCaseInterface>(sp => sp.GetRequiredService<UseCaseService>());
+            servicesCollection.AddSingleton<IImportUseCaseInterface>(sp => sp.GetRequiredService<UseCaseService>());
 
+            servicesCollection.AddSingleton<IAnnotationExportStrategy, YoloExportStrategy>();
             
             servicesCollection.AddSingleton<AppModeSettings>();
             servicesCollection.AddSingleton<IAppModeSettings>(sp => sp.GetRequiredService<AppModeSettings>());
@@ -88,13 +101,13 @@ public class App : Application
             servicesCollection.AddSingleton<IClassStore>(sp => sp.GetRequiredService<ClassStore>());
 
             servicesCollection.AddSingleton<IAppMessenger, AppMessengerService>();
-            servicesCollection.AddSingleton<SettingsDialogViewModel>(sp => sp.GetRequiredService<SettingsDialogViewModel>());
             servicesCollection.AddSingleton<ISettingsManagerViewModelFactory, SettingsManagerViewModelFactory>();
             servicesCollection.AddSingleton<IWorkspaceManagerViewModelFactory, WorkspaceManagerViewModelFactory>();
             servicesCollection.AddSingleton<IClassManagerViewModelFactory, ClassManagerViewModelFactory>();
             servicesCollection.AddSingleton<IAnnotationViewModelFactory, AnnotationViewModelFactory>();
             servicesCollection.AddSingleton<IImageManagerViewModelFactory, ImageManagerViewModelFactory>();
             servicesCollection.AddSingleton<IImageViewModelFactory, ImageViewModelFactory>();
+            servicesCollection.AddSingleton<IFolderParser, FolderParsingService>();
             servicesCollection.AddSingleton<IImageParser, ImageParsingService>();
             servicesCollection.AddSingleton<IClassParser, ClassParsingService>();
             servicesCollection.AddSingleton<IAnnotationParser, AnnotationParsingService>();

@@ -11,6 +11,7 @@ using HanumanInstitute.MvvmDialogs;
 using ImageAnnotationTool.Core;
 using ImageAnnotationTool.Domain.Infrastructure;
 using ImageAnnotationTool.Enums;
+using ImageAnnotationTool.Factories;
 using ImageAnnotationTool.Interfaces;
 using ImageAnnotationTool.Messages;
 using ImageAnnotationTool.Models;

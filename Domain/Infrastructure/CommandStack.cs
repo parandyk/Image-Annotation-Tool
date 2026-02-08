@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using ImageAnnotationTool.Domain.DomainCommands;
 
 namespace ImageAnnotationTool.Domain.Infrastructure;
 

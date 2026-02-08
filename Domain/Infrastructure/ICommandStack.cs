@@ -1,4 +1,5 @@
 using System;
+using ImageAnnotationTool.Domain.DomainCommands;
 
 namespace ImageAnnotationTool.Domain.Infrastructure;
 

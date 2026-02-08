@@ -1,8 +1,9 @@
 using ImageAnnotationTool.Domain.Entities;
 using ImageAnnotationTool.Domain.Infrastructure;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
 using ImageAnnotationTool.Interfaces;
 using AnnotationViewModel = ImageAnnotationTool.ViewModels.AnnotationViewModel;
-using IAnnotationViewModelFactory = ImageAnnotationTool.Domain.Infrastructure.IAnnotationViewModelFactory;
+using IAnnotationViewModelFactory = ImageAnnotationTool.Factories.IAnnotationViewModelFactory;
 using IClassListProvider = ImageAnnotationTool.Domain.Infrastructure.IClassListProvider;
 
 namespace ImageAnnotationTool.Factories;
