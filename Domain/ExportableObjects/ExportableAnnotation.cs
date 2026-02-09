@@ -21,15 +21,15 @@ public sealed class ExportableAnnotation
 
     public (double cx, double cy, double w, double h) GetYoloCoordinates()
     {
-        double cx = (_snapshot.X + _snapshot.Width) / 2.0 / _imgWidth;
-        double cy = (_snapshot.Y + _snapshot.Height) / 2.0 / _imgHeight;
+        double cx = (_snapshot.X + _snapshot.Width / 2.0) / _imgWidth;
+        double cy = (_snapshot.Y + _snapshot.Height / 2.0) / _imgHeight;
         double w = _snapshot.Width / _imgWidth;
         double h = _snapshot.Height / _imgHeight;
         
-        return (Math.Clamp(cx, 0, 1), 
-                Math.Clamp(cy, 0, 1),
-                Math.Clamp(w, 0, 1), 
-                Math.Clamp(h, 0, 1));
+        return (Math.Clamp(cx, 0.0, 1.0), 
+                Math.Clamp(cy, 0.0, 1.0),
+                Math.Clamp(w, 0.0, 1.0), 
+                Math.Clamp(h, 0.0, 1.0));
     }
 
     public (double x, double y, double w, double h) GetCocoCoordinates()
@@ -39,9 +39,9 @@ public sealed class ExportableAnnotation
         double w = _snapshot.Width;
         double h = _snapshot.Height;
         
-        return (Math.Clamp(x, 0, _imgWidth), 
-            Math.Clamp(y, 0, _imgHeight),
-            Math.Clamp(w, 0, _imgWidth), 
-            Math.Clamp(h, 0, _imgHeight));
+        return (Math.Clamp(x, 0.0, _imgWidth), 
+            Math.Clamp(y, 0.0, _imgHeight),
+            Math.Clamp(w, 0.0, _imgWidth), 
+            Math.Clamp(h, 0.0, _imgHeight));
     }
 }
