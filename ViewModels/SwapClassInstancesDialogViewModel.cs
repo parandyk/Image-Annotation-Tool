@@ -132,6 +132,9 @@ public partial class SwapClassInstancesDialogViewModel : ObservableObject, IModa
     [RelayCommand]
     private void Proceed()
     {
+        if (SubstituteClass is null)
+            return;
+        
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
     }

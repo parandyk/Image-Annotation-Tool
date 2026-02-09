@@ -121,6 +121,9 @@ public partial class DeleteClassDialogViewModel : ObservableObject, IModalDialog
     [RelayCommand]
     private void Proceed()
     {
+        if (DeleteMode is null)
+            return;
+        
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
     }

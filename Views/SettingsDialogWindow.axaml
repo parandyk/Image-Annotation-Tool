@@ -5,7 +5,7 @@
         xmlns:ursa="https://irihi.tech/ursa"
         x:Class="ImageAnnotationTool.Views.SettingsDialogWindow"
         x:DataType="vm:SettingsDialogViewModel"
-        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600" Padding="10"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="650" Padding="10"
         Width="600"
         xmlns:vm="clr-namespace:ImageAnnotationTool.ViewModels"
         xmlns:core="clr-namespace:ImageAnnotationTool.Core"
@@ -21,12 +21,13 @@
         Title="Settings">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Grid.IsSharedSizeScope="True">
                 <TextBlock Text="Notification settings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"/>
-                <Grid Width="540" Height="135" HorizontalAlignment="Center">
+                <Grid Width="540" Height="168" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="9*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
@@ -47,6 +48,9 @@
                         
                         <CheckBox Grid.Row="4" Grid.Column="0" IsChecked="{Binding !SuppressGlobalClassInstanceDeletionDialogs}"/>
                         <TextBlock Grid.Row="4" Grid.Column="1" Text="Enable global class instance deletion warnings"/>
+                        
+                        <CheckBox Grid.Row="5" Grid.Column="0" IsChecked="{Binding !SuppressUnassignedExportWarningDialogs}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="Enable fallback class export warnings"/>
                 </Grid>
                 
                 <Separator/>

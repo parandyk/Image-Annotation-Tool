@@ -85,6 +85,9 @@ public partial class ChangeClassDialogViewModel : ObservableObject, IModalDialog
     [RelayCommand]
     private void Proceed()
     {
+        if (SubstituteClass == null)
+            return;
+        
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
     }

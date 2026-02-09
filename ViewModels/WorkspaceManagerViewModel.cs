@@ -1,18 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DynamicData;
 using ImageAnnotationTool.Domain.DataTransferObjects;
+using ImageAnnotationTool.Domain.Entities;
 using ImageAnnotationTool.Domain.ExportableObjects;
 using ImageAnnotationTool.Domain.Infrastructure;
 using ImageAnnotationTool.Domain.Infrastructure.ExportContexts;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
 using ImageAnnotationTool.Domain.Infrastructure.UseCases;
 using ImageAnnotationTool.Enums;
 using ImageAnnotationTool.Factories;
@@ -22,6 +26,7 @@ namespace ImageAnnotationTool.ViewModels;
 
 public partial class WorkspaceManagerViewModel : ObservableObject
 {
+    private readonly INotificationSettings _notificationSettings;
     private readonly IUseCaseProvider _useCaseProvider;
     private readonly IWorkspaceCommandFactory _commandFactory;
     private readonly IDialogWrapper _dialogWrapper;
@@ -30,7 +35,8 @@ public partial class WorkspaceManagerViewModel : ObservableObject
     private readonly IAppMessenger _messenger;
     private readonly IWorkspaceDomainInterface _domain;
     
-    public WorkspaceManagerViewModel(IUseCaseProvider useCaseProvider,
+    public WorkspaceManagerViewModel(INotificationSettings notificationSettings,
+        IUseCaseProvider useCaseProvider,
         IImageManagerViewModelFactory imVmFactory,
         IClassManagerViewModelFactory cmVmFactory,
         IWorkspaceCommandFactory commandFactory,
@@ -40,6 +46,7 @@ public partial class WorkspaceManagerViewModel : ObservableObject
         IAppMessenger messenger,
         IWorkspaceDomainInterface domain)
     {
+        _notificationSettings = notificationSettings;
         _useCaseProvider = useCaseProvider;
         _filesProvider = filesProvider;
         _commandFactory = commandFactory;
@@ -53,8 +60,17 @@ public partial class WorkspaceManagerViewModel : ObservableObject
         ClassManagerVM = cmVmFactory.Create();
         ImageManagerVM = imVmFactory.Create();
         ImageManagerVM.PropertyChanged += OnImageManagerVMChanged;
+        ((INotifyCollectionChanged)ClassManagerVM.ClassList).CollectionChanged += OnClassManagerVMClassListChanged;
     }
-    
+
+    private void OnClassManagerVMClassListChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.NewItems != null || e.OldItems != null)
+        {
+            OnPropertyChanged(nameof(ClassesPresent));
+        }
+    }
+
     [ObservableProperty] 
     private string? _fileText;
     
@@ -215,8 +231,39 @@ public partial class WorkspaceManagerViewModel : ObservableObject
             var path = await _filesProvider.OpenOutputFolderAsync();
             if (path is null) 
                 return;
+
+            bool includeFallback = false;
             
-            var exportContext = CreateExportContext(path, format);
+            if (!_notificationSettings.SuppressUnassignedExportWarningDialog)
+            {
+                ImageSpace? imageSpace = null;
+                
+                if (!global)
+                {
+                    var imageVm = ImageManagerVM.SelectedImageViewModel;
+
+                    if (imageVm is null)
+                        return;
+                    
+                    imageSpace = imageVm.ImageSpace;
+                }
+                
+                var vm = _dialogWrapper.CreateUnassignedWarningDialog(imageSpace);
+                var result = await _dialogWrapper.ShowDialogAsync(vm);
+
+                if (result is false)
+                {
+                    _messenger.SendErrorOccurredNotification("Annotations export aborted.");
+                    return;
+                }
+                
+                if (vm.DontAskAgain)
+                    _notificationSettings.ChangeSuppressionUnassignedExportWarningDialog(true);
+
+                includeFallback = vm.IncludeUnassigned;
+            }
+            
+            var exportContext = CreateAnnotationExportContext(path, format, includeFallback);
 
             if (exportContext is null)
             {
@@ -230,18 +277,21 @@ public partial class WorkspaceManagerViewModel : ObservableObject
             _messenger.SendErrorOccurredNotification(e.Message);
         }
     }
-    
 
-    private List<ClassSnapshot>? CreateClassSnapshots(bool global = true)
+    private List<ClassSnapshot>? CreateClassSnapshots(bool global = true, bool includeFallback = false)
     {
         List<ClassSnapshot> classSnapshots;
         
         if (global)
         {
-            classSnapshots = _domain.Classes.Where(c => !Equals(c, ClassManagerVM.DefaultClass))
+            classSnapshots = _domain.Classes
+                .Where(c => !Equals(c, ClassManagerVM.DefaultClass))
                 .Select(c => _domain.ClassToSnapshot(c))
                 .OrderBy(c => c.Name)
                 .ToList();
+            
+            if (includeFallback)
+                classSnapshots.Add(_domain.ClassToSnapshot(ClassManagerVM.DefaultClass));
         }
         else
         {
@@ -250,11 +300,15 @@ public partial class WorkspaceManagerViewModel : ObservableObject
             
             var imageSpace = ImageManagerVM.SelectedImageViewModel.ImageSpace;
             
-            classSnapshots = imageSpace.Annotations.Where(a => !Equals(a.ClassInfo, ClassManagerVM.DefaultClass))
+            classSnapshots = imageSpace.Annotations
+                .Where(a => !Equals(a.ClassInfo, ClassManagerVM.DefaultClass))
                 .Select(a => _domain.ClassToSnapshot(a.ClassInfo))
                 .Distinct()
                 .OrderBy(c => c.Name)
                 .ToList();
+            
+            if (includeFallback && imageSpace.Annotations.Any(a => Equals(a.ClassInfo, ClassManagerVM.DefaultClass)))
+                classSnapshots.Add(_domain.ClassToSnapshot(ClassManagerVM.DefaultClass));
         }
         
         return classSnapshots;
@@ -283,12 +337,28 @@ public partial class WorkspaceManagerViewModel : ObservableObject
         return imageSnapshots;
     }
 
-    private AnnotationExportContext? CreateExportContext(string path,
-        AnnotationFormat format, 
-        bool global = true)
+    private ClassExportContext? CreateClassExportContext(string path, ClassFormat format, bool global = true,
+        bool includeFallback = false)
     {
+        var classes = CreateClassSnapshots(global, includeFallback);
+
+        if (classes is null || 
+            classes.Count == 0)
+            return null;
         
-        var classes = CreateClassSnapshots(global);
+        var exportableClasses = classes
+            .Select(c => new ExportableClass(c))
+            .ToList();
+        
+        return new ClassExportContext(path, format, exportableClasses);
+    }
+    
+    private AnnotationExportContext? CreateAnnotationExportContext(string path,
+        AnnotationFormat format, 
+        bool global = true, 
+        bool includeFallback = false)
+    {
+        var classes = CreateClassSnapshots(global, includeFallback);
         var images = CreateImageSnapshots(global);
 
         if (classes is null || 
@@ -307,24 +377,27 @@ public partial class WorkspaceManagerViewModel : ObservableObject
         return new AnnotationExportContext(path, format, exportableImages, exportableClasses);
     }
     
-    [RelayCommand] //TODO
-    private async Task SaveClassesToFile(ClassFormat format)
+    [RelayCommand]
+    private async Task SaveClasses(ClassFormat format)
     {
-        throw new  NotImplementedException();
-        
         try
         {
-            if (_filesProvider is null) throw new NullReferenceException("Missing File Service instance.");
-
-            var file = await _filesProvider.SaveClassesFileAsync();
-            if (file is null) return;
+            if (_filesProvider is null) 
+                throw new NullReferenceException("Missing file service instance.");
             
-            var stream = new MemoryStream(Encoding.Default.GetBytes((string)FileText));
-            await using var writeStream = await file.OpenWriteAsync();
-            await stream.CopyToAsync(writeStream);
+            var path = await _filesProvider.OpenOutputFolderAsync();
+            if (path is null) 
+                return;
+            
+            var exportContext = CreateClassExportContext(path, format, true);
 
-            // BBoxesSinceLastSave = 0;
-
+            if (exportContext is null)
+            {
+                throw new NullReferenceException("No valid objects for export.");
+            }
+            
+            _useCaseProvider.ExportClasses(exportContext);
+            _messenger.SendErrorOccurredNotification("Classes exported successfully.");
         }
         catch (Exception e)
         {

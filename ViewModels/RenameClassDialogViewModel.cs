@@ -64,7 +64,7 @@ public partial class RenameClassDialogViewModel : ObservableObject, IModalDialog
     public bool? DialogResult { get; private set; }
     public event EventHandler? RequestClose;
     
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(NameAvailable))]
     private void Proceed()
     {
         DialogResult = true;

@@ -28,6 +28,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         SuppressImageDeletionDialogs = notificationSettings.SuppressImageDeletionDialogs;
         SuppressGlobalClassInstanceDeletionDialogs = notificationSettings.SuppressGlobalClassInstanceDeletionDialogs;
         SuppressLocalClassInstanceDeletionDialogs = notificationSettings.SuppressLocalClassInstanceDeletionDialogs;
+        SuppressUnassignedExportWarningDialogs = notificationSettings.SuppressUnassignedExportWarningDialog;
         
         DragThreshold = interactionSettings.DragThreshold;
         OverridingDefaultDragThreshold = interactionSettings.OverridingDefaultDragThreshold;
@@ -77,6 +78,8 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     private bool _suppressLocalClassInstanceDeletionDialogs;
     [ObservableProperty]
     private bool _suppressGlobalClassInstanceDeletionDialogs;
+    [ObservableProperty]
+    private bool _suppressUnassignedExportWarningDialogs;
     
     // Interaction settings
     [ObservableProperty]

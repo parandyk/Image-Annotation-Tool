@@ -7,10 +7,9 @@ public class NotificationSettings : ObservableObject, INotificationSettings
     public bool SuppressLocalClassInstanceDeletionDialogs { get; private set; } = false;
     public bool SuppressGlobalClassInstanceDeletionDialogs { get; private set; } = false;
     public bool SuppressAnnotationDeletionDialogs { get; private set; } = false;
-    // public bool SuppressLocalClassInstanceSwapDialogs { get; private set; } = false;
-    // public bool SuppressGlobalClassInstanceSwapDialogs { get; private set; } = false;
     public bool SuppressClassDeletionDialogs { get; private set; } = false;
     public bool SuppressImageDeletionDialogs { get; private set; } = false;
+    public bool SuppressUnassignedExportWarningDialog { get; private set; } = false;
 
     public void ChangeSuppressionLocalClassInstanceDeletionDialogs(bool state)
     {
@@ -39,24 +38,6 @@ public class NotificationSettings : ObservableObject, INotificationSettings
         OnPropertyChanged(nameof(SuppressAnnotationDeletionDialogs));
     }
 
-    // public void ChangeSuppressionLocalClassInstanceSwapDialogs(bool state)
-    // {
-    //     if (SuppressLocalClassInstanceSwapDialogs == state)
-    //         return;
-    //     
-    //     SuppressLocalClassInstanceSwapDialogs = state;
-    //     OnPropertyChanged(nameof(SuppressLocalClassInstanceSwapDialogs));
-    // }
-    //
-    // public void ChangeSuppressionGlobalClassInstanceSwapDialogs(bool state)
-    // {
-    //     if (SuppressGlobalClassInstanceSwapDialogs == state)
-    //         return;
-    //     
-    //     SuppressGlobalClassInstanceSwapDialogs = state;
-    //     OnPropertyChanged(nameof(SuppressGlobalClassInstanceSwapDialogs));
-    // }
-
     public void ChangeSuppressionClassDeletionDialogs(bool state)
     {
         if (SuppressClassDeletionDialogs == state)
@@ -73,5 +54,14 @@ public class NotificationSettings : ObservableObject, INotificationSettings
         
         SuppressImageDeletionDialogs = state;
         OnPropertyChanged(nameof(SuppressImageDeletionDialogs));
+    }
+
+    public void ChangeSuppressionUnassignedExportWarningDialog(bool state)
+    {
+        if (SuppressUnassignedExportWarningDialog == state)
+            return;
+        
+        SuppressUnassignedExportWarningDialog = state;
+        OnPropertyChanged(nameof(SuppressUnassignedExportWarningDialog));
     }
 }

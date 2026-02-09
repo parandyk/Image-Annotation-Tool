@@ -1,4 +1,5 @@
 using ImageAnnotationTool.Domain.Infrastructure;
+using ImageAnnotationTool.Domain.Infrastructure.SettingsStore;
 using ImageAnnotationTool.Domain.Infrastructure.UseCases;
 using ImageAnnotationTool.Interfaces;
 using ImageAnnotationTool.ViewModels;
@@ -7,6 +8,7 @@ namespace ImageAnnotationTool.Factories;
 
 public class WorkspaceManagerViewModelFactory : IWorkspaceManagerViewModelFactory
 {
+    private readonly INotificationSettings _notificationSettings;
     private readonly IUseCaseProvider _useCaseProvider;
     private readonly IImageManagerViewModelFactory _imVmFactory;
     private readonly IClassManagerViewModelFactory _cmVmFactory;
@@ -17,7 +19,8 @@ public class WorkspaceManagerViewModelFactory : IWorkspaceManagerViewModelFactor
     private readonly IAppMessenger _messenger;
     private readonly IWorkspaceDomainInterface _domain;
 
-    public WorkspaceManagerViewModelFactory(IUseCaseProvider useCaseProvider,
+    public WorkspaceManagerViewModelFactory(INotificationSettings notificationSettings,
+        IUseCaseProvider useCaseProvider,
         IImageManagerViewModelFactory imVmFactory,
         IClassManagerViewModelFactory cmVmFactory,
         IWorkspaceCommandFactory commandFactory,
@@ -27,6 +30,7 @@ public class WorkspaceManagerViewModelFactory : IWorkspaceManagerViewModelFactor
         IAppMessenger messenger, 
         IWorkspaceDomainInterface domain)
     {
+        _notificationSettings = notificationSettings;
         _useCaseProvider = useCaseProvider;
         _imVmFactory = imVmFactory;
         _cmVmFactory = cmVmFactory;
@@ -40,7 +44,7 @@ public class WorkspaceManagerViewModelFactory : IWorkspaceManagerViewModelFactor
     
     public WorkspaceManagerViewModel Create()
     {
-        return new WorkspaceManagerViewModel(
+        return new WorkspaceManagerViewModel(_notificationSettings,
             _useCaseProvider,
             _imVmFactory,
             _cmVmFactory,

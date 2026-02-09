@@ -19,6 +19,8 @@
     <Window.KeyBindings>
         <KeyBinding Gesture="Escape"
                     Command="{Binding CancelCommand}" />
+        <KeyBinding Gesture="Enter"
+                    Command="{Binding ProceedCommand}" />
     </Window.KeyBindings>
     <StackPanel Orientation="Vertical">
             <TextBlock Text="{Binding Description}" TextWrapping="Wrap" />
@@ -34,18 +36,18 @@
                         <Setter Property="Margin" Value="10,0,0,0" />
                     </Style>
                 </StackPanel.Styles>
-                <Grid ColumnDefinitions="*, *" HorizontalAlignment="Left">
-                    <CheckBox IsChecked="{Binding DontAskAgain, Mode=TwoWay}"
-                               HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="DontAskAgainButton"/>
-                    <TextBlock Grid.Column="1" Text="Don't ask again" TextWrapping="Wrap" Margin="10,0"
-                               HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Interaction.Behaviors>
-                            <EventTriggerBehavior EventName="PointerPressed">
-                                <InvokeButtonClickAction TargetButton="DontAskAgainButton"/>
-                            </EventTriggerBehavior>
-                        </Interaction.Behaviors>
-                    </TextBlock>
-                </Grid>
+                <!-- <Grid ColumnDefinitions="*, *" HorizontalAlignment="Left"> -->
+                <CheckBox IsChecked="{Binding DontAskAgain, Mode=TwoWay}"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="DontAskAgainButton" Content="Don't ask again"/>
+                <!--     <TextBlock Grid.Column="1" Text="Don't ask again" TextWrapping="Wrap" Margin="10,0" -->
+                <!--                HorizontalAlignment="Stretch" VerticalAlignment="Center"> -->
+                <!--         <Interaction.Behaviors> -->
+                <!--             <EventTriggerBehavior EventName="PointerPressed"> -->
+                <!--                 <InvokeButtonClickAction TargetButton="DontAskAgainButton"/> -->
+                <!--             </EventTriggerBehavior> -->
+                <!--         </Interaction.Behaviors> -->
+                <!--     </TextBlock> -->
+                <!-- </Grid> -->
                 <Button Content="Proceed" Command="{Binding ProceedCommand}" />
                 <Button Content="Cancel" Command="{Binding CancelCommand}" />
             </StackPanel>

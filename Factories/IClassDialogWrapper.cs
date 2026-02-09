@@ -19,4 +19,6 @@ public interface IClassDialogWrapper
     RemoveClassInstancesDialogViewModel CreateRemoveClassInstancesDialog(ClassData classToRemove, ImageSpace? image = null);
     
     RemoveClassInstancesDialogViewModel CreateRemoveClassInstancesDialog(List<ClassData> classesToRemove); //TODO: KEEP?
+    
+    UnassignedWarningDialogViewModel CreateUnassignedWarningDialog(ImageSpace? image = null);
 }

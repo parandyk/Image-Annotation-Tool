@@ -22,6 +22,8 @@
     <Window.KeyBindings>
         <KeyBinding Gesture="Escape"
                     Command="{Binding CancelCommand}" />
+        <KeyBinding Gesture="Enter"
+                    Command="{Binding ProceedCommand}" />
     </Window.KeyBindings>
     <StackPanel Orientation="Vertical">
             <!-- <TextBlock FontWeight="Bold" Text="{Binding Title}" TextWrapping="Wrap" /> -->

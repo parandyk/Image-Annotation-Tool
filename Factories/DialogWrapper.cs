@@ -99,6 +99,11 @@ public class DialogWrapper : IDialogWrapper
         throw new NotImplementedException();
     }
 
+    public UnassignedWarningDialogViewModel CreateUnassignedWarningDialog(ImageSpace? image = null)
+    {
+        return new UnassignedWarningDialogViewModel(_statisticsAggregator, _classListProvider, image);
+    }
+
     public DeleteAnnotationDialogViewModel CreateDeleteAnnotationDialog(Annotation annotationToDelete)
     {
         return new DeleteAnnotationDialogViewModel(annotationToDelete);
