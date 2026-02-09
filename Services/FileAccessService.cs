@@ -41,7 +41,7 @@ public sealed class FileAccessService : IFileAccessProvider
         {
             Title = "Open class names file",
             FileTypeFilter = new[] {FileExtensions.ToFilePickerFileType("Class files", FileExtensions.AllClassFiles)},
-            AllowMultiple = true
+            AllowMultiple = true,
         });
 
         var classList = await GetClassesAsync(files);

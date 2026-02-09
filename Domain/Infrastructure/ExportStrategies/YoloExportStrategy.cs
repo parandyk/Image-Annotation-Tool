@@ -18,9 +18,9 @@ public class YoloExportStrategy : IAnnotationExportStrategy
     {
         var (datasetDir, imagesDir, labelsDir) = CreateDirectories(context.OutputDir);
         
-        await ExportDataset(context.Classes, datasetDir);
-        await ExportClasses(context.Classes, datasetDir);
-        await ExportAnnotations(context, imagesDir, labelsDir);
+        await ExportDatasetAsync(context.Classes, datasetDir);
+        await ExportClassesAsync(context.Classes, datasetDir);
+        await ExportAnnotationsAsync(context, imagesDir, labelsDir);
     }
 
     private (string dataset, string images, string labels) CreateDirectories(string outputDir)
@@ -40,13 +40,13 @@ public class YoloExportStrategy : IAnnotationExportStrategy
         return (datasetDir, imagesDir, labelsDir);
     }
         
-    private static async Task ExportClasses(IList<ExportableClass> classes, string path)
+    private static async Task ExportClassesAsync(IList<ExportableClass> classes, string path)
     {
         var outputPath = Path.Combine(path, "classes.txt");
         await File.WriteAllLinesAsync(outputPath, classes.Select(c => c.Name));
     }
 
-    private static async Task ExportAnnotations(AnnotationExportContext context, string imagesDir, string labelsDir)
+    private static async Task ExportAnnotationsAsync(AnnotationExportContext context, string imagesDir, string labelsDir)
     {
         var classMap = context.Classes
             .Select((c, idx) => (c.Name, idx))
@@ -75,7 +75,7 @@ public class YoloExportStrategy : IAnnotationExportStrategy
         }
     }
     
-    private static async Task ExportDataset(IList<ExportableClass> classes, string path)
+    private static async Task ExportDatasetAsync(IList<ExportableClass> classes, string path)
     {
         var sb = new StringBuilder();
         

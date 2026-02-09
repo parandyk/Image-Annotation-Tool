@@ -1,7 +1,4 @@
-using System;
-using ImageAnnotationTool.Domain.ValueObjects;
-
-namespace ImageAnnotationTool.Domain.DataTransferObjects;
+namespace ImageAnnotationTool.Domain.DataTransferObjects.General;
 
 public sealed record AnnotationSnapshot(
     string Label,

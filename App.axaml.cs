@@ -62,6 +62,9 @@ public class App : Application
             servicesCollection.AddSingleton<IImportUseCaseInterface>(sp => sp.GetRequiredService<UseCaseService>());
 
             servicesCollection.AddSingleton<IAnnotationExportStrategy, YoloExportStrategy>();
+            servicesCollection.AddSingleton<IAnnotationExportStrategy, CocoExportStrategy>();
+            
+            servicesCollection.AddSingleton<IClassExportStrategy, TxtExportStrategy>();
             
             servicesCollection.AddSingleton<AppModeSettings>();
             servicesCollection.AddSingleton<IAppModeSettings>(sp => sp.GetRequiredService<AppModeSettings>());

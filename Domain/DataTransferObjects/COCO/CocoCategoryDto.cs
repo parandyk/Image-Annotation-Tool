@@ -1,0 +1,15 @@
+using System.Text.Json.Serialization;
+
+namespace ImageAnnotationTool.Domain.DataTransferObjects.COCO;
+
+public class CocoCategoryDto
+{
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+
+    [JsonPropertyName("supercategory")]
+    public string Supercategory { get; set; } = "none";
+}

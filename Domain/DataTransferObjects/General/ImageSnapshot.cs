@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ImageAnnotationTool.Domain.DataTransferObjects;
+namespace ImageAnnotationTool.Domain.DataTransferObjects.General;
 
 public sealed record ImageSnapshot(
     int Id,

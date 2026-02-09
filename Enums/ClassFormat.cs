@@ -5,9 +5,9 @@ namespace ImageAnnotationTool.Enums;
 
 public enum ClassFormat
 {
-    [Display(Name="txt")]
+    [Display(Name="TXT")]
     Txt,
     
-    [Display(Name="yaml")] 
-    Yaml
+    // [Display(Name="YAML")] 
+    // Yaml
 }

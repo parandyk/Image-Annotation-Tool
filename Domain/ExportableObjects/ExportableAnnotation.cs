@@ -1,5 +1,6 @@
 using System;
 using ImageAnnotationTool.Domain.DataTransferObjects;
+using ImageAnnotationTool.Domain.DataTransferObjects.General;
 
 namespace ImageAnnotationTool.Domain.ExportableObjects;
 
@@ -44,4 +45,6 @@ public sealed class ExportableAnnotation
             Math.Clamp(w, 0.0, _imgWidth), 
             Math.Clamp(h, 0.0, _imgHeight));
     }
+    
+    public double Area => _snapshot.Width * _snapshot.Height;
 }

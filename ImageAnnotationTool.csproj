@@ -56,6 +56,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Domain\DataTransferObjects\VOC\" />
       <Folder Include="Domain\DomainCommands\Undoable\" />
     </ItemGroup>
 </Project>

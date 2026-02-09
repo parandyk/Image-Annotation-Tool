@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using ImageAnnotationTool.Domain.DataTransferObjects;
+using ImageAnnotationTool.Domain.DataTransferObjects.General;
 using ImageAnnotationTool.Domain.Entities;
 
 namespace ImageAnnotationTool.Domain.Infrastructure;

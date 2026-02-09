@@ -38,7 +38,8 @@
                 </StackPanel.Styles>
                 <!-- <Grid ColumnDefinitions="*, *" HorizontalAlignment="Left"> -->
                 <CheckBox IsChecked="{Binding DontAskAgain, Mode=TwoWay}"
-                           HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="DontAskAgainButton" Content="Don't ask again"/>
+                           HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="DontAskAgainButton" 
+                           Content="Don't ask again" Margin="0,0,20,0"/>
                 <!--     <TextBlock Grid.Column="1" Text="Don't ask again" TextWrapping="Wrap" Margin="10,0" -->
                 <!--                HorizontalAlignment="Stretch" VerticalAlignment="Center"> -->
                 <!--         <Interaction.Behaviors> -->

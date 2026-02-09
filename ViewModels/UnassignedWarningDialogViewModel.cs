@@ -42,12 +42,12 @@ public partial class UnassignedWarningDialogViewModel : ObservableObject, IModal
             
             if (Global)
             {
-                text = $"You are about to export annotations across all images. \n" +
+                text = $"You are about to export annotations across all images. " +
                        $"By default, the fallback class \"{DefaultClass.Name}\" is excluded from exporting. \n";
             }
             else
             {
-                text = $"You are about to export annotations in the selected image. \n" +
+                text = $"You are about to export annotations in the selected image. " +
                        $"By default, the fallback class \"{DefaultClass.Name}\" is excluded from exporting. \n";
             }
             
@@ -60,7 +60,7 @@ public partial class UnassignedWarningDialogViewModel : ObservableObject, IModal
                 text += $"{AffectedAnnotationCount} annotation instances will be excluded. \n";
             }
             
-            return text + "Proceed?. \n";
+            return text + "Proceed? \n";
         }
 }
 

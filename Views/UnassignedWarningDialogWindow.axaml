@@ -16,15 +16,16 @@
         ExtendClientAreaTitleBarHeightHint="-1" 
         Title="Exporting annotations warning"
         x:DataType="vm:UnassignedWarningDialogViewModel">
-    <Window.KeyBindings>
-        <KeyBinding Gesture="Escape"
-                    Command="{Binding CancelCommand}" />
-        <KeyBinding Gesture="Enter"
-                    Command="{Binding ProceedCommand}" />
-    </Window.KeyBindings>
-    <StackPanel Orientation="Vertical">
+        <Window.KeyBindings>
+            <KeyBinding Gesture="Escape"
+                        Command="{Binding CancelCommand}" />
+            <KeyBinding Gesture="Enter"
+                        Command="{Binding ProceedCommand}" />
+        </Window.KeyBindings>
+        <StackPanel Orientation="Vertical">
             <TextBlock Text="{Binding Description}" TextWrapping="Wrap" />
-
+            <CheckBox IsChecked="{Binding IncludeUnassigned, Mode=TwoWay}"
+                      HorizontalAlignment="Right" VerticalAlignment="Center" Content="Include unassigned"/>
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,20,0,0">
                 <StackPanel.Styles>
                     <Style Selector="Button">
@@ -36,12 +37,9 @@
                         <Setter Property="Margin" Value="10,0,0,0" />
                     </Style>
                 </StackPanel.Styles>
-                <Grid RowDefinitions="*, *" HorizontalAlignment="Left">
-                    <CheckBox IsChecked="{Binding IncludeUnassigned, Mode=TwoWay}"
-                               HorizontalAlignment="Left" VerticalAlignment="Center" Content="Include unassigned"/>
-                    <CheckBox Grid.Row="1" IsChecked="{Binding DontAskAgain, Mode=TwoWay}"
-                              HorizontalAlignment="Left" VerticalAlignment="Center" Content="Don't ask again"/>
-                </Grid>
+                <CheckBox IsChecked="{Binding DontAskAgain, Mode=TwoWay}"
+                          HorizontalAlignment="Left" VerticalAlignment="Center" Content="Don't ask again"
+                          Margin="0,0,20,0"/>
                 <Button Content="Proceed" Command="{Binding ProceedCommand}" />
                 <Button Content="Cancel" Command="{Binding CancelCommand}" />
             </StackPanel>

@@ -41,6 +41,24 @@
                                                             Command="{Binding WorkspaceManagerVM.OpenAnnotationFileCommand}"/>
                                     </NativeMenu>
                             </NativeMenuItem>
+                            <NativeMenuItem Header="_Export classes" IsEnabled="{Binding WorkspaceManagerVM.ClassesPresent}">
+                                <NativeMenu>
+                                    <NativeMenuItem Command="{Binding WorkspaceManagerVM.SaveClassesCommand}"
+                                                    CommandParameter="{x:Static enums:ClassFormat.Txt}">
+                                        <MenuItem.Header>
+                                            <Binding Source="{x:Static enums:ClassFormat.Txt}"
+                                                     Converter="{StaticResource EnumDisplayNameConverter}"/>
+                                        </MenuItem.Header>
+                                    </NativeMenuItem>
+                                    <!-- <NativeMenuItem Command="{Binding WorkspaceManagerVM.SaveClassesCommand}" -->
+                                    <!--                 CommandParameter="{x:Static enums:ClassFormat.Yaml}"> -->
+                                    <!--     <MenuItem.Header> -->
+                                    <!--         <Binding Source="{x:Static enums:ClassFormat.Yaml}" -->
+                                    <!--                  Converter="{StaticResource EnumDisplayNameConverter}"/> -->
+                                    <!--     </MenuItem.Header> -->
+                                    <!-- </NativeMenuItem> -->
+                                </NativeMenu>
+                            </NativeMenuItem>
                             <NativeMenuItem Header="_Export annotations">
                                 <NativeMenu>
                                     <NativeMenuItem Header="_This image..." 

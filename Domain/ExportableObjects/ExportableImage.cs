@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ImageAnnotationTool.Domain.DataTransferObjects;
+using ImageAnnotationTool.Domain.DataTransferObjects.General;
 
 namespace ImageAnnotationTool.Domain.ExportableObjects;
 

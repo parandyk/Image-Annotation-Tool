@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ImageAnnotationTool.Domain.DataTransferObjects;
+using ImageAnnotationTool.Domain.DataTransferObjects.General;
 using ImageAnnotationTool.Domain.Infrastructure;
 
 namespace ImageAnnotationTool.Domain.Entities;
@@ -42,10 +43,21 @@ public sealed class AnnotationWorkspace : ObservableObject, IWorkspaceDomainInte
     
     public int ImageRunningCount { get; private set; } = 0;
 
-    public ImageSnapshot ImageToSnapshot(ImageSpace image)
+    public ImageSnapshot ImageToSnapshot(ImageSpace image, bool includeFallback)
     {
-        var annotations = image.Annotations
-            .Select(a => AnnotationToSnapshot(a)).ToList();
+        List<AnnotationSnapshot> annotations;
+
+        if (includeFallback)
+        {
+            annotations = image.Annotations
+                .Select(a => AnnotationToSnapshot(a)).ToList();
+        }
+        else
+        {
+            annotations = image.Annotations
+                .Where(a => !IsClassDefault(a.ClassInfo))
+                .Select(a => AnnotationToSnapshot(a)).ToList();
+        }
 
         return new ImageSnapshot(
             image.ExportId,

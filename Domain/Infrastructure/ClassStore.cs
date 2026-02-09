@@ -41,6 +41,7 @@ public sealed class ClassStore : ObservableObject, IClassStore
     }
 
     public ReadOnlyObservableCollection<ClassData> Classes => _workspace.Classes;
+    public event Action? ActiveClassChanged;
 
     private ClassData _activeClass;
     
@@ -53,6 +54,7 @@ public sealed class ClassStore : ObservableObject, IClassStore
             
             _activeClass = value;
             OnPropertyChanged(nameof(ActiveClass));
+            ActiveClassChanged?.Invoke(); //TODO: KEEP?
         }
     }
     

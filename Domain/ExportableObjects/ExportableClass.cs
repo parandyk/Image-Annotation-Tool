@@ -1,4 +1,5 @@
 using ImageAnnotationTool.Domain.DataTransferObjects;
+using ImageAnnotationTool.Domain.DataTransferObjects.General;
 
 namespace ImageAnnotationTool.Domain.ExportableObjects;
 

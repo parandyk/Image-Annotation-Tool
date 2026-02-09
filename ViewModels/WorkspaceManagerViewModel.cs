@@ -12,6 +12,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DynamicData;
 using ImageAnnotationTool.Domain.DataTransferObjects;
+using ImageAnnotationTool.Domain.DataTransferObjects.General;
 using ImageAnnotationTool.Domain.Entities;
 using ImageAnnotationTool.Domain.ExportableObjects;
 using ImageAnnotationTool.Domain.Infrastructure;
@@ -199,7 +200,6 @@ public partial class WorkspaceManagerViewModel : ObservableObject
         try
         {
             await SaveAnnotations(format, false);
-            _messenger.SendErrorOccurredNotification("Annotations exported successfully.");
         }
         catch (Exception e)
         {
@@ -213,7 +213,6 @@ public partial class WorkspaceManagerViewModel : ObservableObject
         try
         {
             await SaveAnnotations(format, true);
-            _messenger.SendErrorOccurredNotification("Annotations exported successfully.");
         }
         catch (Exception e)
         {
@@ -229,8 +228,11 @@ public partial class WorkspaceManagerViewModel : ObservableObject
                 throw new NullReferenceException("Missing file service instance.");
             
             var path = await _filesProvider.OpenOutputFolderAsync();
-            if (path is null) 
+            if (path is null)
+            {
+                _messenger.SendErrorOccurredNotification("Annotations export aborted.");
                 return;
+            }
 
             bool includeFallback = false;
             
@@ -263,7 +265,7 @@ public partial class WorkspaceManagerViewModel : ObservableObject
                 includeFallback = vm.IncludeUnassigned;
             }
             
-            var exportContext = CreateAnnotationExportContext(path, format, includeFallback);
+            var exportContext = CreateAnnotationExportContext(path, format, global, includeFallback);
 
             if (exportContext is null)
             {
@@ -271,6 +273,7 @@ public partial class WorkspaceManagerViewModel : ObservableObject
             }
             
             _useCaseProvider.ExportAnnotations(exportContext);
+            _messenger.SendErrorOccurredNotification("Annotations exported successfully.");
         }
         catch (Exception e)
         {
@@ -314,14 +317,14 @@ public partial class WorkspaceManagerViewModel : ObservableObject
         return classSnapshots;
     }
     
-    private List<ImageSnapshot>? CreateImageSnapshots(bool global = true)
+    private List<ImageSnapshot>? CreateImageSnapshots(bool global = true, bool includeFallback = false)
     {
         List<ImageSnapshot> imageSnapshots = new();
         
         if (global)
         {
             imageSnapshots = _domain.Images.
-                Select(img => _domain.ImageToSnapshot(img))
+                Select(img => _domain.ImageToSnapshot(img, includeFallback))
                 .ToList();
         }
         else
@@ -330,7 +333,7 @@ public partial class WorkspaceManagerViewModel : ObservableObject
                 return null;
             
             var imageSpace = ImageManagerVM.SelectedImageViewModel.ImageSpace;
-            var snapshot = _domain.ImageToSnapshot(imageSpace);
+            var snapshot = _domain.ImageToSnapshot(imageSpace, includeFallback);
             imageSnapshots.Add(snapshot);
         }
         
@@ -359,8 +362,8 @@ public partial class WorkspaceManagerViewModel : ObservableObject
         bool includeFallback = false)
     {
         var classes = CreateClassSnapshots(global, includeFallback);
-        var images = CreateImageSnapshots(global);
-
+        var images = CreateImageSnapshots(global, includeFallback);
+        
         if (classes is null || 
             images is null ||
             classes.Count == 0 ||
@@ -386,8 +389,11 @@ public partial class WorkspaceManagerViewModel : ObservableObject
                 throw new NullReferenceException("Missing file service instance.");
             
             var path = await _filesProvider.OpenOutputFolderAsync();
-            if (path is null) 
+            if (path is null)
+            {
+                _messenger.SendErrorOccurredNotification("Classes export aborted.");
                 return;
+            }
             
             var exportContext = CreateClassExportContext(path, format, true);
 

@@ -36,20 +36,20 @@
                         <!--           CommandParameter="{x:True}"/> -->
                     <!-- </MenuItem> -->
                     <MenuItem Classes="menu-button" Header="_Export classes" IsEnabled="{Binding WorkspaceManagerVM.ClassesPresent}">
-                        <MenuItem Command="{Binding WorkspaceManagerVM.SaveClassesToFileCommand}"
+                        <MenuItem Command="{Binding WorkspaceManagerVM.SaveClassesCommand}"
                                   CommandParameter="{x:Static enums:ClassFormat.Txt}">
                             <MenuItem.Header>
                                 <Binding Source="{x:Static enums:ClassFormat.Txt}"
                                          Converter="{StaticResource EnumDisplayNameConverter}"/>
                             </MenuItem.Header>
                         </MenuItem>
-                        <MenuItem Command="{Binding WorkspaceManagerVM.SaveClassesToFileCommand}"
-                                  CommandParameter="{x:Static enums:ClassFormat.Yaml}">
-                            <MenuItem.Header>
-                                <Binding Source="{x:Static enums:ClassFormat.Yaml}"
-                                         Converter="{StaticResource EnumDisplayNameConverter}"/>
-                            </MenuItem.Header>
-                        </MenuItem>
+                        <!-- <MenuItem Command="{Binding WorkspaceManagerVM.SaveClassesCommand}" -->
+                        <!--           CommandParameter="{x:Static enums:ClassFormat.Yaml}"> -->
+                        <!--     <MenuItem.Header> -->
+                        <!--         <Binding Source="{x:Static enums:ClassFormat.Yaml}" -->
+                        <!--                  Converter="{StaticResource EnumDisplayNameConverter}"/> -->
+                        <!--     </MenuItem.Header> -->
+                        <!-- </MenuItem> -->
                     </MenuItem>
                     <MenuItem Classes="menu-button" Header="_Export annotations">
                         <MenuItem Header="_From this image..." 

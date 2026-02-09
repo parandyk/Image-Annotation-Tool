@@ -75,6 +75,7 @@ public partial class ImageViewModel : ObservableObject, IDisposable
         
         SortedFilteredAnnotationList = new ReadOnlyObservableCollection<AnnotationViewModel>(_sortedFilteredAnnotationList);
         ((INotifyCollectionChanged)_classList).CollectionChanged += OnClassListCollectionChanged;
+        _classListProvider.ActiveClassChanged += ActiveClassChanged;
         
         _messenger.Register<AbortOperationMessage>(this, OnAbortRequested);
         
@@ -82,6 +83,15 @@ public partial class ImageViewModel : ObservableObject, IDisposable
             DrawAnnotations();
         
         RebuildAnnotationDisplayList();
+    }
+
+    private void ActiveClassChanged()
+    {
+        if (SelectedAnnotation is null)
+            return;
+        
+        if (SelectedAnnotation.Temporary)
+            SelectedAnnotation.AnnotationData.ChangeClass(_classListProvider.GetActiveClass());
     }
 
     private void OnClassListCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -1038,6 +1048,7 @@ public partial class ImageViewModel : ObservableObject, IDisposable
         _annotationModes.PropertyChanged -= OnAnnotationModeChanged;
         ((INotifyCollectionChanged)_imageSpace.Annotations).CollectionChanged -= OnDomainChanged;
         ((INotifyCollectionChanged)_classList).CollectionChanged -= OnClassListCollectionChanged;
+        _classListProvider.ActiveClassChanged -= ActiveClassChanged;
         
         WeakReferenceMessenger.Default.UnregisterAll(this);
         GC.SuppressFinalize(this);
