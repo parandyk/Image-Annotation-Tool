@@ -12,6 +12,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Avalonia.Xaml.Interactions.Draggable;
+using Avalonia.Xaml.Interactions.Events;
 using Avalonia.Xaml.Interactivity;
 using CommunityToolkit.Mvvm.Messaging;
 using ImageAnnotationTool.Interfaces;
@@ -62,7 +63,7 @@ public class DragCycleBBoxBehavior : StyledElementBehavior<Control>
         AvaloniaProperty.Register<DragCycleBBoxBehavior, ICommand?>(nameof(ChangeDragStateCommand));
     
     // /// <summary>
-    // /// Identifies the <see cref="DragThreshold"/> avalonia property. Used for setting how much drag 
+    // /// Identifies the <see cref="DragThreshold"/> avalonia property. Used for setting how much mouse movement needs to happen before dragging starts 
     // /// </summary>
     public static readonly StyledProperty<double> DragThresholdProperty =
         AvaloniaProperty.Register<DragCycleBBoxBehavior, double>(nameof(DragThreshold), InteractionConstants.DefaultDragThreshold);
@@ -129,7 +130,8 @@ public class DragCycleBBoxBehavior : StyledElementBehavior<Control>
         get => GetValue(DragThresholdProperty);
         set => SetValue(DragThresholdProperty, value);
     }
-    
+
+    private Control? _resizableHost;
     private Control? _itemHost;
     private Control? _parent;
     private Control? _draggedContainer;
@@ -217,6 +219,7 @@ public class DragCycleBBoxBehavior : StyledElementBehavior<Control>
             _start = e.GetPosition(parent);
             _parent = parent;
             _itemHost = AssociatedObject.GetVisualAncestors().OfType<Grid>().Skip(1).FirstOrDefault();
+            _resizableHost = AssociatedObject.GetVisualAncestors().OfType<Viewbox>().FirstOrDefault();
 
             _enableDrag = false;
             _captured = true;
@@ -262,7 +265,7 @@ public class DragCycleBBoxBehavior : StyledElementBehavior<Control>
         if (!_isPending)
             return;
         
-        var newPoint = e.GetPosition(AssociatedObject);
+        var newPoint = e.GetPosition(_parent);
         
         var moved = VerifyMovement(_start, newPoint);
 
@@ -272,6 +275,7 @@ public class DragCycleBBoxBehavior : StyledElementBehavior<Control>
         _isPending = false;
         
         _enableDrag = true;
+        _start = newPoint;
         
         if (ChangeDragStateCommand != null && ChangeDragStateCommand.CanExecute(_enableDrag))
             ChangeDragStateCommand.Execute(_enableDrag);
@@ -404,9 +408,21 @@ public class DragCycleBBoxBehavior : StyledElementBehavior<Control>
 
     private bool VerifyMovement(Point start, Point end)
     {
-        var moved = Math.Abs(start.X - end.X) > DragThreshold 
-                    || Math.Abs(start.Y - end.Y) > DragThreshold;
-
+        double adjustedDragThresholdX = DragThreshold;
+        double adjustedDragThresholdY = DragThreshold;
+        
+        if (_resizableHost != null && _itemHost != null)
+        {
+            adjustedDragThresholdX = DragThreshold * _resizableHost.Bounds.Width / _itemHost.Bounds.Width;
+            adjustedDragThresholdY = DragThreshold * _resizableHost.Bounds.Height / _itemHost.Bounds.Height;
+        }
+        
+        var moved = Math.Abs(start.X - end.X) > adjustedDragThresholdX 
+                    || Math.Abs(start.Y - end.Y) > adjustedDragThresholdY;
+        
+        Debug.WriteLine($"drag threshold: {DragThreshold}");
+        Debug.WriteLine($"Adjusted X drag threshold: {adjustedDragThresholdX}");
+        Debug.WriteLine($"Adjusted Y drag threshold: {adjustedDragThresholdY}");
         return moved;
     }
 }

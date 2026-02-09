@@ -21,7 +21,7 @@ public class CanvasLevelBBoxCycleBehavior : StyledElementBehavior<Control>
     /// Identifies the <see cref="Command"/> avalonia property. Used for setting 
     /// </summary>
     public static readonly StyledProperty<ICommand?> CycleCommandProperty =
-        AvaloniaProperty.Register<DragCycleBBoxBehavior, ICommand?>(nameof(CycleCommand));
+        AvaloniaProperty.Register<CanvasLevelBBoxCycleBehavior, ICommand?>(nameof(CycleCommand));
     /// <summary>
     /// Gets or sets the command to invoke when cycling
     /// </summary>

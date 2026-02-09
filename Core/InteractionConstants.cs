@@ -10,7 +10,7 @@ public static class InteractionConstants
     
     public const double MaxZoom = 20.0;
 
-    public const double UpperDragThreshold = 10.0;
+    public const double UpperDragThreshold = 20.0;
 
     public const double LowerDragThreshold = 0.0;
 }

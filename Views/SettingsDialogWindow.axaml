@@ -21,7 +21,7 @@
         Title="Settings">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Grid.IsSharedSizeScope="True">
                 <TextBlock Text="Notification settings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"/>
-                <Grid Width="540" Height="168" HorizontalAlignment="Center">
+                <Grid Width="540" Height="168" HorizontalAlignment="Center" Margin="0,0,0,5">
                         <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="9*"/>
@@ -56,7 +56,7 @@
                 <Separator/>
                 
                 <TextBlock Text="Drawing settings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"/>
-                <Grid ColumnDefinitions="3*, 7*" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45">
+                <Grid ColumnDefinitions="3*, 7*" HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"  Margin="0,0,0,5">
                         <ursa:EnumSelector  Value="{Binding AddingMode, Mode=TwoWay}"
                                             EnumType="enums:AnnotationAddingMode" DisplayDescription="True"
                                             HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,5,0"/>
@@ -70,7 +70,7 @@
                         <CheckBox  IsChecked="{Binding OverridingDefaultDragThreshold, Mode=TwoWay}"
                                   x:Name="UseDragCustomValueButton" Content="Use custom value" HorizontalAlignment="Left"/>
                 </Border>
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"  Margin="0,0,0,5">
                         <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="Numeric"/>
                                 <ColumnDefinition Width="5*"/>
@@ -109,7 +109,7 @@
                         <CheckBox Grid.Column="0" IsChecked="{Binding OverridingDefaultBboxBorderThickness, Mode=TwoWay}"
                                   x:Name="UseThicknessCustomValueButton" Content="Use custom value" HorizontalAlignment="Left"/>
                 </Border>
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="540" Height="45"  Margin="0,0,0,5">
                         <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="Numeric"/>
                                 <ColumnDefinition Width="5*"/>
@@ -143,7 +143,7 @@
                 
                 <Separator/>
                 
-                <Grid Width="540" Height="135" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Width="540" Height="135" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="0,0,0,5">
                         <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="9*"/>

@@ -204,6 +204,7 @@ public partial class SettingsManagerViewModel : ObservableObject
     {
         _interactionSettings.UseDefaultDragThreshold(settingsVm.OverridingDefaultDragThreshold);
         _interactionSettings.SetDragThreshold(settingsVm.DragThreshold);
+        OnPropertyChanged(nameof(DragThreshold));
     }
     
     private void SaveAppModeSettings(SettingsDialogViewModel settingsVm)
