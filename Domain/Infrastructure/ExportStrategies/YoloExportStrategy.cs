@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using ImageAnnotationTool.Domain.Entities;
+using ImageAnnotationTool.Domain.ExportableObjects;
 using ImageAnnotationTool.Domain.Infrastructure.ExportContexts;
 using ImageAnnotationTool.Enums;
 
@@ -15,8 +16,17 @@ public class YoloExportStrategy : IAnnotationExportStrategy
     public AnnotationFormat Format => AnnotationFormat.Yolo;
     public async Task ExportAsync(AnnotationExportContext context)
     {
+        var (datasetDir, imagesDir, labelsDir) = CreateDirectories(context.OutputDir);
+        
+        await ExportDataset(context.Classes, datasetDir);
+        await ExportClasses(context.Classes, datasetDir);
+        await ExportAnnotations(context, imagesDir, labelsDir);
+    }
+
+    private (string dataset, string images, string labels) CreateDirectories(string outputDir)
+    {
         var time = DateTime.Now;
-        var datasetDir = context.OutputDir + "dataset_" +
+        var datasetDir = outputDir + "dataset_" +
                          time.ToString("yyyy-MM-dd_HH_mm_ss") +
                          Guid.NewGuid().ToString("N")[..6].ToUpperInvariant();
         
@@ -27,9 +37,17 @@ public class YoloExportStrategy : IAnnotationExportStrategy
         Directory.CreateDirectory(imagesDir);
         Directory.CreateDirectory(labelsDir);
         
-        await File.WriteAllLinesAsync(Path.Combine(datasetDir, "classes.txt"), 
-            context.Classes.Select(c => c.Name));
+        return (datasetDir, imagesDir, labelsDir);
+    }
         
+    private static async Task ExportClasses(IList<ExportableClass> classes, string path)
+    {
+        var outputPath = Path.Combine(path, "classes.txt");
+        await File.WriteAllLinesAsync(outputPath, classes.Select(c => c.Name));
+    }
+
+    private static async Task ExportAnnotations(AnnotationExportContext context, string imagesDir, string labelsDir)
+    {
         var classMap = context.Classes
             .Select((c, idx) => (c.Name, idx))
             .ToDictionary(x => x.Name, x => x.idx);
@@ -50,13 +68,32 @@ public class YoloExportStrategy : IAnnotationExportStrategy
                 lines.Add(string.Format(CultureInfo.InvariantCulture, 
                     "{0} {1:F6} {2:F6} {3:F6} {4:F6}",
                     classId, cx, cy, w, h));
-                
-                // lines.Add(string.Format(
-                //     $"{classId} {cx:F6} {cy:F6} {w:F6} {h:F6}"));
             }
             
             var labelFilename = Path.ChangeExtension(image.Filename, ".txt");
             await File.WriteAllLinesAsync(Path.Combine(labelsDir, labelFilename), lines);
         }
+    }
+    
+    private static async Task ExportDataset(IList<ExportableClass> classes, string path)
+    {
+        var sb = new StringBuilder();
+        
+        sb.AppendLine("path: .");
+        sb.AppendLine("train: images");
+        sb.AppendLine("val: images");
+        sb.AppendLine();
+        
+        sb.AppendLine($"nc: {classes.Count}");
+        sb.AppendLine("names:");
+        
+        for (int i = 0; i < classes.Count; i++)
+        {
+            var name = classes[i].Name;
+            sb.AppendLine($"  {i}: '{name}'"); 
+        }
+
+        var yamlPath = Path.Combine(path, "data.yaml");
+        await File.WriteAllTextAsync(yamlPath, sb.ToString());
     }
 }
